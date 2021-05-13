@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation"
+            app:startDestination="@+id/homeFragment">
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.peter.letsswtich.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.peter.letsswtich.chat.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat"/>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.peter.letsswtich.map.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.peter.letsswtich.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+
+
+    <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_chat_fragment" app:destination="@id/chatFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_map_fragment" app:destination="@id/mapFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+
+
+</navigation>
