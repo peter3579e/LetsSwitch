@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Matched Dialog -->
+    <dimen name="size_length">500dp</dimen>
+    <dimen name="size_width">300dp</dimen>
+
+</resources>

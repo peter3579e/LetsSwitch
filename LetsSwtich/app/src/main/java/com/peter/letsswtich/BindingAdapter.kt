@@ -2,6 +2,7 @@ package com.peter.letsswtich
 
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.home.HomeAdapter
+import com.peter.letsswtich.util.TimeUtil
 
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
@@ -36,4 +38,9 @@ fun bindCartView(recyclerView: RecyclerView, data : List<User>?) {
 
     adapter.submitList(data)
     adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("ago")
+fun bindAgo(textView: TextView, time:Long?){
+    time?.let { textView.text = TimeUtil.stampToAgo(time) }
 }

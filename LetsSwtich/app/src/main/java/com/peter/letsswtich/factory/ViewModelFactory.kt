@@ -2,6 +2,7 @@ package com.peter.letsswtich.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.peter.letsswtich.chat.ChatViewModel
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.home.HomeViewModel
 
@@ -21,8 +22,8 @@ class ViewModelFactory constructor(
                 isAssignableFrom(HomeViewModel::class.java) ->
                     HomeViewModel(letsSwitchRepository)
 
-//                isAssignableFrom(HomeViewModel::class.java) ->
-//                    HomeViewModel(letsSwitchReposityory)
+                isAssignableFrom(ChatViewModel::class.java) ->
+                    ChatViewModel(letsSwitchRepository)
 //
 //                isAssignableFrom(CartViewModel::class.java) ->
 //                    CartViewModel(letsSwitchReposityoryy)

@@ -26,6 +26,11 @@
         android:name="com.peter.letsswtich.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/chatRoomFragment"
+        android:name="com.peter.letsswtich.chatroom.ChatRoomFragment"
+        android:label="ChatRoomFragment"
+        tools:layout="@layout/fragment_chat"/>
 
 
 
@@ -41,6 +46,10 @@
     <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@+id/chatRoomFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+
 
 
 </navigation>
