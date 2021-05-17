@@ -7,7 +7,10 @@
     <string name="toast_add_follow">Add To Follow List</string>
     <string name="card_about">About</string>
     <string name="you_shall_not_pass">You cant pass</string>
-    <string name="message">message</string>
+    <string name="message">Message</string>
     <string name="start_a_new_conversation">Start a new conversation</string>
     <string name="no_message">No message</string>
+    <string name="newmatches">New Matches</string>
+    <string name="indicator_message">Type a message</string>
+    <string name="reminder_chatroom_message">Please send something</string>
 </resources>

@@ -31,7 +31,9 @@ class ChatFragment:Fragment() {
 
         binding.viewModel = viewModel
         val adapter = ChatListAdapter(viewModel)
+        val newMatchesAdapter = NewMatchedAdapter(viewModel)
         binding.recyclerChatList.adapter = adapter
+        binding.recyclerNewMatches.adapter = newMatchesAdapter
 
         viewModel.getChatItem()
 
@@ -63,6 +65,7 @@ class ChatFragment:Fragment() {
                     binding.noValueImage.visibility = View.VISIBLE
                 } else {
                     adapter.submitList(it)
+                    newMatchesAdapter.submitList(it)
                 }
             }
         })

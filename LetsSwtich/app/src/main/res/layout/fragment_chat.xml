@@ -16,17 +16,43 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/title_message"
+            android:id="@+id/new_matches"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/newmatches"
+            android:textColor="@color/black_87_alpha"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_new_matches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/title_message"
+            app:layout_constraintTop_toBottomOf="@id/new_matches"
+            tools:listitem="@layout/item_new_matches" />
+
+        <TextView
+            android:id="@+id/title_message"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto"
             android:text="@string/message"
             android:textColor="@color/black_87_alpha"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/recycler_new_matches" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_chat_list"

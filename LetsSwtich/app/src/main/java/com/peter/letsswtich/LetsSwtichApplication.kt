@@ -6,6 +6,7 @@ import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.data.source.remote.LetsSwtichRemoteDataSource
 import com.peter.letsswtich.util.ServiceLocator
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 class LetsSwtichApplication: Application() {
@@ -22,4 +23,5 @@ class LetsSwtichApplication: Application() {
         LetsSwtichApplication.appContext = applicationContext
         instance = this
     }
+
 }

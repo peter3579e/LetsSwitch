@@ -1,8 +1,11 @@
 package com.peter.letsswtich.chat
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +26,19 @@ class ChatListAdapter(viewModel: ChatViewModel) : ListAdapter<ChatRoom, ChatList
             binding.textChatName.text = friendInfo.userName
             binding.image = friendInfo.userImage
 
-            binding.layoutChatList.setOnClickListener {
-                Navigation.createNavigateOnClickListener(NavigationDirections.navigateToChatroomFragment()).onClick(binding.layoutChatList)
+//            binding.layoutChatList.setOnClickListener {
+//                Navigation.createNavigateOnClickListener(NavigationDirections.navigateToChatroomFragment()).onClick(binding.layoutChatList)
+//            }
+
+            binding.root.setOnClickListener{
+                view: View ->
+                view.findNavController().navigate(NavigationDirections.navigateToChatroomFragment(friendInfo.userEmail,friendInfo.userName))
+                Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userEmail}")
+                Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userName}")
             }
+
+//            Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userEmail}")
+//            Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userName}")
 
             binding.executePendingBindings()
 
@@ -38,6 +51,10 @@ class ChatListAdapter(viewModel: ChatViewModel) : ListAdapter<ChatRoom, ChatList
 
     override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
         holder.bind(getItem(position))
+//        holder.itemView.setOnClickListener{
+//            Navigation.createNavigateOnClickListener(NavigationDirections.navigateToChatroomFragment())
+//            Log.d("ChatListAdapter","value of getItem = ${getItem(position)}")
+//        }
     }
 
 

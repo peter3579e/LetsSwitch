@@ -30,9 +30,16 @@
         android:id="@+id/chatRoomFragment"
         android:name="com.peter.letsswtich.chatroom.ChatRoomFragment"
         android:label="ChatRoomFragment"
-        tools:layout="@layout/fragment_chat"/>
-
-
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="userEmail"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="userName"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"
@@ -46,9 +53,7 @@
     <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
-    <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@+id/chatRoomFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@+id/chatRoomFragment" />
 
 
 

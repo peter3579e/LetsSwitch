@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.peter.letsswtich.chat.NewMatchedAdapter
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.home.HomeAdapter
 import com.peter.letsswtich.util.TimeUtil

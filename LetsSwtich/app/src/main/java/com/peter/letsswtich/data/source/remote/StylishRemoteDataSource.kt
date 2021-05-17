@@ -1,12 +1,10 @@
 package com.peter.letsswtich.data.source.remote
 
-import com.peter.letsswtich.data.ChatRoom
-import com.peter.letsswtich.data.Result
-import com.peter.letsswtich.data.User
-import com.peter.letsswtich.data.UserInfo
+import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 
 object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
+
 
     override suspend fun getChatItem(): List<ChatRoom> {
         var mock = mutableListOf<ChatRoom>()
@@ -14,24 +12,24 @@ object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
             add(
                 ChatRoom(
                 "123",
-                1620355603699, listOf(UserInfo("peter3579e@gmail.com","Peter", "https://api.appworks-school.tw/assets/201807242228/main.jpg")),
-                    listOf("Peter","Wency"),"I love you you love me"
+                1620355603699, listOf(UserInfo("peter7788@gmail.com","Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg")),
+                    listOf("Peter","Wency"),"Hello How are you doing?"
             )
             )
 
             add(
                 ChatRoom(
                     "123",
-                    1620355603699, listOf(UserInfo("peter3579e@gmail.com","Peter", "https://api.appworks-school.tw/assets/201807202150/main.jpg")),
-                    listOf("Peter","Wency"),"I love you you love me"
+                    1620355603699, listOf(UserInfo("peter3434@gmail.com","Chloe", "https://api.appworks-school.tw/assets/201807202150/main.jpg")),
+                    listOf("Peter","Chloe"),"Hello How are you doing?"
                 )
             )
 
             add(
                 ChatRoom(
                     "123",
-                    1620355603699, listOf(UserInfo("peter3579e@gmail.com","Peter", "https://api.appworks-school.tw/assets/201807201824/main.jpg")),
-                    listOf("Peter","Wency"),"I love you you love me"
+                    1620355603699, listOf(UserInfo("peter123@gmail.com","Gillan", "https://api.appworks-school.tw/assets/201807201824/main.jpg")),
+                    listOf("Peter","Gillan"),"Hello How are you doing?"
                 )
             )
         }
@@ -108,6 +106,22 @@ object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
                     "https://api.appworks-school.tw/assets/201807201824/main.jpg",
                     "https://api.appworks-school.tw/assets/201807201824/main.jpg"),
                     "https://api.appworks-school.tw/assets/201807202150/main.jpg","Taipei","Hawai","FeMale","I love you you love me","Wizar")
+            )
+        }
+        return mock
+    }
+
+    override suspend fun getMessageItem(): List<Message>{
+        var mock = mutableListOf<Message>()
+        mock.run{
+            add(
+                Message("123","Wency","https://api.appworks-school.tw/assets/201807242228/main.jpg","peter7788@gmail.com","雪莉？", 1620355603699)
+            )
+            add(
+                Message("123","Chloe","https://api.appworks-school.tw/assets/201807202150/main.jpg","peter3434@gmail.com","雪莉？", 1620355603699)
+            )
+            add(
+                Message("123","Gillan","https://api.appworks-school.tw/assets/201807201824/main.jpg","peter123@gmail.com","雪莉？", 1620355603699)
             )
         }
         return mock
