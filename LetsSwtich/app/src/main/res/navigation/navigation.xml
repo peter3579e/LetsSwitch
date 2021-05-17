@@ -34,11 +34,13 @@
         <argument
             android:name="userEmail"
             app:argType="string"
-            app:nullable="true"/>
+            app:nullable="true"
+            android:defaultValue="@null"/>
         <argument
             android:name="userName"
             app:argType="string"
-            app:nullable="true"/>
+            app:nullable="true"
+            android:defaultValue="@null"/>
     </fragment>
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"

@@ -115,6 +115,11 @@ dependencies {
     // TimeAgo
     implementation "com.github.marlonlom:timeago:4.0.1"
 
+    //Google Maps
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
 
 
     testImplementation 'junit:junit:4.13.1'

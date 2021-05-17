@@ -1,9 +1,9 @@
 package com.peter.letsswtich.ext
 
 
-import UserEmailViewModelFactory
 import androidx.fragment.app.Fragment
 import com.peter.letsswtich.LetsSwtichApplication
+import com.peter.letsswtich.factory.ChatRoomViewModelFactory
 import com.peter.letsswtich.factory.ViewModelFactory
 
 fun Fragment.getVmFactory(): ViewModelFactory {
@@ -11,7 +11,7 @@ fun Fragment.getVmFactory(): ViewModelFactory {
     return ViewModelFactory(repository)
 }
 
-fun Fragment.getVmFactory(userEmail: String, userName: String) : UserEmailViewModelFactory {
+fun Fragment.getVmFactory(userEmail: String, userName: String) : ChatRoomViewModelFactory {
     val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
-    return UserEmailViewModelFactory(repository, userEmail, userName)
+    return ChatRoomViewModelFactory(repository, userEmail, userName)
 }

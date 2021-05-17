@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.FragmentChatRoomBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
+import com.peter.letsswtich.util.Logger
 
 
 class ChatRoomFragment : Fragment() {
@@ -45,17 +47,19 @@ class ChatRoomFragment : Fragment() {
         binding.viewModel = viewModel
         binding.recyclerMessage.adapter = adapter
         binding.lifecycleOwner = this
-//        viewModel.getMessageItem()
 
-//        val friendUserEmail = viewModel.currentChattingUser
+        val friendUserEmail = viewModel.currentChattingUser
         val myUserEmail = UserManager.user.email
 
-        Log.d("ChatRoomFragment"," valuse of useremail = $myUserEmail")
+        Log.d("ChatRoomFragment"," value of useremail = $myUserEmail")
+        Log.d("ChatRoomFragment", "value of friendsEmail = $friendUserEmail")
 
         // Setup custom toolbar
         if (activity is MainActivity) {
             (activity as MainActivity).setSupportActionBar(binding.toolbar)
         }
+
+        Log.d("ChatRoomFragment","value of enterMessage = ${viewModel.enterMessage.value}")
 
         binding.send.setOnClickListener {
             if (isEmpty()) {
@@ -70,6 +74,15 @@ class ChatRoomFragment : Fragment() {
         viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+
+        viewModel.enterMessage.observe(viewLifecycleOwner, Observer {
+            Logger.d(it)
+        })
+
+        binding.editMessage.doOnTextChanged { text, start, before, count ->
+            viewModel.enterMessage.value =text.toString()
+            Log.d("Peter","${viewModel.enterMessage.value}")
+        }
 
 
 

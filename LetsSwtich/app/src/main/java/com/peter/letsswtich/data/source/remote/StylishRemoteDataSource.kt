@@ -32,6 +32,7 @@ object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
                     listOf("Peter","Gillan"),"Hello How are you doing?"
                 )
             )
+
         }
         return mock
     }
@@ -118,10 +119,10 @@ object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
                 Message("123","Wency","https://api.appworks-school.tw/assets/201807242228/main.jpg","peter7788@gmail.com","雪莉？", 1620355603699)
             )
             add(
-                Message("123","Chloe","https://api.appworks-school.tw/assets/201807202150/main.jpg","peter3434@gmail.com","雪莉？", 1620355603699)
+                    Message("123","Peter","https://api.appworks-school.tw/assets/201807201824/main.jpg","peter3579e@gmail.com","哇嗚珍妮佛羅茲！！！！！", 1620355603699)
             )
             add(
-                Message("123","Gillan","https://api.appworks-school.tw/assets/201807201824/main.jpg","peter123@gmail.com","雪莉？", 1620355603699)
+                    Message("123","Wency","https://api.appworks-school.tw/assets/201807242228/main.jpg","peter7788@gmail.com","你為什麼要攻擊我的coin master村莊？", 1620355603699)
             )
         }
         return mock
