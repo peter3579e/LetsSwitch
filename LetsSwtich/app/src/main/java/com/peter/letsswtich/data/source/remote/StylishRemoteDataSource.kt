@@ -127,4 +127,14 @@ object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
         }
         return mock
     }
+
+    override suspend fun getMapItem(): List<StoreLocation>{
+        var mock = mutableListOf<StoreLocation>()
+        mock.run{
+            add(
+                StoreLocation(Store("123","AppleStore","https://api.appworks-school.tw/assets/201807242228/main.jpg"),"奇福扁食",25.034070787981246, 121.53106153460475,"0938941285")
+            )
+        }
+        return mock
+    }
 }

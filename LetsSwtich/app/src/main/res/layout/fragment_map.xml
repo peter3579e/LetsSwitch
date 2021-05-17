@@ -1,21 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.peter.letsswtich.map.MapViewModel" />
 
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="This is MapFragment"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/radar_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/card_view_search"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="80dp"-->
+<!--            map:cardCornerRadius="15dp"-->
+<!--            map:cardElevation="2dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginHorizontal="16dp"-->
+<!--            map:layout_constraintEnd_toEndOf="parent"-->
+<!--            map:layout_constraintStart_toStartOf="parent"-->
+<!--            map:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            map:cardCornerRadius="15dp"-->
+<!--            map:cardElevation="10dp"-->
+<!--            android:layout_marginBottom="32dp"-->
+<!--            android:layout_marginHorizontal="16dp"-->
+<!--            android:clickable="true"-->
+<!--            map:layout_constraintBottom_toBottomOf="parent"-->
+<!--            map:layout_constraintEnd_toEndOf="parent"-->
+<!--            map:layout_constraintStart_toStartOf="parent">-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/radar_map_card_layout_detail"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    map:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    map:layout_constraintEnd_toEndOf="parent"-->
+<!--                    map:layout_constraintStart_toStartOf="parent"-->
+<!--                    >-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/image_call_phone"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="30dp"-->
+<!--                        android:layout_marginStart="16dp"-->
+<!--                        android:background="@drawable/shape_circle"-->
+<!--                        android:padding="6dp"-->
+<!--                        android:src="@drawable/ic_phone_black_24dp"-->
+<!--                        map:layout_constraintStart_toEndOf="@+id/image_navigation_to_store"-->
+<!--                        map:layout_constraintTop_toTopOf="@+id/image_navigation_to_store"-->
+<!--                        map:tint="#37A0C8" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/image_navigation_to_store"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="30dp"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:layout_marginBottom="8dp"-->
+<!--                        android:background="@drawable/shape_circle"-->
+<!--                        android:padding="6dp"-->
+<!--                        android:src="@drawable/ic_navigation_black_24dp"-->
+<!--                        map:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        map:layout_constraintStart_toStartOf="@+id/radar_text_store_information"-->
+<!--                        map:layout_constraintTop_toBottomOf="@+id/radar_text_store_information"-->
+<!--                        map:layout_constraintVertical_bias="0"-->
+<!--                        map:tint="#37A0C8" />-->
+
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/radar_recycler_store_high_score"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="130dp"-->
+<!--                        android:layout_marginBottom="8dp"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                        map:layout_constraintEnd_toEndOf="parent"-->
+<!--                        map:layout_constraintStart_toStartOf="parent"-->
+<!--                        map:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/radar_text_store_information"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="16dp"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:fontFamily="@font/noto_sans"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/text_title"-->
+<!--                        map:layout_constraintStart_toStartOf="parent"-->
+<!--                        map:layout_constraintTop_toBottomOf="@+id/radar_recycler_store_high_score" />-->
+
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:id="@+id/radar_layout_map_all_store_drink"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginEnd="16dp"-->
+<!--                        android:onClick="@{() -> viewModel.storeDrinkStatus()}"-->
+<!--                        map:layout_constraintBottom_toBottomOf="@+id/image_call_phone"-->
+<!--                        map:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/radar_text_map_all_store_drink"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@string/display_drink"-->
+<!--                            android:textColor="@color/text_color_hint"-->
+<!--                            map:layout_constraintStart_toStartOf="parent"-->
+<!--                            map:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/radar_image_fold_arrow"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:background="@color/White"-->
+<!--                            android:src="@drawable/fold_store_drink"-->
+<!--                            android:tint="@color/text_color_hint"-->
+<!--                            map:layout_constraintBottom_toBottomOf="@+id/radar_text_map_all_store_drink"-->
+<!--                            map:layout_constraintDimensionRatio="1"-->
+<!--                            map:layout_constraintStart_toEndOf="@+id/radar_text_map_all_store_drink"-->
+<!--                            map:layout_constraintTop_toTopOf="@+id/radar_text_map_all_store_drink" />-->
+
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:id="@+id/radar_layout_map_drink_rank"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="100dp"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:visibility="@{viewModel.storeDrinkStatus == true ? View.VISIBLE:View.GONE}"-->
+<!--                        map:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        map:layout_constraintStart_toStartOf="parent"-->
+<!--                        map:layout_constraintTop_toBottomOf="@+id/image_navigation_to_store">-->
+
+<!--                        <View-->
+<!--                            android:id="@+id/radar_line_detail"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="1dp"-->
+<!--                            android:layout_marginHorizontal="4dp"-->
+<!--                            android:background="@color/app_line_gary"-->
+<!--                            map:layout_constraintEnd_toEndOf="parent"-->
+<!--                            map:layout_constraintStart_toStartOf="parent"-->
+<!--                            map:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                        <androidx.recyclerview.widget.RecyclerView-->
+<!--                            android:id="@+id/radar_recycler_map_drink_rank"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                            map:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            map:layout_constraintEnd_toEndOf="parent"-->
+<!--                            map:layout_constraintStart_toStartOf="parent"-->
+<!--                            map:layout_constraintTop_toBottomOf="@+id/radar_line_detail"-->
+<!--                            map:listRadarStoreDrink="@{viewModel.newDrinkRank}" />-->
+
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                <ProgressBar-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:theme="@style/ProgressTheme"-->
+<!--                    map:layout_constraintBottom_toBottomOf="@+id/radar_map_card_layout_detail"-->
+<!--                    map:layout_constraintEnd_toEndOf="parent"-->
+<!--                    map:layout_constraintStart_toStartOf="parent"-->
+<!--                    map:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

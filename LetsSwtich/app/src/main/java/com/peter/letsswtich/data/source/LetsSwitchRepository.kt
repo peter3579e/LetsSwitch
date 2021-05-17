@@ -1,12 +1,10 @@
 package com.peter.letsswtich.data.source
 
-import com.peter.letsswtich.data.ChatRoom
-import com.peter.letsswtich.data.Message
-import com.peter.letsswtich.data.Result
-import com.peter.letsswtich.data.User
+import com.peter.letsswtich.data.*
 
 interface LetsSwitchRepository {
     suspend fun getUserItem(): List<User>
     suspend fun getChatItem(): List<ChatRoom>
     suspend fun getMessageItem(): List<Message>
+    suspend fun getMapItem(): List<StoreLocation>
 }

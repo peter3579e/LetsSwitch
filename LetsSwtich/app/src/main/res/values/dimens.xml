@@ -4,5 +4,6 @@
     <!-- Matched Dialog -->
     <dimen name="size_length">500dp</dimen>
     <dimen name="size_width">300dp</dimen>
+    <dimen name="text_title">20dp</dimen>
 
 </resources>

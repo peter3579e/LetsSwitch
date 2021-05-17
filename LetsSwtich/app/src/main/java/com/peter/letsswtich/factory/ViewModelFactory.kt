@@ -6,6 +6,7 @@ import com.peter.letsswtich.chat.ChatViewModel
 import com.peter.letsswtich.chatroom.ChatRoomViewModel
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.home.HomeViewModel
+import com.peter.letsswtich.map.MapViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -25,6 +26,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(ChatViewModel::class.java) ->
                     ChatViewModel(letsSwitchRepository)
+
+                isAssignableFrom(MapViewModel::class.java)->
+                    MapViewModel(letsSwitchRepository)
 
 //
 //                isAssignableFrom(CartViewModel::class.java) ->

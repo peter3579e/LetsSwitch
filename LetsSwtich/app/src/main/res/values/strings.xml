@@ -13,4 +13,5 @@
     <string name="newmatches">New Matches</string>
     <string name="indicator_message">Type a message</string>
     <string name="reminder_chatroom_message">Please send something</string>
+    <string name="google_maps_key">AIzaSyAYu63fvKcvAeii9ngoIcC_CRBjgUajUN8</string>
 </resources>

@@ -1,10 +1,7 @@
 package com.peter.letsswtich.data.source.local
 
 import android.content.Context
-import com.peter.letsswtich.data.ChatRoom
-import com.peter.letsswtich.data.Message
-import com.peter.letsswtich.data.Result
-import com.peter.letsswtich.data.User
+import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 
 class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
@@ -17,6 +14,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun getMessageItem(): List<Message> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMapItem(): List<StoreLocation> {
         TODO("Not yet implemented")
     }
 }
