@@ -132,7 +132,13 @@ object LetsSwtichRemoteDataSource : LetsSwitchDataSource {
         var mock = mutableListOf<StoreLocation>()
         mock.run{
             add(
-                StoreLocation(Store("123","AppleStore","https://api.appworks-school.tw/assets/201807242228/main.jpg"),"奇福扁食",25.034070787981246, 121.53106153460475,"0938941285")
+                StoreLocation(Store("123","Wayne","https://api.appworks-school.tw/assets/201807242228/main.jpg"),"想找人約跑步",25.034070787981246, 121.53106153460475,"0938941285")
+            )
+            add(
+                StoreLocation(Store("123","Chloe","https://api.appworks-school.tw/assets/201807201824/main.jpg"),"想吃飯",22.99095476570537, 120.19685561482974,"0938941285")
+            )
+            add(
+                StoreLocation(Store("123","Scolly","https://api.appworks-school.tw/assets/201807202150/main.jpg"),"想看電影",25.034658371107255, 121.53197895144412,"0938941285")
             )
         }
         return mock

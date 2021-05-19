@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.peter.letsswtich.data.Comment
+import com.peter.letsswtich.data.Store
 import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.util.Logger
@@ -56,12 +57,16 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         getMapItemLocation()
     }
 
+
+
+
     fun getMapItemLocation() {
         coroutineScope.launch {
             _storeLocation.value = letsSwitchRepository.getMapItem()
             Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
         }
     }
+
 
 
 
