@@ -37,6 +37,12 @@ class MainActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
 
                     }
+                    R.id.navigation_profile -> {
+
+                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
+                        return@OnNavigationItemSelectedListener true
+
+                    }
                 }
                 false
             }

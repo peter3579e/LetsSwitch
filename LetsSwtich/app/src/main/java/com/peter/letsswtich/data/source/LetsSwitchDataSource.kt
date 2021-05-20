@@ -4,9 +4,10 @@ import com.peter.letsswtich.data.*
 
 interface LetsSwitchDataSource {
 
-    suspend fun getUserItem(): List<User>
+    suspend fun getAllUser(): Result<List<User>>
     suspend fun getChatItem(): List<ChatRoom>
     suspend fun getMessageItem(): List<Message>
     suspend fun getMapItem(): List<StoreLocation>
+    suspend fun postUser()
 
 }

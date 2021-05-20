@@ -19,17 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/roundframe">
-x
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp"
-            android:layout_margin="10dp"
-            android:elevation="3dp"
-            android:src="@drawable/ic_cute_avatar"
-            android:onClick="@{()->viewModel.navigateToProfile()}"/>
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:elevation="3dp"-->
+<!--            android:src="@drawable/ic_cute_avatar"-->
+<!--            android:onClick="@{()->viewModel.navigateToProfile()}"/>-->
 
         <View
             android:id="@+id/bg_red"
@@ -71,7 +71,7 @@ x
 
         <com.yuyakaido.android.cardstackview.CardStackView
             android:id="@+id/stack_view"
-            listCard="@{viewModel.cardProduct}"
+            listCard="@{viewModel.allUser}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_centerHorizontal="true"
@@ -157,12 +157,13 @@ x
                     android:id="@+id/button_no"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:background="@drawable/button_round_blue"
+                    android:background="@drawable/button_round_white"
                     android:contentDescription="@null"
+                    android:tint="#63DD99"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_right" />
+                    app:srcCompat="@drawable/ic_like_button" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 
 class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
-    override suspend fun getUserItem(): List<User> {
+    override suspend fun getAllUser(): Result<List<User>> {
         TODO("Not yet implemented")
     }
 
@@ -18,6 +18,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun getMapItem(): List<StoreLocation> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postUser() {
         TODO("Not yet implemented")
     }
 }

@@ -10,7 +10,6 @@ import com.peter.letsswtich.databinding.DialogMatchedBinding
 class MatchedDialog : AppCompatDialogFragment() {
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

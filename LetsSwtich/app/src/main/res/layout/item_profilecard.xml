@@ -35,7 +35,7 @@
                 <ImageView
                     android:id="@+id/image_card_user"
                     android:layout_width="0dp"
-                    imageUrl="@{item.profilePic[1]}"
+                    imageUrl="@{item.personImages[1]}"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="0dp"
                     android:layout_marginTop="0dp"

@@ -2,7 +2,6 @@ package com.peter.letsswtich.home
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,11 @@ import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
-import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.databinding.FragmentHomeBinding
 import com.peter.letsswtich.ext.getVmFactory
+import com.peter.letsswtich.login.UserManager
 import com.yuyakaido.android.cardstackview.*
 import com.peter.letsswtich.util.Logger
 
@@ -31,6 +27,7 @@ class HomeFragment : Fragment(), CardStackListener {
     lateinit var adapter: HomeAdapter
     private var count = 0
     private lateinit var layoutManager: CardStackLayoutManager
+    private val myEmail = UserManager.user.email
 
 
     override fun onCreateView(
@@ -49,7 +46,6 @@ class HomeFragment : Fragment(), CardStackListener {
 //            Log.d("Peter","value of = ${viewModel.cardProduct.value}")
 //        })
 
-        viewModel.getUserItem()
 
         // Setup card stack recyclerview
         val stackView = binding.stackView
@@ -89,12 +85,12 @@ class HomeFragment : Fragment(), CardStackListener {
             binding.stackView.rewind()
         }
 
-        viewModel.navigateToProfilePage.observe(viewLifecycleOwner, Observer {
-            if (viewModel.navigateToProfilePage.value == true){
-                findNavController().navigate(NavigationDirections.navigateToProfileFragment())
-                viewModel.onProfileNavigated()
-        }
-        })
+//        viewModel.navigateToProfilePage.observe(viewLifecycleOwner, Observer {
+//            if (viewModel.navigateToProfilePage.value == true){
+//                findNavController().navigate(NavigationDirections.navigateToProfileFragment())
+//                viewModel.onProfileNavigated()
+//        }
+//        })
 
 //        viewModel.createSortedList()
 //
@@ -134,7 +130,7 @@ class HomeFragment : Fragment(), CardStackListener {
 
     override fun onCardSwiped(direction: Direction?) {
 
-        val maxAmount = viewModel.cardProduct.value?.size
+        val maxAmount = viewModel.allUser.value?.size
 
         viewModel.setRedBg(0f)
         viewModel.setBlueBg(0f)
@@ -171,6 +167,10 @@ class HomeFragment : Fragment(), CardStackListener {
         if (direction == Direction.Right) {
 
 //            viewModel.postUserToFollow(myEmail, requireNotNull(viewModel.usersWithMatch.value)[count])
+        val likedUser = requireNotNull(viewModel.allUser.value)[count]
+
+        Log.d("HomeFragment","value of like = $likedUser ")
+
 
             Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
         }

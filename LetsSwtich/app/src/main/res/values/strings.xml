@@ -14,4 +14,5 @@
     <string name="indicator_message">Type a message</string>
     <string name="reminder_chatroom_message">Please send something</string>
     <string name="google_maps_key">AIzaSyAYu63fvKcvAeii9ngoIcC_CRBjgUajUN8</string>
+    <string name="get_nothing_from_firebase">Get Nothing From FireBase</string>
 </resources>

@@ -11,8 +11,8 @@ class DefaultLetsSwitchRepository(
 ) :
     LetsSwitchRepository {
 
-    override suspend fun getUserItem(): List<User> {
-        return remoteDataSource.getUserItem()
+    override suspend fun getAllUser(): Result<List<User>> {
+        return remoteDataSource.getAllUser()
     }
 
     override suspend fun getChatItem(): List<ChatRoom> {
@@ -25,6 +25,10 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun getMapItem() : List<StoreLocation> {
         return remoteDataSource.getMapItem()
+    }
+
+    override suspend fun postUser(){
+        return remoteDataSource.postUser()
     }
 
 }

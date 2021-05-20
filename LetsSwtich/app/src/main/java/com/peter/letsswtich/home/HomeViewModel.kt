@@ -7,18 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
+import com.peter.letsswtich.data.Result
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.network.LoadApiStatus
+import com.peter.letsswtich.util.Logger
 import kotlinx.coroutines.*
 
 class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): ViewModel() {
 
-    private val _cardProduct = MutableLiveData<List<User>>()
+    private val _allUser = MutableLiveData<List<User>>()
 
-    val cardProduct: MutableLiveData<List<User>>
+    val allUser: MutableLiveData<List<User>>
 
-        get() = _cardProduct
+        get() = _allUser
 
     private var _redBg = MutableLiveData<Float>()
 
@@ -30,16 +32,21 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
     val blueBg: LiveData<Float>
         get() = _blueBg
 
-    private val _usersWithMatch = MutableLiveData<List<User>>()
+    private val _likedUser = MutableLiveData<List<User>>()
 
-    val usersWithMatch: LiveData<List<User>>
-        get() = _usersWithMatch
+    val likedUser: LiveData<List<User>>
+        get() = _likedUser
 
-    private val _navigateToProfilePage = MutableLiveData<Boolean>()
+//    private val _navigateToProfilePage = MutableLiveData<Boolean>()
+//
+//    val  navigateToProfilePage: MutableLiveData<Boolean>
+//
+//        get() = _navigateToProfilePage
 
-    val  navigateToProfilePage: MutableLiveData<Boolean>
+    private val _refreshStatus = MutableLiveData<Boolean>()
 
-        get() = _navigateToProfilePage
+    val refreshStatus: LiveData<Boolean>
+        get() = _refreshStatus
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -66,26 +73,72 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
         get() = _status
 
     init {
-        _cardProduct.value = null
+        Logger.i("------------------------------------")
+        Logger.i("[${this::class.simpleName}]${this}")
+        Logger.i("------------------------------------")
+
+        getAllUser()
+//        postUser()
     }
 
-
-
-
-    fun getUserItem() {
+    fun postUser(){
         coroutineScope.launch {
-            _cardProduct.value = letsSwitchRepository.getUserItem()
-            Log.d("Peter","Value of getUser ${cardProduct.value}")
+            letsSwitchRepository.postUser()
         }
     }
 
-    fun navigateToProfile(){
-        _navigateToProfilePage.value = true
+
+
+
+
+
+    fun getAllUser() {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            val result = letsSwitchRepository.getAllUser()
+
+            _allUser.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    doneProgress()
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
+            _refreshStatus.value = false
+        }
     }
 
-    fun onProfileNavigated() {
-        _navigateToProfilePage.value = false
+    var doneProgressCount = 4
+    private fun doneProgress() {
+
+        doneProgressCount--
+        if (doneProgressCount == 0) _status.value = LoadApiStatus.DONE
     }
+
+//    fun navigateToProfile(){
+//        _navigateToProfilePage.value = true
+//    }
+//
+//    fun onProfileNavigated() {
+//        _navigateToProfilePage.value = false
+//    }
 
 
 
@@ -101,9 +154,9 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
         _blueBg.value = ratio
     }
 
-    fun createSortedList() {
-        _usersWithMatch.value = _cardProduct.value
-    }
+//    fun createSortedList(users: List<User>) {
+//        _likedUser.value = users.
+//    }
 
 
 }
