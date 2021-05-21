@@ -24,4 +24,8 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     override suspend fun postUser() {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateAndCheckLike(myEmail: String, user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
 }

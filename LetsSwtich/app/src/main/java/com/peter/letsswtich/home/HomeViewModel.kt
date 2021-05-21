@@ -7,14 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
+import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.data.Result
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
+import com.peter.letsswtich.ext.filterByTraits
+
 import com.peter.letsswtich.network.LoadApiStatus
 import com.peter.letsswtich.util.Logger
+import com.peter.letsswtich.util.ServiceLocator.letsSwitchRepository
 import kotlinx.coroutines.*
 
-class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): ViewModel() {
+class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository,  requirement: Requirement): ViewModel() {
+
+    val answer = requirement
 
     private val _allUser = MutableLiveData<List<User>>()
 
@@ -37,6 +43,13 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
     val likedUser: LiveData<List<User>>
         get() = _likedUser
 
+
+
+    var count: Boolean = false
+
+
+
+
 //    private val _navigateToProfilePage = MutableLiveData<Boolean>()
 //
 //    val  navigateToProfilePage: MutableLiveData<Boolean>
@@ -47,6 +60,12 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
 
     val refreshStatus: LiveData<Boolean>
         get() = _refreshStatus
+
+    // list of users after filtering
+    private val _usersWithMatch = MutableLiveData<List<User>>()
+
+    val usersWithMatch: LiveData<List<User>>
+        get() = _usersWithMatch
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -77,23 +96,41 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
 
+
         getAllUser()
-//        postUser()
     }
 
-    fun postUser(){
+    fun updateAndCheckLike(myEmail: String, user: User){
         coroutineScope.launch {
-            letsSwitchRepository.postUser()
+
+            when(val result = letsSwitchRepository.updateAndCheckLike(myEmail,user)){
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    leave(true)
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                }
+                    
+                }
+            }
         }
-    }
-
-
 
 
 
 
     fun getAllUser() {
-        coroutineScope.launch {
+       coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
             val result = letsSwitchRepository.getAllUser()
@@ -120,7 +157,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
                     null
                 }
             }
-            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
+//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
             _refreshStatus.value = false
         }
     }
@@ -154,9 +191,13 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
         _blueBg.value = ratio
     }
 
-//    fun createSortedList(users: List<User>) {
-//        _likedUser.value = users.
-//    }
+    fun filteredUserList(users: List<User>){
+        _usersWithMatch.value = users.filterByTraits(answer)
+        Log.d("HomeViewModel","value of users = $users")
+        Log.d("HomeViewModel","here here here!!!")
+    }
+
+
 
 
 }

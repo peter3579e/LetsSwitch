@@ -10,6 +10,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.databinding.FragmentHomeBinding
@@ -17,17 +18,21 @@ import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
 import com.yuyakaido.android.cardstackview.*
 import com.peter.letsswtich.util.Logger
+import java.util.*
 
 
 class HomeFragment : Fragment(), CardStackListener {
 
-    private val viewModel : HomeViewModel by viewModels<HomeViewModel> { getVmFactory() }
+    private val viewModel : HomeViewModel by viewModels<HomeViewModel> { getVmFactory(
+            HomeFragmentArgs.fromBundle(requireArguments()).selectedAnswer
+    ) }
 
     private lateinit var binding: FragmentHomeBinding
     lateinit var adapter: HomeAdapter
     private var count = 0
     private lateinit var layoutManager: CardStackLayoutManager
     private val myEmail = UserManager.user.email
+    private var maxCount : Int = -1
 
 
     override fun onCreateView(
@@ -82,8 +87,25 @@ class HomeFragment : Fragment(), CardStackListener {
         }
 
         binding.buttonRewind.setOnClickListener {
+            if (count == 1 || count == 2 ){
+                viewModel.count = true
+            }
             binding.stackView.rewind()
         }
+
+        viewModel.allUser.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            viewModel.filteredUserList(it)
+            Log.d("HomeFragment","value of match User = ${viewModel.usersWithMatch.value}")
+
+            if (viewModel.usersWithMatch == null){
+                matchValueVisibility(false)
+            } else {
+                matchValueVisibility(true)
+            }
+        })
+
+
+
 
 //        viewModel.navigateToProfilePage.observe(viewLifecycleOwner, Observer {
 //            if (viewModel.navigateToProfilePage.value == true){
@@ -94,17 +116,7 @@ class HomeFragment : Fragment(), CardStackListener {
 
 //        viewModel.createSortedList()
 //
-//        viewModel.usersWithMatch.observe(viewLifecycleOwner, Observer {
-//
-////            val sortedList = it.excludeUser()
-////
-////            if (sortedList.isEmpty()) {
-////                matchValueVisibility(false)
-////            } else {
-////                matchValueVisibility(true)
-////            }
-//            adapter.submitList(viewModel.cardProduct.value)
-//        })
+
 
 
 
@@ -130,7 +142,7 @@ class HomeFragment : Fragment(), CardStackListener {
 
     override fun onCardSwiped(direction: Direction?) {
 
-        val maxAmount = viewModel.allUser.value?.size
+        maxCount = viewModel.allUser.value?.size!!
 
         viewModel.setRedBg(0f)
         viewModel.setBlueBg(0f)
@@ -144,7 +156,7 @@ class HomeFragment : Fragment(), CardStackListener {
 //        }
 
         Logger.i(count.toString())
-        Logger.i(maxAmount.toString())
+        Logger.i(maxCount.toString())
 
     }
 
@@ -171,6 +183,7 @@ class HomeFragment : Fragment(), CardStackListener {
 
         Log.d("HomeFragment","value of like = $likedUser ")
 
+            viewModel.updateAndCheckLike(myEmail,likedUser)
 
             Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
         }
@@ -183,6 +196,19 @@ class HomeFragment : Fragment(), CardStackListener {
             .setInterpolator(AccelerateInterpolator())
             .build()
         layoutManager.setSwipeAnimationSetting(setting)
+    }
+
+    private fun matchValueVisibility(withValue: Boolean) {
+        if (withValue) {
+            binding.noValueText.visibility = View.GONE
+            binding.noValueButton.visibility = View.GONE
+        } else {
+            binding.noValueText.visibility = View.VISIBLE
+            binding.noValueButton.visibility = View.VISIBLE
+//            binding.noValueButton.setOnClickListener {
+//                findNavController().navigate(NavigationDirections.navigateToPairingFragment())
+//            }
+        }
     }
 
 //    private fun setupSearchAnimation (status: LoadApiStatus) {

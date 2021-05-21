@@ -31,4 +31,8 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.postUser()
     }
 
+    override suspend fun updateAndCheckLike(myEmail: String, user: User): Result<Boolean>{
+        return remoteDataSource.updateAndCheckLike(myEmail,user)
+    }
+
 }

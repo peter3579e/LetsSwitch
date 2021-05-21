@@ -1,6 +1,7 @@
 package com.peter.letsswtich.data.source.remote
 
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
@@ -78,20 +79,36 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
-    override suspend fun postUser(){
+    override suspend fun updateAndCheckLike(myEmail: String, user: User): com.peter.letsswtich.data.Result<Boolean> = suspendCoroutine {
+        val users = FirebaseFirestore.getInstance().collection(PATH_USER)
+
+        Log.d("letsSwitchRemoteDataSource","UpdateAndCheckLike has run")
+
+        users.document(myEmail).collection("followList").document(user.email)
+                .set(user)
+                .addOnSuccessListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+        users.document(myEmail).update("likeList",FieldValue.arrayUnion(user.email))
+    }
+
+    override suspend fun postUser() {
         val user = FirebaseFirestore.getInstance().collection(PATH_USER)
-        val document = user.document()
+        val document = user.document("peter3579e@gmail.com")
         val data = hashMapOf(
             "personImages" to listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
-                "https://api.appworks-school.tw/assets/201807202150/main.jpg",
+                "https://img.onl/6zU8bQ",
                 "https://api.appworks-school.tw/assets/201807201824/main.jpg",
                 "https://api.appworks-school.tw/assets/201807201824/main.jpg"),
-            "description" to "I love playing tennis",
+            "description" to "Hello",
             "status" to "boring",
             "id" to "123",
             "bigheadPic" to "https://api.appworks-school.tw/assets/201807201824/main.jpg",
             "googleId" to "12345",
-            "age" to 26,
+            "age" to 25,
             "latitude" to 25.034070787981246,
             "lngti" to 121.53106153460475,
             "gender" to "Male",
@@ -99,11 +116,13 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
             "dislikeList" to listOf("Sdfasdf","sdfasf"),
             "likedFromUser" to listOf("sdfasdfasdf","sdfasdfdfs"),
             "friends" to listOf("sadfadfadfadsf","asdfadsfasdf"),
-            "name" to "Peter Liu",
-            "email" to "peter324234@yahoo.com.tw",
+            "name" to "Peter",
+            "email" to "peter3579e@gmail.com",
             "city" to "Taipei",
             "district" to "Hawai",
-            "role" to "teacher"
+            "role" to "teacher",
+                "fluentLanguage" to listOf("English","Chinese"),
+                "preferLanguage" to listOf("Japanese","French")
         )
         Log.d("Peter","The post has run")
 

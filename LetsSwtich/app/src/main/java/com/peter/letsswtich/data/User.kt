@@ -23,5 +23,7 @@ data class User (
     var email: String = "",
     var city: String = "",
     var district: String = "",
-    var role: String = ""
+    var role: String = "",
+    var fluentLanguage: List<String> = listOf(),
+    var preferLanguage: List<String> = listOf()
         ): Parcelable

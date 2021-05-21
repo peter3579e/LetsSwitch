@@ -10,18 +10,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+
     private val onNavigationItemSelectedListener =
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.navigation_home -> {
 
-                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToHomeFragment())
+                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFirstQuestionnaire())
                         return@OnNavigationItemSelectedListener true
 
                     }
@@ -57,9 +59,12 @@ class MainActivity : AppCompatActivity() {
 //        bindingBadge.viewModel = viewModel
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+
 
         setupBottomNav()
 

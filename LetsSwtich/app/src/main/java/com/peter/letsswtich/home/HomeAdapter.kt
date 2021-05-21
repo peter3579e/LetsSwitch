@@ -1,5 +1,6 @@
 package com.peter.letsswtich.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
@@ -8,6 +9,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.ItemProfilecardBinding
 
@@ -15,9 +17,32 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
 
     class UserViewHolder(private var binding: ItemProfilecardBinding, viewModel: HomeViewModel): RecyclerView.ViewHolder(binding.root),LifecycleOwner {
-        fun bind(user: User){
+        fun bind(user: User,viewModel: HomeViewModel){
             binding.lifecycleOwner = this
             binding.item = user
+
+            val chipGroup = binding.chipGroup
+
+            var language = user.fluentLanguage
+
+
+
+
+
+
+
+
+            if (viewModel.count == true){
+                language = emptyList()
+            }
+
+            Log.d("HomeAdapter","size of language = ${language.size}")
+
+            for (language in language){
+                val chip = Chip(chipGroup.context)
+                chip.text = language
+                chipGroup.addView(chip)
+            }
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -55,7 +80,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is UserViewHolder -> {
-                holder.bind(getItem(position) as User)
+                holder.bind(getItem(position) as User,viewModel)
             }
         }
     }

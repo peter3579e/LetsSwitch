@@ -7,6 +7,7 @@ import com.peter.letsswtich.chatroom.ChatRoomViewModel
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.home.HomeViewModel
 import com.peter.letsswtich.map.MapViewModel
+import com.peter.letsswtich.question.FirstQuestionnaireViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -21,8 +22,9 @@ class ViewModelFactory constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
-                isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(letsSwitchRepository)
+
+                isAssignableFrom(FirstQuestionnaireViewModel::class.java) ->
+                    FirstQuestionnaireViewModel(letsSwitchRepository)
 
                 isAssignableFrom(ChatViewModel::class.java) ->
                     ChatViewModel(letsSwitchRepository)
