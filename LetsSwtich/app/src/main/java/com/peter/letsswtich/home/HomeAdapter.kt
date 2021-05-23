@@ -32,11 +32,11 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
 
 
-            if (viewModel.count == true){
+            if (viewModel.count){
                 language = emptyList()
             }
 
-            Log.d("HomeAdapter","size of language = ${language.size}")
+            Log.d("HomeAdapter","Adapter has run")
 
             for (language in language){
                 val chip = Chip(chipGroup.context)

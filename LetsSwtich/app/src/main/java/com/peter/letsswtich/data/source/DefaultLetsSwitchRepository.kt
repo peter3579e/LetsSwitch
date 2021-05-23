@@ -35,4 +35,8 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.updateAndCheckLike(myEmail,user)
     }
 
+    override suspend fun getLikeList(myEmail: String, user: User): Result<List<String>> {
+        return remoteDataSource.getLikeList(myEmail,user)
+    }
+
 }

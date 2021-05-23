@@ -1,6 +1,7 @@
 package com.peter.letsswtich.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
 import com.yuyakaido.android.cardstackview.*
 import com.peter.letsswtich.util.Logger
+import kotlinx.coroutines.delay
 import java.util.*
 
 
@@ -33,6 +35,7 @@ class HomeFragment : Fragment(), CardStackListener {
     private lateinit var layoutManager: CardStackLayoutManager
     private val myEmail = UserManager.user.email
     private var maxCount : Int = -1
+    private var found : Boolean = false
 
 
     override fun onCreateView(
@@ -183,9 +186,64 @@ class HomeFragment : Fragment(), CardStackListener {
 
         Log.d("HomeFragment","value of like = $likedUser ")
 
-            viewModel.updateAndCheckLike(myEmail,likedUser)
+//            viewModel.updateAndCheckLike(myEmail,likedUser)
+            viewModel.getLikeList(myEmail,likedUser)
 
-            Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
+//            Handler().postDelayed({Log.d("HomeFragment","List User = ${viewModel.getUserLikeList.value}")},5000)
+
+
+
+
+            viewModel.getUserLikeList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                if(it!=null){
+//                    viewModel.ifmatched.value = true
+
+
+
+//                    for (n in it) {
+//                        if (n == myEmail) {
+//                            found = true
+//                            break
+//                        }
+//                        else{
+//                            found = false
+//                        }
+//                    }
+                    Log.d("HomeFragment","value of found = $found")
+//                    if(it.contains(myEmail)){
+//                        Log.d("HomeFragment","YesYes it is a match!")
+//                        Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
+//                    }else{
+//                        Log.d("HomeFragment","No match!")
+//                    }
+                }
+            })
+
+
+
+//            Log.d("HomeFragment","List User = ${viewModel.getUserLikeList.value}")
+
+
+//
+//
+//
+//
+
+//
+//            viewModel.ifmatched.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+//
+//                if(it == true){
+//                    if(viewModel.getUserLikeList.value!!.contains(myEmail)){
+//                        Log.d("HomeFragment","YesYes it is a match!")
+//                        Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
+//                    }else{
+//                        Log.d("HomeFragment","No match!")
+//                    }
+//                }
+//            })
+
+
+//            Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
         }
     }
 

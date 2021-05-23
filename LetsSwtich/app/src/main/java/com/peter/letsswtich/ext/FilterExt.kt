@@ -30,3 +30,4 @@ fun List<User>?.filterByTraits(requirement: Requirement) : List<User> {
     }
             ?: listOf()
 }
+

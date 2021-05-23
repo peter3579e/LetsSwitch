@@ -30,7 +30,7 @@ class FirstQuestionnaireFragment:Fragment() {
         binding.viewModel = viewModel
 
         binding.button.setOnClickListener {
-            findNavController().navigate(NavigationDirections.navigateToHomeFragment(Requirement("Female","English", listOf(0,100),"Taipei")))
+            findNavController().navigate(NavigationDirections.navigateToHomeFragment(Requirement("","English", listOf(0,100),"Taipei")))
         }
 
         binding.button2.setOnClickListener{

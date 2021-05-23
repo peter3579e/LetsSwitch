@@ -10,5 +10,6 @@ interface LetsSwitchDataSource {
     suspend fun getMapItem(): List<StoreLocation>
     suspend fun postUser()
     suspend fun updateAndCheckLike(myEmail: String, user: User): Result<Boolean>
+    suspend fun getLikeList(myEmail: String, user: User): Result<List<String>>
 
 }
