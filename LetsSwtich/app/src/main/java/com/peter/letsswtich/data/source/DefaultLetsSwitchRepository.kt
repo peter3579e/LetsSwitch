@@ -1,8 +1,7 @@
 package com.peter.letsswtich.data.source
 
+import androidx.lifecycle.MutableLiveData
 import com.peter.letsswtich.data.*
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers.IO
 
 
 class DefaultLetsSwitchRepository(
@@ -27,16 +26,31 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.getMapItem()
     }
 
+    override suspend fun getLikeList(myEmail: String, user: User): Result<List<String>> {
+        return remoteDataSource.getLikeList(myEmail,user)
+    }
+
+    override fun getNewMatchListener(myEmail: String): MutableLiveData<List<User>> {
+        return remoteDataSource.getNewMatchListener(myEmail)
+    }
+
+    override suspend fun getMyOldMatchList(myEmail: String): Result<List<User>> {
+        return remoteDataSource.getMyOldMatchList(myEmail)
+    }
+
     override suspend fun postUser(){
         return remoteDataSource.postUser()
     }
 
-    override suspend fun updateAndCheckLike(myEmail: String, user: User): Result<Boolean>{
-        return remoteDataSource.updateAndCheckLike(myEmail,user)
+    override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>{
+        return remoteDataSource.updateMyLike(myEmail,user)
     }
 
-    override suspend fun getLikeList(myEmail: String, user: User): Result<List<String>> {
-        return remoteDataSource.getLikeList(myEmail,user)
+    override suspend fun updateMatch(myEmail: String, user: User): Result<Boolean> {
+        return remoteDataSource.updateMatch(myEmail,user)}
+
+    override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean>{
+        return remoteDataSource.removeUserFromLikeList(myEmail,user)
     }
 
 }

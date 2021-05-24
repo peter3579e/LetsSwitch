@@ -7,30 +7,87 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.ItemProfilecardBinding
+import java.util.*
+import kotlin.concurrent.timerTask
 
 class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.ViewHolder> (DiffCallback){
 
 
+
     class UserViewHolder(private var binding: ItemProfilecardBinding, viewModel: HomeViewModel): RecyclerView.ViewHolder(binding.root),LifecycleOwner {
         fun bind(user: User,viewModel: HomeViewModel){
+
+
+            val linearSnapHelper = LinearSnapHelper().apply {
+                attachToRecyclerView(binding.imageCardUser)
+            }
+
             binding.lifecycleOwner = this
             binding.item = user
+            binding.viewModel = viewModel
+            val adapter = ImageAdapter(viewModel)
+            val circleAdapter = ImageCircleAdapter()
+            binding.imageCardUser.adapter = adapter
+            binding.recyclerImageCircles.adapter = circleAdapter
+
+            binding.imageCardUser.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                viewModel.onCampaignScrollChange(
+                        binding.imageCardUser.layoutManager,
+                        linearSnapHelper
+                )
+            }
+
+            viewModel.snapPosition.observe(this, androidx.lifecycle.Observer {
+                viewModel.userPersonImage.value?.let {images ->
+                    (binding.recyclerImageCircles.adapter as ImageCircleAdapter).selectedPosition.value =
+                            (it % (images.size))
+                }
+            })
+
+            val layoutManager = binding.imageCardUser.layoutManager
+
+
+
+
+
+            binding.cardImagePlus.setOnClickListener {
+                viewModel.userPersonImage.value?.let {images ->
+                    viewModel.snapPosition.value?.let {
+                        if(viewModel.snapPosition.value!!< images.size){
+                            layoutManager?.smoothScrollToPosition(
+                                    binding.imageCardUser, RecyclerView.State(),
+                                    it.plus(1)
+
+                            )
+                        }
+                        Log.d("timer", "position ${it}")
+                    }
+                }
+            }
+
+            binding.cardImageMinus.setOnClickListener {
+                viewModel.userPersonImage.value?.let {
+                    viewModel.snapPosition.value?.let {
+                        if (viewModel.snapPosition.value!! > 0) {
+                            layoutManager?.smoothScrollToPosition(
+                                    binding.imageCardUser, RecyclerView.State(),
+                                    it.minus(1)
+                            )
+                        }
+                        Log.d("timer", "position ${it}")
+                    }
+                }
+            }
 
             val chipGroup = binding.chipGroup
 
             var language = user.fluentLanguage
-
-
-
-
-
-
-
 
             if (viewModel.count){
                 language = emptyList()
@@ -81,6 +138,12 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
         when(holder){
             is UserViewHolder -> {
                 holder.bind(getItem(position) as User,viewModel)
+
+                val user = getItem(position) as User
+                viewModel.userPersonImage.value = user.personImages
+
+                Log.d("HomeAdapter","User personImages value ${viewModel.userPersonImage.value}")
+
             }
         }
     }

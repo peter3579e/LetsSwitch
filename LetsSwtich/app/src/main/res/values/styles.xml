@@ -5,4 +5,8 @@
         <item name="colorAccent">@color/black_3f3a3a</item>
     </style>
 
+    <style name="MessageDialog">
+        <item name="android:windowBackground">@color/translucent_80</item>
+    </style>
+
 </resources>

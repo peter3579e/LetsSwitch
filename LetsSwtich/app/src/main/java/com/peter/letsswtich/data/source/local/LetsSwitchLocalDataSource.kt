@@ -1,6 +1,7 @@
 package com.peter.letsswtich.data.source.local
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 
@@ -25,11 +26,27 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateAndCheckLike(myEmail: String, user: User): Result<Boolean> {
+    override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
     override suspend fun getLikeList(myEmail: String, user: User): Result<List<String>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getNewMatchListener(myEmail: String): MutableLiveData<List<User>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMyOldMatchList(myEmail: String): Result<List<User>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateMatch(myEmail: String, user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
 }

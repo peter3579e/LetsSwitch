@@ -1,7 +1,6 @@
 package com.peter.letsswtich.home
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +13,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
+import com.peter.letsswtich.NavigationDirections
+import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentHomeBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
+import com.peter.letsswtich.network.LoadApiStatus
 import com.yuyakaido.android.cardstackview.*
 import com.peter.letsswtich.util.Logger
-import kotlinx.coroutines.delay
 import java.util.*
 
 
@@ -35,7 +36,7 @@ class HomeFragment : Fragment(), CardStackListener {
     private lateinit var layoutManager: CardStackLayoutManager
     private val myEmail = UserManager.user.email
     private var maxCount : Int = -1
-    private var found : Boolean = false
+    var likedUser = requireNotNull(com.peter.letsswtich.data.User())
 
 
     override fun onCreateView(
@@ -49,10 +50,6 @@ class HomeFragment : Fragment(), CardStackListener {
         binding.lifecycleOwner=viewLifecycleOwner
 
         binding.viewModel=viewModel
-
-//        viewModel.cardProduct.observe(viewLifecycleOwner, Observer {
-//            Log.d("Peter","value of = ${viewModel.cardProduct.value}")
-//        })
 
 
         // Setup card stack recyclerview
@@ -107,20 +104,52 @@ class HomeFragment : Fragment(), CardStackListener {
             }
         })
 
+        viewModel.userLikeList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if(it!=null){
+                    if(it.contains(myEmail)){
+                        Log.d("HomeFragment","YesYes it is a match!")
+                        findNavController().navigate(NavigationDirections.navigateToMatchedDialog(likedUser))
+                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.bigheadPic}")
+                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.name}")
+                        Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
+                        viewModel.updateMatch(myEmail,likedUser)
+                    }else{
+                        Log.d("HomeFragment","No match!")
+                    }
+            }
+        })
+
+        viewModel.oldMatchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            var oldMatchList = it
+            Log.d("HomeFragment","value of old Matchlist = ${oldMatchList.size}")
+            if(oldMatchList!=null) {
+                viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+//                    Log.d("HomeFragment","value of matchlist = ${viewModel.matchList.value}")
+                    if(viewModel.matchList.value != oldMatchList){
+                        val matchList: List<User> = viewModel.matchList.value!!
+
+                        val newPerson = matchList - oldMatchList
+
+                        oldMatchList = matchList
+
+                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson.size}")
+                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson[0]}")
+                        Log.d("HomeFragment","value of matchlist [0] = ${oldMatchList.size}")
+                       findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson[0]))
+                    }
+
+                })
+            }
+        })
 
 
+        viewModel.status.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            setupSearchAnimation(it)
+        })
 
-//        viewModel.navigateToProfilePage.observe(viewLifecycleOwner, Observer {
-//            if (viewModel.navigateToProfilePage.value == true){
-//                findNavController().navigate(NavigationDirections.navigateToProfileFragment())
-//                viewModel.onProfileNavigated()
-//        }
-//        })
+        viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
-//        viewModel.createSortedList()
-//
-
-
+        })
 
 
         return binding.root
@@ -175,6 +204,7 @@ class HomeFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardRewound() {
+        viewModel.snapPosition.value = 0
         count--
     }
 
@@ -182,68 +212,22 @@ class HomeFragment : Fragment(), CardStackListener {
         if (direction == Direction.Right) {
 
 //            viewModel.postUserToFollow(myEmail, requireNotNull(viewModel.usersWithMatch.value)[count])
-        val likedUser = requireNotNull(viewModel.allUser.value)[count]
+        likedUser = requireNotNull(viewModel.allUser.value)[count]
 
         Log.d("HomeFragment","value of like = $likedUser ")
 
-//            viewModel.updateAndCheckLike(myEmail,likedUser)
+            viewModel.updateMyLike(myEmail,likedUser)
             viewModel.getLikeList(myEmail,likedUser)
-
-//            Handler().postDelayed({Log.d("HomeFragment","List User = ${viewModel.getUserLikeList.value}")},5000)
-
-
-
-
-            viewModel.getUserLikeList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                if(it!=null){
-//                    viewModel.ifmatched.value = true
-
-
-
-//                    for (n in it) {
-//                        if (n == myEmail) {
-//                            found = true
-//                            break
-//                        }
-//                        else{
-//                            found = false
-//                        }
-//                    }
-                    Log.d("HomeFragment","value of found = $found")
-//                    if(it.contains(myEmail)){
-//                        Log.d("HomeFragment","YesYes it is a match!")
-//                        Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
-//                    }else{
-//                        Log.d("HomeFragment","No match!")
-//                    }
-                }
-            })
-
-
-
-//            Log.d("HomeFragment","List User = ${viewModel.getUserLikeList.value}")
-
-
-//
-//
-//
-//
-
-//
-//            viewModel.ifmatched.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//
-//                if(it == true){
-//                    if(viewModel.getUserLikeList.value!!.contains(myEmail)){
-//                        Log.d("HomeFragment","YesYes it is a match!")
-//                        Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
-//                    }else{
-//                        Log.d("HomeFragment","No match!")
-//                    }
-//                }
-//            })
-
+            viewModel.snapPosition.value = 0
 
 //            Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
+        }
+
+        if(direction == Direction.Left) {
+            likedUser = requireNotNull(viewModel.allUser.value)[count]
+            Toast.makeText(LetsSwtichApplication.appContext, "Remove from likeList", Toast.LENGTH_SHORT).show()
+            viewModel.removeFromLikeList(myEmail,likedUser)
+            viewModel.snapPosition.value = 0
         }
     }
 
@@ -269,18 +253,20 @@ class HomeFragment : Fragment(), CardStackListener {
         }
     }
 
-//    private fun setupSearchAnimation (status: LoadApiStatus) {
-//        when (status) {
-//            LoadApiStatus.LOADING -> {
-//                binding.layoutLoading.visibility = View.VISIBLE
-//                binding.animSearching.playAnimation()
-//            }
-//            LoadApiStatus.DONE -> {
-//                binding.layoutLoading.visibility = View.GONE
-//                binding.animSearching.cancelAnimation()
-//            }
-//            else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+    private fun setupSearchAnimation (status: LoadApiStatus) {
+        when (status) {
+            LoadApiStatus.LOADING -> {
+                Log.d("HomeFragment","LoadApi has Run")
+                binding.layoutLoading.visibility = View.VISIBLE
+                binding.animSearching.playAnimation()
+            }
+            LoadApiStatus.DONE -> {
+                binding.layoutLoading.visibility = View.GONE
+                binding.animSearching.cancelAnimation()
+                Log.d("HomeFragment","LoadApi has Done")
+            }
+            else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

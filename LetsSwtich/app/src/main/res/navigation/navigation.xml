@@ -37,6 +37,18 @@
         android:name="com.peter.letsswtich.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
+
+    <dialog
+        android:id="@+id/matchedDialog"
+        android:name="com.peter.letsswtich.dialog.MatchedDialog"
+        android:label="MatchedDialog"
+        tools:layout="@layout/dialog_matched">
+        <argument
+            android:name="matchedUserInfo"
+            app:argType="com.peter.letsswtich.data.User"
+            app:nullable="false"/>
+    </dialog>
+
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.peter.letsswtich.chatroom.ChatRoomFragment"
@@ -68,6 +80,7 @@
     <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
 
 
 
