@@ -26,30 +26,33 @@ import java.util.*
 
 class HomeFragment : Fragment(), CardStackListener {
 
-    private val viewModel : HomeViewModel by viewModels<HomeViewModel> { getVmFactory(
-            HomeFragmentArgs.fromBundle(requireArguments()).selectedAnswer
-    ) }
+    private val viewModel: HomeViewModel by viewModels<HomeViewModel> {
+        getVmFactory(
+                HomeFragmentArgs.fromBundle(requireArguments()).selectedAnswer
+        )
+    }
 
     private lateinit var binding: FragmentHomeBinding
     lateinit var adapter: HomeAdapter
     private var count = 0
     private lateinit var layoutManager: CardStackLayoutManager
     private val myEmail = UserManager.user.email
-    private var maxCount : Int = -1
+    private var maxCount: Int = -1
     var likedUser = requireNotNull(com.peter.letsswtich.data.User())
+    private var oldMatchList: List<User> = listOf()
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater,container,false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
-        binding.lifecycleOwner=viewLifecycleOwner
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.viewModel=viewModel
+        binding.viewModel = viewModel
 
 
         // Setup card stack recyclerview
@@ -65,7 +68,7 @@ class HomeFragment : Fragment(), CardStackListener {
         stackView.layoutManager = layoutManager
         stackView.adapter = adapter
         stackView.itemAnimator.apply {
-            if (this is DefaultItemAnimator){
+            if (this is DefaultItemAnimator) {
                 supportsChangeAnimations = false
             }
         }
@@ -87,17 +90,18 @@ class HomeFragment : Fragment(), CardStackListener {
         }
 
         binding.buttonRewind.setOnClickListener {
-            if (count == 1 || count == 2 ){
+            if (count == 1 || count == 2) {
                 viewModel.count = true
             }
             binding.stackView.rewind()
         }
 
+
         viewModel.allUser.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             viewModel.filteredUserList(it)
-            Log.d("HomeFragment","value of match User = ${viewModel.usersWithMatch.value}")
+            Log.d("HomeFragment", "value of match User = ${viewModel.usersWithMatch.value}")
 
-            if (viewModel.usersWithMatch == null){
+            if (viewModel.usersWithMatch == null) {
                 matchValueVisibility(false)
             } else {
                 matchValueVisibility(true)
@@ -105,52 +109,54 @@ class HomeFragment : Fragment(), CardStackListener {
         })
 
         viewModel.userLikeList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if(it!=null){
-                    if(it.contains(myEmail)){
-                        Log.d("HomeFragment","YesYes it is a match!")
-                        findNavController().navigate(NavigationDirections.navigateToMatchedDialog(likedUser))
-                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.bigheadPic}")
-                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.name}")
-                        Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
-                        viewModel.updateMatch(myEmail,likedUser)
-                    }else{
-                        Log.d("HomeFragment","No match!")
-                    }
+
+            if (it != null) {
+                if (it.contains(myEmail)) {
+                    Log.d("HomeFragment", "YesYes it is a match!")
+                    findNavController().navigate(NavigationDirections.navigateToMatchedDialog(likedUser))
+//                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.bigheadPic}")
+//                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.name}")
+                    Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
+                    viewModel.updateMatch(myEmail, likedUser)
+                } else {
+                    Log.d("HomeFragment", "No match!")
+                }
             }
         })
+
 
         viewModel.oldMatchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            var oldMatchList = it
-            Log.d("HomeFragment","value of old Matchlist = ${oldMatchList.size}")
-            if(oldMatchList!=null) {
-                viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//                    Log.d("HomeFragment","value of matchlist = ${viewModel.matchList.value}")
-                    if(viewModel.matchList.value != oldMatchList){
-                        val matchList: List<User> = viewModel.matchList.value!!
-
-                        val newPerson = matchList - oldMatchList
-
-                        oldMatchList = matchList
-
-                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson.size}")
-                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson[0]}")
-                        Log.d("HomeFragment","value of matchlist [0] = ${oldMatchList.size}")
-                       findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson[0]))
-                    }
-
-                })
-            }
+            oldMatchList = it
+            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
         })
 
+        viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+//            Log.d("HomeViewFragment", "matchlist has detected!!")
+
+            if (viewModel.matchList.value!!.size > oldMatchList.size) {
+                val matchList: List<User> = viewModel.matchList.value!!
+//                Log.d("HomeFragment", "new match List = ${matchList.size}")
+
+                val newPerson = matchList - oldMatchList
+
+                if (newPerson[0] != likedUser) {
+                    findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson[0]))
+                }
+//                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson.size}")
+//                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson[0]}")
+//                        Log.d("HomeFragment","value of matchlist [0] = ${oldMatchList.size}")
+                oldMatchList = matchList
+            }
+            if (viewModel.matchList.value!!.size < oldMatchList.size) {
+//                Log.d("HomeFragment", "Friends has been deleted")
+                viewModel.getMyOldMatchList(myEmail)
+            }
+        })
 
         viewModel.status.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             setupSearchAnimation(it)
         })
-
-        viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-
-        })
-
 
         return binding.root
     }
@@ -212,31 +218,31 @@ class HomeFragment : Fragment(), CardStackListener {
         if (direction == Direction.Right) {
 
 //            viewModel.postUserToFollow(myEmail, requireNotNull(viewModel.usersWithMatch.value)[count])
-        likedUser = requireNotNull(viewModel.allUser.value)[count]
+            likedUser = requireNotNull(viewModel.allUser.value)[count]
 
-        Log.d("HomeFragment","value of like = $likedUser ")
+            Log.d("HomeFragment", "value of like = $likedUser ")
 
-            viewModel.updateMyLike(myEmail,likedUser)
-            viewModel.getLikeList(myEmail,likedUser)
+            viewModel.updateMyLike(myEmail, likedUser)
+            viewModel.getLikeList(myEmail, likedUser)
             viewModel.snapPosition.value = 0
 
 //            Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
         }
 
-        if(direction == Direction.Left) {
+        if (direction == Direction.Left) {
             likedUser = requireNotNull(viewModel.allUser.value)[count]
             Toast.makeText(LetsSwtichApplication.appContext, "Remove from likeList", Toast.LENGTH_SHORT).show()
-            viewModel.removeFromLikeList(myEmail,likedUser)
+            viewModel.removeFromLikeList(myEmail, likedUser)
             viewModel.snapPosition.value = 0
         }
     }
 
     private fun setupSwipeAnimation(direction: Direction) {
         val setting = SwipeAnimationSetting.Builder()
-            .setDirection(direction)
-            .setDuration(Duration.Normal.duration)
-            .setInterpolator(AccelerateInterpolator())
-            .build()
+                .setDirection(direction)
+                .setDuration(Duration.Normal.duration)
+                .setInterpolator(AccelerateInterpolator())
+                .build()
         layoutManager.setSwipeAnimationSetting(setting)
     }
 
@@ -253,17 +259,17 @@ class HomeFragment : Fragment(), CardStackListener {
         }
     }
 
-    private fun setupSearchAnimation (status: LoadApiStatus) {
+    private fun setupSearchAnimation(status: LoadApiStatus) {
         when (status) {
             LoadApiStatus.LOADING -> {
-                Log.d("HomeFragment","LoadApi has Run")
+//                Log.d("HomeFragment", "LoadApi has Run")
                 binding.layoutLoading.visibility = View.VISIBLE
                 binding.animSearching.playAnimation()
             }
             LoadApiStatus.DONE -> {
                 binding.layoutLoading.visibility = View.GONE
                 binding.animSearching.cancelAnimation()
-                Log.d("HomeFragment","LoadApi has Done")
+//                Log.d("HomeFragment", "LoadApi has Done")
             }
             else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT).show()
         }

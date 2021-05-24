@@ -212,6 +212,14 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .addOnFailureListener { e ->
                     Logger.w("Error adding document $e")
                 }
+        users.document(myEmail).collection(PATH_MATCHLIST).document(user.email)
+                .set(user)
+                .addOnSuccessListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
     }
 
 
@@ -219,6 +227,14 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     override suspend fun removeUserFromLikeList(myEmail: String, user: User): com.peter.letsswtich.data.Result<Boolean> = suspendCoroutine { continuation ->
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
         users.document(myEmail).collection(PATH_FOLLOWLIST).document(user.email)
+                .delete()
+                .addOnSuccessListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+        users.document(myEmail).collection(PATH_MATCHLIST).document(user.email)
                 .delete()
                 .addOnSuccessListener {
                     Logger.d("DocumentSnapshot added with ID: ${users}")

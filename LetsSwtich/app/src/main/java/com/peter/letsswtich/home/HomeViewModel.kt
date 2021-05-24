@@ -56,6 +56,13 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         get() = _userLikeList
 
 
+    private val _swipe = MutableLiveData<Boolean>()
+
+    val swipe: LiveData<Boolean>
+        get() = _swipe
+
+
+
     var count: Boolean = false
 
     var matchList = MutableLiveData<List<User>>()
@@ -74,10 +81,12 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
 
     private val _oldMatchList = MutableLiveData<List<User>>()
 
-    val oldMatchList: LiveData<List<User>>
+    val oldMatchList: MutableLiveData<List<User>>
         get() = _oldMatchList
 
     val userPersonImage = MutableLiveData<List<String>>()
+
+
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -121,8 +130,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
 
-
-
+        _swipe.value = false
 
         getAllUser()
         myDetail("peter324234@yahoo.com.tw", user = User(listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
@@ -254,29 +262,26 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
 
     fun getMyOldMatchList(myEmail: String){
         coroutineScope.launch {
-            _status.value = LoadApiStatus.LOADING
+
+            Log.d("HomeViewModel","getMyOldMatchList has run!!!")
 
             val result = letsSwitchRepository.getMyOldMatchList(myEmail)
 
             _oldMatchList.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
                     result.data
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
             }
@@ -355,6 +360,15 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
                 }
             }
         }
+    }
+
+
+    fun enableSwipe(){
+        _swipe.value = true
+    }
+
+    fun disableSwipe(){
+        _swipe.value = false
     }
 
 

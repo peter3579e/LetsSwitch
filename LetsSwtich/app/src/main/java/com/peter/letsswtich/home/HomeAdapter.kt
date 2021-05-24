@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.google.android.material.chip.Chip
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.ItemProfilecardBinding
@@ -25,7 +22,10 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
 
             val linearSnapHelper = LinearSnapHelper().apply {
-                attachToRecyclerView(binding.imageCardUser)
+//                attachToRecyclerView(binding.imageCardUser)
+                val snapHelper: SnapHelper = PagerSnapHelper()
+                binding.imageCardUser.onFlingListener = null
+                snapHelper.attachToRecyclerView(binding.imageCardUser)
             }
 
             binding.lifecycleOwner = this
@@ -59,7 +59,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
             binding.cardImagePlus.setOnClickListener {
                 viewModel.userPersonImage.value?.let {images ->
                     viewModel.snapPosition.value?.let {
-                        if(viewModel.snapPosition.value!!< images.size){
+                        if(viewModel.snapPosition.value!!< images.size-1){
                             layoutManager?.smoothScrollToPosition(
                                     binding.imageCardUser, RecyclerView.State(),
                                     it.plus(1)
@@ -142,7 +142,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
                 val user = getItem(position) as User
                 viewModel.userPersonImage.value = user.personImages
 
-                Log.d("HomeAdapter","User personImages value ${viewModel.userPersonImage.value}")
+//                Log.d("HomeAdapter","User personImages value ${viewModel.userPersonImage.value}")
 
             }
         }
