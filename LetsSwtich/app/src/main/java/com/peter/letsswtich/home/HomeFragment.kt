@@ -127,20 +127,22 @@ class HomeFragment : Fragment(), CardStackListener {
 
         viewModel.oldMatchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             oldMatchList = it
-            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
+//            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
         })
 
         viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
 //            Log.d("HomeViewFragment", "matchlist has detected!!")
 
-            if (viewModel.matchList.value!!.size > oldMatchList.size) {
+            if (viewModel.matchList.value!!.size > oldMatchList.size && viewModel.oldMatchList.value != null) {
                 val matchList: List<User> = viewModel.matchList.value!!
 //                Log.d("HomeFragment", "new match List = ${matchList.size}")
 
                 val newPerson = matchList - oldMatchList
 
-                if (newPerson[0] != likedUser) {
+//                Log.d("HomeFragment", "new match List = $likedUser")
+
+                if (newPerson[0] != likedUser && likedUser != null) {
                     findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson[0]))
                 }
 //                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson.size}")
@@ -149,14 +151,23 @@ class HomeFragment : Fragment(), CardStackListener {
                 oldMatchList = matchList
             }
             if (viewModel.matchList.value!!.size < oldMatchList.size) {
-//                Log.d("HomeFragment", "Friends has been deleted")
+                Log.d("HomeFragment", "Friends has been deleted")
                 viewModel.getMyOldMatchList(myEmail)
             }
+
         })
+
+
 
         viewModel.status.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             setupSearchAnimation(it)
         })
+
+        viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+        })
+
+
 
         return binding.root
     }

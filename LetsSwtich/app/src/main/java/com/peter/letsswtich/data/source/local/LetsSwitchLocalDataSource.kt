@@ -10,7 +10,7 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getChatItem(): List<ChatRoom> {
+    override fun getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>> {
         TODO("Not yet implemented")
     }
 
@@ -23,6 +23,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun postUser() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.util.Logger
-import kotlin.Result
+import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -19,37 +20,102 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     private const val PATH_USER = "user"
     private const val PATH_MATCHLIST = "matchedList"
     private const val PATH_FOLLOWLIST = "followList"
+    private const val PATH_CHATLIST = "chatList"
 
 
-    override suspend fun getChatItem(): List<ChatRoom> {
-        var mock = mutableListOf<ChatRoom>()
-        mock.run {
-            add(
-                    ChatRoom(
-                            "123",
-                            1620355603699, listOf(UserInfo("peter7788@gmail.com", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg")),
-                            listOf("Peter", "Wency"), "Hello How are you doing?"
-                    )
-            )
+//    override suspend fun getChatList(): List<ChatRoom> {
+//        var mock = mutableListOf<ChatRoom>()
+//        mock.run {
+//            add(
+//                    ChatRoom(
+//                            "123",
+//                            1620355603699, listOf(UserInfo("peter7788@gmail.com", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg")),
+//                            listOf("Peter", "Wency"), "Hello How are you doing?"
+//                    )
+//            )
+//
+//            add(
+//                    ChatRoom(
+//                            "123",
+//                            1620355603699, listOf(UserInfo("peter3434@gmail.com", "Chloe", "https://api.appworks-school.tw/assets/201807202150/main.jpg")),
+//                            listOf("Peter", "Chloe"), "Hello How are you doing?"
+//                    )
+//            )
+//
+//            add(
+//                    ChatRoom(
+//                            "123",
+//                            1620355603699, listOf(UserInfo("peter123@gmail.com", "Gillan", "https://api.appworks-school.tw/assets/201807201824/main.jpg")),
+//                            listOf("Peter", "Gillan"), "Hello How are you doing?"
+//                    )
+//            )
+//
+//        }
+//        return mock
+//    }
 
-            add(
-                    ChatRoom(
-                            "123",
-                            1620355603699, listOf(UserInfo("peter3434@gmail.com", "Chloe", "https://api.appworks-school.tw/assets/201807202150/main.jpg")),
-                            listOf("Peter", "Chloe"), "Hello How are you doing?"
-                    )
-            )
+    override fun getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>> {
+        val liveData = MutableLiveData<List<ChatRoom>>()
+        FirebaseFirestore.getInstance()
+                .collection(PATH_CHATLIST)
+                .orderBy("latestTime", Query.Direction.DESCENDING)
+                .whereArrayContains("attendees", myEmail)
+                .addSnapshotListener { snapshot, exception ->
+                    Logger.i("add SnapshotListener detected")
 
-            add(
-                    ChatRoom(
-                            "123",
-                            1620355603699, listOf(UserInfo("peter123@gmail.com", "Gillan", "https://api.appworks-school.tw/assets/201807201824/main.jpg")),
-                            listOf("Peter", "Gillan"), "Hello How are you doing?"
-                    )
-            )
+                    exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                    }
 
-        }
-        return mock
+                    val list = mutableListOf<ChatRoom>()
+                    snapshot?.forEach { document ->
+                        Logger.d(document.id + " => " + document.data)
+
+                        val chatRoom = document.toObject(ChatRoom::class.java)
+                        list.add(chatRoom)
+                    }
+                    liveData.value = list
+                    Log.d("RemotedateSource","value of getLiveChatList =${liveData.value!!.size}")
+
+                }
+        return liveData
+    }
+
+    override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> = suspendCoroutine { continuation ->
+        val chat = FirebaseFirestore.getInstance().collection(PATH_CHATLIST)
+        val document = chat.document()
+
+        chatRoom.chatRoomId = document.id
+        chatRoom.latestTime = Calendar.getInstance().timeInMillis
+
+        chat.whereIn("attendees", listOf(chatRoom.attendees, chatRoom.attendees.reversed()))
+                .get()
+                .addOnSuccessListener { result ->
+                    if (result.isEmpty) {
+                        document
+                                .set(chatRoom)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Logger.i("Chatroom: $chatRoom")
+
+                                        continuation.resume(Result.Success(true))
+                                    } else {
+                                        task.exception?.let {
+
+                                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                                            continuation.resume(Result.Error(it))
+                                            return@addOnCompleteListener
+                                        }
+                                        continuation.resume(Result.Fail(LetsSwtichApplication.appContext.getString(R.string.you_shall_not_pass)))
+                                    }
+                                }
+                    } else {
+                        for (myDocument in result) {
+                            Logger.d("Already initialized")
+                        }
+                    }
+                }
+
     }
 
     override suspend fun getLikeList(myEmail: String, user: User): com.peter.letsswtich.data.Result<List<String>> = suspendCoroutine { continuation ->
@@ -72,7 +138,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
                         Log.d("letsSwitchRemoteDataSource", "value of list User = $list")
 
-                        continuation.resume(com.peter.letsswtich.data.Result.Success(list))
+                        continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message} ")
@@ -103,7 +169,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                             list.add(user)
                             Log.d("LetsSwitch DataSource", "value of user $user")
                         }
-                        continuation.resume(com.peter.letsswtich.data.Result.Success(list))
+                        continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message} ")
@@ -137,7 +203,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
                         Log.d("letsSwitchRemoteDataSource", "value of OldMatchList = $list")
 
-                        continuation.resume(com.peter.letsswtich.data.Result.Success(list))
+                        continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message} ")
@@ -183,7 +249,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
 
 
-    override suspend fun updateMyLike(myEmail: String, user: User): com.peter.letsswtich.data.Result<Boolean> = suspendCoroutine {
+    override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> = suspendCoroutine {
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
 
         Log.d("letsSwitchRemoteDataSource", "UpdateAndCheckLike has run")
@@ -201,7 +267,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
-    override suspend fun updateMatch(myEmail: String,user: User): com.peter.letsswtich.data.Result<Boolean> = suspendCoroutine {
+    override suspend fun updateMatch(myEmail: String,user: User): Result<Boolean> = suspendCoroutine {
 
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
         users.document(user.email).collection(PATH_MATCHLIST).document(myEmail)
@@ -224,7 +290,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
 
 
-    override suspend fun removeUserFromLikeList(myEmail: String, user: User): com.peter.letsswtich.data.Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean> = suspendCoroutine { continuation ->
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
         users.document(myEmail).collection(PATH_FOLLOWLIST).document(user.email)
                 .delete()
@@ -289,9 +355,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
         mock.run {
             add(
                     Message("123", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg", "peter7788@gmail.com", "雪莉？", 1620355603699)
-            )
-            add(
-                    Message("123", "Peter", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "peter3579e@gmail.com", "哇嗚珍妮佛羅茲！！！！！", 1620355603699)
             )
             add(
                     Message("123", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg", "peter7788@gmail.com", "你為什麼要攻擊我的coin master村莊？", 1620355603699)

@@ -3,6 +3,7 @@ package com.peter.letsswtich
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
@@ -12,10 +13,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.databinding.ActivityMainBinding
+import com.peter.letsswtich.ext.getVmFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    val viewModel by viewModels<MainViewModel>{ getVmFactory() }
 
 
     private val onNavigationItemSelectedListener =
@@ -63,6 +67,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
 
 

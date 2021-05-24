@@ -1,6 +1,7 @@
 package com.peter.letsswtich.chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.ChatRoom
+import com.peter.letsswtich.data.UserInfo
 import com.peter.letsswtich.databinding.FragmentChatBinding
 import com.peter.letsswtich.databinding.FragmentHomeBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.home.HomeViewModel
+import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.util.Logger
 
 class ChatFragment:Fragment() {
@@ -34,17 +37,24 @@ class ChatFragment:Fragment() {
         val newMatchesAdapter = NewMatchedAdapter(viewModel)
         binding.recyclerChatList.adapter = adapter
         binding.recyclerNewMatches.adapter = newMatchesAdapter
+        binding.lifecycleOwner = this
 
-        viewModel.getChatItem()
+
+        viewModel.matchList.observe(viewLifecycleOwner, Observer {
+            Log.d("ChatFragment","the value of matchlist = ${viewModel.matchList.value!!.size}")
+            viewModel.getChatRoom()
+        })
+
 
         viewModel.allLiveChatRooms.observe(viewLifecycleOwner, Observer {
             it.let {
+                Log.d("ChatFragment", "value of allLiveChatRoom = $it")
                 val filteredChatRoom = mutableListOf<ChatRoom>()
 
                 it.forEach {chatRoom ->
 
                     // Remove my info to make the new info list contains only the other user's info
-//                    chatRoom.attendeesInfo = excludeMyInfo(chatRoom.attendeesInfo)
+                    chatRoom.attendeesInfo = excludeMyInfo(chatRoom.attendeesInfo)
 
                     filteredChatRoom.add(chatRoom)
                 }
@@ -55,7 +65,7 @@ class ChatFragment:Fragment() {
         })
 
         viewModel.filteredChatRooms.observe(viewLifecycleOwner, Observer {
-            Logger.w("viewModel.filteredChatRooms.observe, it=$it")
+            Log.d("ChatFragment", "value of filteredChatRoom=$it")
             it?.let {
 
 //                binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
@@ -73,9 +83,9 @@ class ChatFragment:Fragment() {
         return binding.root
     }
 
-//    private fun excludeMyInfo (attendeesInfo: List<UserInfo>) : List<UserInfo>{
-//        return attendeesInfo.filter {
-//            it.userEmail != UserManager.user.email
-//        }
-//    }
+    private fun excludeMyInfo (attendeesInfo: List<UserInfo>) : List<UserInfo>{
+        return attendeesInfo.filter {
+            it.userEmail != UserManager.user.email
+        }
+    }
 }

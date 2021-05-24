@@ -14,8 +14,8 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.getAllUser()
     }
 
-    override suspend fun getChatItem(): List<ChatRoom> {
-        return remoteDataSource.getChatItem()
+    override fun getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>> {
+        return remoteDataSource.getLiveChatList(myEmail)
     }
 
     override suspend fun getMessageItem(): List<Message> {
@@ -40,6 +40,10 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun postUser(){
         return remoteDataSource.postUser()
+    }
+
+    override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
+        return remoteDataSource.postChatRoom(chatRoom)
     }
 
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>{

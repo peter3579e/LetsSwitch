@@ -2,6 +2,7 @@ package com.peter.letsswtich.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.chat.ChatViewModel
 import com.peter.letsswtich.chatroom.ChatRoomViewModel
 import com.peter.letsswtich.data.source.LetsSwitchRepository
@@ -22,6 +23,9 @@ class ViewModelFactory constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
+
+                isAssignableFrom(MainViewModel::class.java)->
+                    MainViewModel(letsSwitchRepository)
 
                 isAssignableFrom(FirstQuestionnaireViewModel::class.java) ->
                     FirstQuestionnaireViewModel(letsSwitchRepository)

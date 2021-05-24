@@ -25,6 +25,7 @@ import com.peter.letsswtich.network.LoadApiStatus
 import com.peter.letsswtich.util.Logger
 import com.peter.letsswtich.util.ServiceLocator.letsSwitchRepository
 import kotlinx.coroutines.*
+import java.util.logging.Handler
 import kotlin.coroutines.suspendCoroutine
 
 class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requirement: Requirement) : ViewModel() {
@@ -137,10 +138,12 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
                 "https://img.onl/6zU8bQ",
                 "https://api.appworks-school.tw/assets/201807201824/main.jpg",
                 "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "Hello", "boring", "123", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "12345", 25, 25.034070787981246, 121.53106153460475, "Male", listOf("jsidfjisdjfiasf", "sfdasdfasdf"), listOf("Sdfasdf", "sdfasf"), listOf("sdfasdfasdf", "sdfasdfdfs"), listOf("sadfadfadfadsf", "asdfadsfasdf"), "Peter", "peter3579e@gmail.com", "Taipei", "Hawai", "teacher", listOf("English", "Chinese"), listOf("Japanese", "French")))
-
         getMyOldMatchList(UserManager.user.email)
 
-        getNewMatchListener(UserManager.user.email)
+            getNewMatchListener(UserManager.user.email)
+
+
+
     }
 
     fun updateMyLike(myEmail: String, user: User) {
@@ -255,7 +258,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         }
     }
 
-    private fun getNewMatchListener(myEmail: String){
+    fun getNewMatchListener(myEmail: String){
         Log.d("HomeViewModel","getNewMatchListener has run!!!")
         matchList = letsSwitchRepository.getNewMatchListener(myEmail)
     }
