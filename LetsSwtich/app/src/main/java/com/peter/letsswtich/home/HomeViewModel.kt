@@ -134,10 +134,10 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         _swipe.value = false
 
         getAllUser()
-        myDetail("peter324234@yahoo.com.tw", user = User(listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
-                "https://img.onl/6zU8bQ",
-                "https://api.appworks-school.tw/assets/201807201824/main.jpg",
-                "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "Hello", "boring", "123", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "12345", 25, 25.034070787981246, 121.53106153460475, "Male", listOf("jsidfjisdjfiasf", "sfdasdfasdf"), listOf("Sdfasdf", "sdfasf"), listOf("sdfasdfasdf", "sdfasdfdfs"), listOf("sadfadfadfadsf", "asdfadsfasdf"), "Peter", "peter3579e@gmail.com", "Taipei", "Hawai", "teacher", listOf("English", "Chinese"), listOf("Japanese", "French")))
+//        myDetail("peter324234@yahoo.com.tw", user = User(listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
+//                "https://img.onl/6zU8bQ",
+//                "https://api.appworks-school.tw/assets/201807201824/main.jpg",
+//                "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "Hello", "boring", "123", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "12345", 25, 25.034070787981246, 121.53106153460475, "Male", listOf("jsidfjisdjfiasf", "sfdasdfasdf"), listOf("Sdfasdf", "sdfasf"), listOf("sdfasdfasdf", "sdfasdfdfs"), listOf("sadfadfadfadsf", "asdfadsfasdf"), "Peter", "peter3579e@gmail.com", "Taipei", "Hawai", "teacher", listOf("English", "Chinese"), listOf("Japanese", "French")))
         getMyOldMatchList(UserManager.user.email)
 
             getNewMatchListener(UserManager.user.email)

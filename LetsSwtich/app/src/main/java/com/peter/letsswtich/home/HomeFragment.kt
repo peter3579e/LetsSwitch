@@ -10,12 +10,14 @@ import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentHomeBinding
+import com.peter.letsswtich.ext.excludeUser
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.network.LoadApiStatus
@@ -101,11 +103,18 @@ class HomeFragment : Fragment(), CardStackListener {
             viewModel.filteredUserList(it)
             Log.d("HomeFragment", "value of match User = ${viewModel.usersWithMatch.value}")
 
-            if (viewModel.usersWithMatch == null) {
+        })
+
+        viewModel.usersWithMatch.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            val sortedList = it.excludeUser()
+
+            if (sortedList.isEmpty()) {
                 matchValueVisibility(false)
             } else {
                 matchValueVisibility(true)
             }
+            adapter.submitList(sortedList)
         })
 
         viewModel.userLikeList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -191,7 +200,7 @@ class HomeFragment : Fragment(), CardStackListener {
 
     override fun onCardSwiped(direction: Direction?) {
 
-        maxCount = viewModel.allUser.value?.size!!
+        maxCount = viewModel.usersWithMatch.value?.size!!
 
         viewModel.setRedBg(0f)
         viewModel.setBlueBg(0f)
@@ -229,7 +238,7 @@ class HomeFragment : Fragment(), CardStackListener {
         if (direction == Direction.Right) {
 
 //            viewModel.postUserToFollow(myEmail, requireNotNull(viewModel.usersWithMatch.value)[count])
-            likedUser = requireNotNull(viewModel.allUser.value)[count]
+            likedUser = requireNotNull(viewModel.usersWithMatch.value)[count]
 
             Log.d("HomeFragment", "value of like = $likedUser ")
 
@@ -241,7 +250,7 @@ class HomeFragment : Fragment(), CardStackListener {
         }
 
         if (direction == Direction.Left) {
-            likedUser = requireNotNull(viewModel.allUser.value)[count]
+            likedUser = requireNotNull(viewModel.usersWithMatch.value)[count]
             Toast.makeText(LetsSwtichApplication.appContext, "Remove from likeList", Toast.LENGTH_SHORT).show()
             viewModel.removeFromLikeList(myEmail, likedUser)
             viewModel.snapPosition.value = 0

@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.databinding.ActivityMainBinding
 import com.peter.letsswtich.ext.getVmFactory
+import com.peter.letsswtich.login.UserManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.navigation_profile -> {
 
-                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
+                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment(UserManager.user))
                         return@OnNavigationItemSelectedListener true
 
                     }

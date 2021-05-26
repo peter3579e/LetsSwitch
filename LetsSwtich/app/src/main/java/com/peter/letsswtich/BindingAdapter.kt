@@ -17,6 +17,7 @@ import com.peter.letsswtich.data.User
 import com.peter.letsswtich.home.HomeAdapter
 import com.peter.letsswtich.home.ImageAdapter
 import com.peter.letsswtich.home.ImageCircleAdapter
+import com.peter.letsswtich.profile.PhotosAdapter
 import com.peter.letsswtich.util.TimeUtil
 import com.peter.letsswtich.util.Util.getColor
 
@@ -86,6 +87,7 @@ fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<String>?
                 is ImageAdapter -> {
                     submitImages(it)
                 }
+
             }
         }
     }

@@ -45,6 +45,7 @@
     <!-- Blue Series -->
     <color name="blue_facebook">#3b5998</color>
     <color name="light_blue">#03A9F4</color>
+    <color name="profile_blue">#6699CC</color>
 
     <!-- Bottom Navigation -->
     <color name="bottom_navigation_item_normal">@color/gray_999999</color>

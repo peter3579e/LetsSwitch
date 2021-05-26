@@ -35,6 +35,14 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val leave: LiveData<Boolean>
         get() = _leave
 
+    private val _roomByMessageTime = MutableLiveData<List<ChatRoom>>()
+
+
+    val roomByMessageTime: MutableLiveData<List<ChatRoom>>
+        get() = _roomByMessageTime
+
+    val latestTimeMessage = MutableLiveData<Long>()
+
     private val _matchList = MutableLiveData<List<User>>()
 
     val matchList: MutableLiveData<List<User>>
@@ -99,14 +107,14 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         matchList.value!!.forEach { it ->
             val myInfo = UserInfo().apply {
                 userEmail = UserManager.user.email
-                userImage = UserManager.user.bigheadPic
+                userImage = UserManager.user.personImages[0]
                 userName = UserManager.user.name
             }
 
             val friendInfo = UserInfo().apply {
                 userEmail = it.email
                 userName = it.name
-                userImage = it.bigheadPic
+                userImage = it.personImages[0]
             }
 
             chatList.add(friendInfo)
@@ -116,6 +124,7 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
             chat.apply {
                 chatRoomId = ""
                 latestTime = 0
+                latestMessageTime = 0
                 attendeesInfo = listOf(myInfo,friendInfo)
                 attendees = attendlist
             }

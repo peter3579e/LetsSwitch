@@ -7,8 +7,8 @@ import com.peter.letsswtich.login.UserManager
 
 class MatchedDialogViewModel(private val letsSwitchRepository: LetsSwitchRepository, matchedUserInfo: User):ViewModel() {
 
-    val matchedUserBigHeadPic = matchedUserInfo.bigheadPic
+    val matchedUserBigHeadPic = matchedUserInfo.personImages[0]
     val matchedUserName = matchedUserInfo.name
-    val myBigHeadPic = UserManager.user.bigheadPic
+    val myBigHeadPic = UserManager.user.personImages[0]
 
 }

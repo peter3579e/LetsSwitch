@@ -1,21 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.peter.letsswtich.profile.ProfileViewModel" />
+
     </data>
+    
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
+        <ImageView
+            android:id="@+id/profileBackground"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            imageUrl="@{viewModel.userDetail.backGroundPic}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/bg_profile"
+            android:scaleType="centerCrop"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="190dp"
+            android:clipChildren="false"
+            android:elevation="4dp"
+            imageUrl="@{viewModel.userDetail.personImages[0]}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/ic_cute_avatar" />
 
         <TextView
+            android:id="@+id/profille_status"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:background="@drawable/bg_blue_round_corner"
+            tools:text="Avaliable"
+            android:text="@{viewModel.userDetail.status}"
+            android:textAlignment="center"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:elevation="5dp"
+            android:layout_marginEnd="70dp"
+            app:layout_constraintEnd_toEndOf="@id/profile_image"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_description_frame"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            app:layout_constraintTop_toBottomOf="@id/profille_status">
+
+            <TextView
+                android:id="@+id/profile_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.userDetail.description}"
+                android:textSize="15dp"
+                android:maxLines="3"
+                android:fontFamily="@font/roboto"
+                tools:text="I would like to learn how to write my name in English"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_map_frame"
+            android:layout_width="match_parent"
+            android:background="@color/gray_light"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@id/profile_description_frame">
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOCATION"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@id/location"
+                app:layout_constraintTop_toBottomOf="@id/location"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_map" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/language_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_light"
+            app:layout_constraintTop_toBottomOf="@id/profile_map_frame">
+
+            <TextView
+                android:id="@+id/user_is"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="NATIVE IN"
+                android:fontFamily="@font/roboto"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textSize="15dp"
+                android:layout_marginStart="16dp"/>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="6dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:theme="@style/Theme.MaterialComponents.Light"
+                app:chipSpacingVertical="2dp"
+                app:layout_constraintStart_toStartOf="@id/user_is"
+                app:layout_constraintTop_toBottomOf="@id/user_is">
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/also_speak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/chipGroup"
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/roboto"
+                android:text="ALSO SPEAKS"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textSize="15dp"
+                android:layout_marginStart="16dp"/>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_also"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="6dp"
+                android:theme="@style/Theme.MaterialComponents.Light"
+                app:chipSpacingVertical="2dp"
+                android:layout_marginTop="3dp"
+                app:layout_constraintBottom_toTopOf="@id/learning"
+                app:layout_constraintStart_toStartOf="@id/also_speak"
+                app:layout_constraintTop_toBottomOf="@id/also_speak">
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/learning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/chip_also"
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/roboto"
+                android:text= "LEARNING"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textSize="15dp"
+                android:layout_marginStart="16dp"/>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_learning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="6dp"
+                android:theme="@style/Theme.MaterialComponents.Light"
+                app:chipSpacingVertical="2dp"
+                android:layout_marginTop="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/also_speak"
+                app:layout_constraintTop_toBottomOf="@id/learning">
+            </com.google.android.material.chip.ChipGroup>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/photos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="this is profile page"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"></TextView>
+            app:layout_constraintTop_toBottomOf="@id/language_frame"
+            app:layout_constraintStart_toStartOf="parent"
+            android:fontFamily="@font/roboto"
+            android:text= "PHOTOS"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"
+            android:layout_marginStart="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photos_recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/photos"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:itemCount="8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_profile_photos"
+            android:layout_marginBottom="40dp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -31,6 +31,7 @@ class ChatRoomFragment : Fragment() {
 
     private lateinit var binding: FragmentChatRoomBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -49,9 +50,9 @@ class ChatRoomFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val friendUserEmail = viewModel.currentChattingUser
-        val myUserEmail = UserManager.user.email
+        val myEmail = UserManager.user.email
 
-        Log.d("ChatRoomFragment"," value of useremail = $myUserEmail")
+        Log.d("ChatRoomFragment"," value of useremail = $myEmail")
         Log.d("ChatRoomFragment", "value of friendsEmail = $friendUserEmail")
 
         // Setup custom toolbar
@@ -66,7 +67,7 @@ class ChatRoomFragment : Fragment() {
                 Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.reminder_chatroom_message), Toast.LENGTH_SHORT).show()
             }
             else {
-                sendMessage()
+                sendMessage(myEmail,friendUserEmail)
             }
         }
 
@@ -104,8 +105,8 @@ class ChatRoomFragment : Fragment() {
         return false
     }
 
-    private fun sendMessage() {
-//        viewModel.postMessage(viewModel.getUserEmails(myEmail, friendEmail), viewModel.getMessage())
+    private fun sendMessage(myEmail: String, friendEmail: String) {
+        viewModel.postMessage(viewModel.getUserEmails(myEmail, friendEmail), viewModel.getMessage())
         binding.editMessage.text.clear()
     }
 }

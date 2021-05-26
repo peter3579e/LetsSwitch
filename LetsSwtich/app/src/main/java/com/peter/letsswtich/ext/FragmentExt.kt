@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.data.User
-import com.peter.letsswtich.dialog.MatchedDialogArgs
 import com.peter.letsswtich.factory.ChatRoomViewModelFactory
-import com.peter.letsswtich.factory.MatchedDialogViewModelFactory
+import com.peter.letsswtich.factory.UserViewModelFactory
 import com.peter.letsswtich.factory.RequirementViewModelFactory
 import com.peter.letsswtich.factory.ViewModelFactory
 
@@ -26,7 +25,7 @@ fun Fragment.getVmFactory(userRequiremnet: Requirement) : RequirementViewModelFa
     return RequirementViewModelFactory(repository, userRequiremnet)
 }
 
-fun Fragment.getVmFactory(matchedUser: User) : MatchedDialogViewModelFactory {
+fun Fragment.getVmFactory(matchedUser: User) : UserViewModelFactory {
     val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
-    return MatchedDialogViewModelFactory(repository, matchedUser)
+    return UserViewModelFactory(repository, matchedUser)
 }

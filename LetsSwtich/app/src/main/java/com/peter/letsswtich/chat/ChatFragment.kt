@@ -13,11 +13,8 @@ import com.peter.letsswtich.R
 import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.data.UserInfo
 import com.peter.letsswtich.databinding.FragmentChatBinding
-import com.peter.letsswtich.databinding.FragmentHomeBinding
 import com.peter.letsswtich.ext.getVmFactory
-import com.peter.letsswtich.home.HomeViewModel
 import com.peter.letsswtich.login.UserManager
-import com.peter.letsswtich.util.Logger
 
 class ChatFragment:Fragment() {
 
@@ -64,21 +61,38 @@ class ChatFragment:Fragment() {
             }
         })
 
-        viewModel.filteredChatRooms.observe(viewLifecycleOwner, Observer {
-            Log.d("ChatFragment", "value of filteredChatRoom=$it")
-            it?.let {
 
-//                binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
+        viewModel.filteredChatRooms.observe(viewLifecycleOwner, Observer { list ->
 
-                if (it.isEmpty()) {
+
+//            Log.d("ChatFragment", "value of filteredChatRoom=${list.sortedByDescending { it.latestMessageTime }}")
+
+            val newList = list.sortedByDescending { it.latestMessageTime }
+
+            for(i in newList){
+                Log.d("ChatFragment","value of list = ${i.latestMessageTime}]")
+            }
+
+//            val sort = listOf(3,4,1,2,3,7,8)
+//            val sortto = sort.sortedByDescending { it }
+//
+//            for(i in sortto){
+//                Log.d("ChatFragment","value of list = $i]")
+//            }
+
+
+                viewModel.roomByMessageTime.value = list
+                binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
+
+                if (list.isEmpty()) {
                     binding.noValue.visibility = View.VISIBLE
                     binding.noValueImage.visibility = View.VISIBLE
                 } else {
-                    adapter.submitList(it)
-                    newMatchesAdapter.submitList(it)
+                    newMatchesAdapter.submitList(list)
+                    adapter.submitList(newList)
                 }
             }
-        })
+        )
 
         return binding.root
     }

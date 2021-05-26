@@ -23,10 +23,12 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,21 +40,18 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/image_card_user"
-                    android:layout_width="0dp"
                     images="@{item.personImages}"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginHorizontal="0dp"
-                    android:layout_marginTop="0dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toTopOf="@id/text_card_name"
-                    app:layout_constraintDimensionRatio="1"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_cute_avatar"
-                    app:spanCount="1"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/roundframe"
+                    android:orientation="horizontal"
+                    android:scaleType="centerCrop"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:spanCount="1" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_image_circles"
@@ -75,8 +74,7 @@
                     android:layout_width="180dp"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="0dp"
-                    android:layout_marginTop="0dp"
-                    app:layout_constraintBottom_toTopOf="@id/text_card_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,7 +84,7 @@
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="0dp"
                     android:layout_marginTop="0dp"
-                    app:layout_constraintBottom_toTopOf="@id/text_card_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,35 +92,24 @@
                     android:id="@+id/text_card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    tools:textColor="@color/black"
+                    android:textSize="30sp"
                     android:text="@{item.name}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_card_user"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@id/image_card_location"
+                    app:layout_constraintStart_toStartOf="@id/image_card_location"
                     tools:text="Sirius Black" />
 
-                <TextView
-                    android:id="@+id/text_card_identity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textStyle="bold"
-                    android:text="@{item.gender}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_card_name"
-                    tools:text="Tutor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_card_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_card_identity">
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toEndOf="@id/image_card_location"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
 
                     <TextView
@@ -130,6 +117,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:textColor="@color/white"
+                        tools:textColor="@color/black"
                         android:text="@{item.city}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -141,6 +130,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=", "
+                        android:textColor="@color/white"
+                        tools:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/text_card_city"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -150,6 +141,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{item.district}"
+                        android:textColor="@color/white"
+                        tools:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/divider_card_location"
                         app:layout_constraintTop_toTopOf="parent"
@@ -160,64 +153,67 @@
                     android:id="@+id/image_card_location"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
                     app:layout_constraintBottom_toBottomOf="@id/layout_card_location"
                     app:layout_constraintEnd_toStartOf="@id/layout_card_location"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/layout_card_location"
-                    app:srcCompat="@drawable/ic_baseline_location_on_24" />
+                    app:srcCompat="@drawable/ic_baseline_location_on_24"
+                    tools:tint="@color/black"
+                    app:tint="@color/white" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginVertical="6dp"
                     android:theme="@style/Theme.MaterialComponents.Light"
                     app:chipSpacingVertical="2dp"
-                    app:layout_constraintBottom_toTopOf="@id/title_card_about"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintStart_toStartOf="@id/image_card_location"
                     app:layout_constraintTop_toBottomOf="@id/layout_card_location">
 
                 </com.google.android.material.chip.ChipGroup>
 
-                <TextView
-                    android:id="@+id/title_card_about"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:textStyle="bold"
-                    android:text="@string/card_about"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chipGroup"
-                    tools:text="About"></TextView>
+<!--                <TextView-->
+<!--                    android:id="@+id/title_card_about"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="24dp"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="@string/card_about"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/chipGroup"-->
+<!--                    tools:text="About"></TextView>-->
 
-                <TextView
-                    android:id="@+id/title_card_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="16dp"
-                    android:textStyle="bold"
-                    android:text="@{item.name}"
-                    app:layout_constraintStart_toEndOf="@id/title_card_about"
-                    app:layout_constraintTop_toBottomOf="@id/chipGroup"
-                    tools:text="Sirius Black"></TextView>
+<!--                <TextView-->
+<!--                    android:id="@+id/title_card_name"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="4dp"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="@{item.name}"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/title_card_about"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/chipGroup"-->
+<!--                    tools:text="Sirius Black"></TextView>-->
 
                 <TextView
                     android:id="@+id/text_card_introduction"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="16dp"
-                    android:ellipsize="end"
-                    android:text='@{String.valueOf(item.age)+"years old"}'
-                    android:maxLines="3"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_card_about"
-                    tools:text="We've all got both light and dark inside us. What matters is the part we choose to act on. That's who we really are." />
+                    android:layout_marginStart="4dp"
+                    android:text='@{String.valueOf(item.age)}'
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/text_card_name"
+                    app:layout_constraintStart_toEndOf="@id/text_card_name"
+                    app:layout_constraintTop_toTopOf="@id/text_card_name"
+                    app:layout_constraintVertical_bias="0.6"
+                    tools:text="26"
+                    tools:textColor="@color/black" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

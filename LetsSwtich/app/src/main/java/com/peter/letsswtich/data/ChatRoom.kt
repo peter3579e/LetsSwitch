@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class ChatRoom(
     var chatRoomId : String = "",
     var latestTime : Long = -0L,
+    var latestMessageTime : Long = -0L,
     var attendeesInfo: List<UserInfo> = listOf(),
     var attendees: List<String> = listOf(""),
     var latestMessage: String =""

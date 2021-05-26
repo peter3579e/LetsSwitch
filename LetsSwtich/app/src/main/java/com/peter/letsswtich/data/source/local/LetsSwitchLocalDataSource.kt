@@ -14,6 +14,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getAllLiveMessage(emails: List<String>): MutableLiveData<List<Message>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getMessageItem(): List<Message> {
         TODO("Not yet implemented")
     }
@@ -23,6 +27,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun postUser() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postMessage(emails: List<String>, message: Message): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

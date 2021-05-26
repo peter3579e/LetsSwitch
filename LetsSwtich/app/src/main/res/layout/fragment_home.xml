@@ -71,7 +71,6 @@
 
         <com.yuyakaido.android.cardstackview.CardStackView
             android:id="@+id/stack_view"
-            listCard="@{viewModel.usersWithMatch}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_centerHorizontal="true"
@@ -107,14 +106,16 @@
 
                 <ImageButton
                     android:id="@+id/button_yes"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/button_round_red"
                     android:contentDescription="@null"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.492"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_left" />
+                    app:srcCompat="@drawable/ic_dislike_button" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -131,8 +132,8 @@
 
                 <ImageButton
                     android:id="@+id/button_rewind"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:background="@drawable/button_round"
                     android:contentDescription="@null"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -155,14 +156,17 @@
 
                 <ImageButton
                     android:id="@+id/button_no"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/button_round_white"
                     android:contentDescription="@null"
                     android:tint="#63DD99"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.492"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.473"
                     app:srcCompat="@drawable/ic_like_button" />
 
 

@@ -36,7 +36,12 @@
         android:id="@+id/profileFragment"
         android:name="com.peter.letsswtich.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userDetail"
+            app:argType="com.peter.letsswtich.data.User"
+            app:nullable="false" />
+    </fragment>
 
     <dialog
         android:id="@+id/matchedDialog"
