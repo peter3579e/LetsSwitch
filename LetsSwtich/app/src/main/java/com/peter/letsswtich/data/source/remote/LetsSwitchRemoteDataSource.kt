@@ -21,6 +21,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     private const val PATH_MATCHLIST = "matchedList"
     private const val PATH_FOLLOWLIST = "followList"
     private const val PATH_CHATLIST = "chatList"
+    private const val PATH_MATCHTIME= "matchedTime"
 
 
 //    override suspend fun getChatList(): List<ChatRoom> {
@@ -323,6 +324,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .collection(PATH_USER)
                 .document(myEmail)
                 .collection(PATH_MATCHLIST)
+                .orderBy("matchTime", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, exception ->
                     Logger.i("add SnapshotListener detected")
 
@@ -332,9 +334,11 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     val list = mutableListOf<User>()
                     if (snapshot != null) {
                         for (document in snapshot) {
-                            Logger.d(document.id + " => " + document.data)
+                            Log.d("remoteDataSource","getNewMatchListener has run !!!")
+//                            Logger.d(document.id + " => " + document.data)
 
                             val event = document.toObject(User::class.java)
+                            Log.d("testtest","matchTime value = ${event.matchTime}")
                             list.add(event)
                         }
                     }
@@ -366,27 +370,31 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
+
     override suspend fun updateMatch(myEmail: String,user: User): Result<Boolean> = suspendCoroutine {
 
-        val users = FirebaseFirestore.getInstance().collection(PATH_USER)
-        users.document(user.email).collection(PATH_MATCHLIST).document(myEmail)
-                .set(UserManager.user)
-                .addOnSuccessListener {
-                    Logger.d("DocumentSnapshot added with ID: ${users}")
-                }
-                .addOnFailureListener { e ->
-                    Logger.w("Error adding document $e")
-                }
-        users.document(myEmail).collection(PATH_MATCHLIST).document(user.email)
-                .set(user)
-                .addOnSuccessListener {
-                    Logger.d("DocumentSnapshot added with ID: ${users}")
-                }
-                .addOnFailureListener { e ->
-                    Logger.w("Error adding document $e")
-                }
-    }
 
+
+        val users = FirebaseFirestore.getInstance().collection(PATH_USER)
+        val matchList = users.document(user.email).collection(PATH_MATCHLIST).document(myEmail)
+                user.matchTime = Calendar.getInstance().timeInMillis
+        matchList.set(user)
+                .addOnSuccessListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+        val myMatch = users.document(myEmail).collection(PATH_MATCHLIST).document(user.email)
+                myMatch.set(user)
+                .addOnSuccessListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+
+    }
 
 
     override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean> = suspendCoroutine { continuation ->

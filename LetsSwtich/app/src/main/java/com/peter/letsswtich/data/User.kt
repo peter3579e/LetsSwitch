@@ -22,5 +22,7 @@ data class User (
     var role: String = "",
     var fluentLanguage: List<String> = listOf(),
     var preferLanguage: List<String> = listOf(),
-    var backGroundPic: String = ""
+    var backGroundPic: String = "",
+    var matchTime: Long = 0L
+
         ): Parcelable

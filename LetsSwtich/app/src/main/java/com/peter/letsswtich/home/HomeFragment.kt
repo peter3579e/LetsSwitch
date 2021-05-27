@@ -10,10 +10,12 @@ import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
+import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentHomeBinding
@@ -44,11 +46,14 @@ class HomeFragment : Fragment(), CardStackListener {
     private var oldMatchList: List<User> = listOf()
 
 
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
@@ -139,32 +144,22 @@ class HomeFragment : Fragment(), CardStackListener {
 //            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
         })
 
-        viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        mainViewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
 //            Log.d("HomeViewFragment", "matchlist has detected!!")
 
-            if (viewModel.matchList.value!!.size > oldMatchList.size && viewModel.oldMatchList.value != null) {
-                val matchList: List<User> = viewModel.matchList.value!!
-//                Log.d("HomeFragment", "new match List = ${matchList.size}")
-
-                val newPerson = matchList - oldMatchList
-
-//                Log.d("HomeFragment", "new match List = $likedUser")
-
-                if (newPerson[0] != likedUser && likedUser != null) {
-                    findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson[0]))
-                }
-//                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson.size}")
-//                        Log.d("HomeFragment","value of matchlist [0] = ${newPerson[0]}")
-//                        Log.d("HomeFragment","value of matchlist [0] = ${oldMatchList.size}")
-                oldMatchList = matchList
+            for (match in it){
+                Log.d("matchList","value of matchList = ${match.matchTime}")
             }
-            if (viewModel.matchList.value!!.size < oldMatchList.size) {
-                Log.d("HomeFragment", "Friends has been deleted")
-                viewModel.getMyOldMatchList(myEmail)
+
+            Log.d("matchList","value of likedUser =$likedUser")
+
+            if (it[0].email != likedUser.email && likedUser.email !=""){
+                findNavController().navigate(NavigationDirections.navigateToMatchedDialog(it[0]))
             }
 
         })
+
 
 
 

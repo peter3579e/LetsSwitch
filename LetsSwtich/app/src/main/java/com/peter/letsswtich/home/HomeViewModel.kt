@@ -57,13 +57,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         get() = _userLikeList
 
 
-    private val _swipe = MutableLiveData<Boolean>()
-
-    val swipe: LiveData<Boolean>
-        get() = _swipe
-
-
-
     var count: Boolean = false
 
     var matchList = MutableLiveData<List<User>>()
@@ -131,7 +124,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
 
-        _swipe.value = false
 
         getAllUser()
 //        myDetail("peter324234@yahoo.com.tw", user = User(listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
@@ -140,7 +132,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
 //                "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "Hello", "boring", "123", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "12345", 25, 25.034070787981246, 121.53106153460475, "Male", listOf("jsidfjisdjfiasf", "sfdasdfasdf"), listOf("Sdfasdf", "sdfasf"), listOf("sdfasdfasdf", "sdfasdfdfs"), listOf("sadfadfadfadsf", "asdfadsfasdf"), "Peter", "peter3579e@gmail.com", "Taipei", "Hawai", "teacher", listOf("English", "Chinese"), listOf("Japanese", "French")))
         getMyOldMatchList(UserManager.user.email)
 
-            getNewMatchListener(UserManager.user.email)
+//            getNewMatchListener(UserManager.user.email)
 
 
 
@@ -363,15 +355,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
                 }
             }
         }
-    }
-
-
-    fun enableSwipe(){
-        _swipe.value = true
-    }
-
-    fun disableSwipe(){
-        _swipe.value = false
     }
 
 
