@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.peter.letsswtich.util.CurrentFragmentType"/>
+
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.peter.letsswtich.MainViewModel" />
@@ -15,7 +19,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/myNavHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
@@ -37,6 +41,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:itemIconSize="36dp"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.CHATROOM || viewModel.navigateToFriendsProfile == true ? View.GONE : View.VISIBLE}"
             app:menu="@menu/bottom_nav_menu"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

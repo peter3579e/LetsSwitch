@@ -8,6 +8,7 @@ import com.peter.letsswtich.data.Result
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.login.UserManager
+import com.peter.letsswtich.util.CurrentFragmentType
 import com.peter.letsswtich.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,9 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
 
     val likeList = MutableLiveData<User>()
 
+    // Record current fragment to support data binding
+    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
+
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
@@ -35,6 +39,10 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
 
     val refreshStatus: LiveData<Boolean>
         get() = _refreshStatus
+
+    val _navigateToFriendsProfile = MutableLiveData<Boolean>()
+    val navigateToFriendsProfile: MutableLiveData<Boolean>
+    get() = _navigateToFriendsProfile
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -86,6 +94,14 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
 //            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
             _refreshStatus.value = false
         }
+    }
+
+    fun navigateToFriendProfile(){
+        _navigateToFriendsProfile.value = true
+    }
+
+    fun friendsProfileNavigated(){
+        _navigateToFriendsProfile.value = false
     }
 
 }

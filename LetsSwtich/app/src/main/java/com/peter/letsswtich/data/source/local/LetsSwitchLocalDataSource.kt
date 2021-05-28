@@ -14,7 +14,7 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
-    override fun getAllLiveMessage(emails: List<String>): MutableLiveData<List<Message>> {
+    override fun getAllLiveMessage(emails: List<String>): MutableLiveData<MessageWithId> {
         TODO("Not yet implemented")
     }
 
@@ -38,6 +38,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateIsRead(friendEmail: String, documentId: String): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
@@ -47,6 +51,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override fun getNewMatchListener(myEmail: String): MutableLiveData<List<User>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserDetail(userEmail: String): Result<User> {
         TODO("Not yet implemented")
     }
 

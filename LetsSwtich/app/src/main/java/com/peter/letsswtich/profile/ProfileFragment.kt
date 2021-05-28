@@ -5,32 +5,57 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.peter.letsswtich.MainActivity
+import com.peter.letsswtich.MainViewModel
+import com.peter.letsswtich.NavigationDirections
+import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.FragmentProfileBinding
 import com.peter.letsswtich.dialog.MatchedDialogArgs
 import com.peter.letsswtich.dialog.MatchedDialogViewModel
 import com.peter.letsswtich.ext.getVmFactory
+import com.peter.letsswtich.login.UserManager
 
-class ProfileFragment: Fragment() {
+
+class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel by viewModels<ProfileViewModel> {
         getVmFactory(
-                ProfileFragmentArgs.fromBundle(requireArguments()).userDetail
+            ProfileFragmentArgs.fromBundle(requireArguments()).userDetail
         )
     }
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        binding=FragmentProfileBinding.inflate(inflater,container,false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+
+        if(viewModel.userDetail.email != UserManager.user.email){
+            binding.buttonBack.visibility = View.VISIBLE
+            mainViewModel.navigateToFriendProfile()
+            Log.d("ProfileFragment","valeu of navigation = ${mainViewModel.navigateToFriendsProfile.value}")
+            binding.buttonBack.setOnClickListener{
+                findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.userDetail.email,viewModel.userDetail.name))
+            }
+        }
+
         val nativeChip = binding.chipGroup
         val chip = Chip(nativeChip.context)
         chip.text = viewModel.userDetail.fluentLanguage[0]
@@ -40,24 +65,28 @@ class ProfileFragment: Fragment() {
         chip2.text = viewModel.userDetail.fluentLanguage[1]
         fluentChip.addView(chip2)
 
+
+
         val adapter = PhotosAdapter()
 
         binding.photosRecycleView.adapter = adapter
 
 
-        for(language in viewModel.userDetail.preferLanguage){
+        for (language in viewModel.userDetail.preferLanguage) {
             val learningChip = binding.chipLearning
             val chip3 = Chip(learningChip.context)
             chip3.text = language
             learningChip.addView(chip3)
         }
 
-        val imageList : MutableList<String> = mutableListOf()
 
-        for(images in viewModel.userDetail.personImages){
-            if (images == viewModel.userDetail.personImages[0]){
-                Log.d("ProfileFragment","Nothing happened")
-            }else{
+
+        val imageList: MutableList<String> = mutableListOf()
+
+        for (images in viewModel.userDetail.personImages) {
+            if (images == viewModel.userDetail.personImages[0]) {
+                Log.d("ProfileFragment", "Nothing happened")
+            } else {
                 imageList.add(images)
             }
         }
@@ -65,6 +94,11 @@ class ProfileFragment: Fragment() {
         adapter.submitList(imageList)
 
 
+
+
+
         return binding.root
     }
+
+
 }

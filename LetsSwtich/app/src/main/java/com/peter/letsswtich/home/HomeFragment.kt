@@ -160,6 +160,8 @@ class HomeFragment : Fragment(), CardStackListener {
 
         })
 
+        mainViewModel.likeList.value = likedUser
+
 
 
 

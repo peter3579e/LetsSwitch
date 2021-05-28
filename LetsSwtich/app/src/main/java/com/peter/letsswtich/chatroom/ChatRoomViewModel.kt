@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.Message
+import com.peter.letsswtich.data.MessageWithId
+import com.peter.letsswtich.data.Result
+import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.data.source.remote.LetsSwitchRemoteDataSource.postMessage
 import com.peter.letsswtich.login.UserManager
@@ -17,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, userEmail:String, userName:String) : ViewModel() {
+class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, userEmail:String, userName: String) : ViewModel() {
 
     val currentChattingUser = userEmail
 
@@ -26,8 +29,17 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
     // EditText input
     val enterMessage = MutableLiveData<String>()
 
+    private val _userDetail = MutableLiveData<User>()
+
+    val userDetail: LiveData<User>
+        get() = _userDetail
+
+    var count :Int =0
+
+
+
     // All live message
-    var allLiveMessage = MutableLiveData<List<Message>>()
+    var allLiveMessage = MutableLiveData<MessageWithId>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -59,6 +71,8 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
 
         getAllLiveMessage(getUserEmails(UserManager.user.email, currentChattingUser))
 
+        getUserDetail(currentChattingUser)
+
 //        getMessageItem()
     }
 
@@ -73,7 +87,8 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
                 senderImage = UserManager.user.personImages[0],
                 senderEmail = UserManager.user.email,
                 text = enterMessage.value.toString(),
-                createdTime = 0L
+                createdTime = 0L,
+            read = false
         )
     }
 
@@ -106,6 +121,64 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
 
     }
 
+    fun updateIsRead(friendEmail:String,documentId:String){
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            when (val result = letsSwitchRepository.updateIsRead(friendEmail,documentId)) {
+                is com.peter.letsswtich.data.Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    leave(true)
+                }
+                is com.peter.letsswtich.data.Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is com.peter.letsswtich.data.Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
+    }
+
+    fun getUserDetail(userEmail:String) {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            val result = letsSwitchRepository.getUserDetail(userEmail)
+
+            _userDetail.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
+        }
+    }
+
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
@@ -113,12 +186,12 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
 
 
 
-    fun getMessageItem() {
-        coroutineScope.launch {
-            allLiveMessage.value = letsSwitchRepository.getMessageItem()
-            Log.d("ChatRoomViewModel","Value of getMessage ${allLiveMessage.value}")
-        }
-    }
+//    fun getMessageItem() {
+//        coroutineScope.launch {
+//            allLiveMessage.value = letsSwitchRepository.getMessageItem()
+//            Log.d("ChatRoomViewModel","Value of getMessage ${allLiveMessage.value}")
+//        }
+//    }
 
     private fun getAllLiveMessage(userEmails: List<String>) {
         allLiveMessage = letsSwitchRepository.getAllLiveMessage(userEmails)

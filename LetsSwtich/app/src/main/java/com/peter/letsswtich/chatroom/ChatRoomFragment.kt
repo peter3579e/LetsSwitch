@@ -11,10 +11,9 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.peter.letsswtich.LetsSwtichApplication
-import com.peter.letsswtich.MainActivity
-import com.peter.letsswtich.R
+import com.peter.letsswtich.*
 import com.peter.letsswtich.databinding.FragmentChatRoomBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
@@ -25,7 +24,8 @@ class ChatRoomFragment : Fragment() {
 
     private val viewModel by viewModels<ChatRoomViewModel> {
         getVmFactory(
-            ChatRoomFragmentArgs.fromBundle(requireArguments()).userEmail!!, ChatRoomFragmentArgs.fromBundle(requireArguments()).userName!!
+            ChatRoomFragmentArgs.fromBundle(requireArguments()).userEmail,
+            ChatRoomFragmentArgs.fromBundle(requireArguments()).userName
         )
     }
 
@@ -44,10 +44,16 @@ class ChatRoomFragment : Fragment() {
     ): View? {
 
         binding = FragmentChatRoomBinding.inflate(inflater,container,false)
-        val adapter = ChatRoomAdapter()
+        val adapter = ChatRoomAdapter(viewModel)
         binding.viewModel = viewModel
         binding.recyclerMessage.adapter = adapter
         binding.lifecycleOwner = this
+
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+        mainViewModel.friendsProfileNavigated()
+
+
 
         val friendUserEmail = viewModel.currentChattingUser
         val myEmail = UserManager.user.email
@@ -71,9 +77,16 @@ class ChatRoomFragment : Fragment() {
             }
         }
 
+
         // Observers
-        viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+        viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer {message ->
+            viewModel.updateIsRead(viewModel.currentChattingUser,message.documentId)
+
+            viewModel.userDetail.observe(viewLifecycleOwner, Observer {
+                Log.d("ChatRoomFragment","the detail of User is = $it")
+                adapter.submitList(message.message)
+            })
+//            Log.d("ChatRoomFragment","value of documentID = ${it.documentId}")
         })
 
         viewModel.enterMessage.observe(viewLifecycleOwner, Observer {
@@ -84,6 +97,8 @@ class ChatRoomFragment : Fragment() {
             viewModel.enterMessage.value =text.toString()
             Log.d("Peter","${viewModel.enterMessage.value}")
         }
+
+
 
 
 
@@ -99,7 +114,7 @@ class ChatRoomFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            findNavController().navigateUp()
+            findNavController().navigate(NavigationDirections.navigateToChatFragment())
             return true
         }
         return false

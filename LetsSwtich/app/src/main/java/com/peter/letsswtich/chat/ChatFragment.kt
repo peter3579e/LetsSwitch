@@ -9,6 +9,8 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.data.UserInfo
@@ -35,6 +37,7 @@ class ChatFragment:Fragment() {
         binding.recyclerChatList.adapter = adapter
         binding.recyclerNewMatches.adapter = newMatchesAdapter
         binding.lifecycleOwner = this
+
 
 
         viewModel.matchList.observe(viewLifecycleOwner, Observer {

@@ -18,7 +18,11 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.getLiveChatList(myEmail)
     }
 
-    override fun getAllLiveMessage(emails: List<String>): MutableLiveData<List<Message>> {
+    override suspend fun getUserDetail(userEmail:String): Result<User>{
+        return remoteDataSource.getUserDetail(userEmail)
+    }
+
+    override fun getAllLiveMessage(emails: List<String>): MutableLiveData<MessageWithId> {
         return remoteDataSource.getAllLiveMessage(emails)
     }
 
@@ -57,6 +61,10 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>{
         return remoteDataSource.updateMyLike(myEmail,user)
+    }
+
+    override suspend fun updateIsRead(friendEmail:String,documentId: String): Result<Boolean>{
+        return remoteDataSource.updateIsRead(friendEmail,documentId)
     }
 
     override suspend fun updateMatch(myEmail: String, user: User): Result<Boolean> {

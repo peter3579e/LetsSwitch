@@ -43,6 +43,16 @@
             app:nullable="false" />
     </fragment>
 
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.peter.letsswtich.editprofile.EditProfileFragment"
+        android:label="EditProfileFragment">
+<!--        <argument-->
+<!--            android:name="userDetail"-->
+<!--            app:argType="com.peter.letsswitch.data.User"-->
+<!--            app:nullable="false" />-->
+    </fragment>
+
     <dialog
         android:id="@+id/matchedDialog"
         android:name="com.peter.letsswtich.dialog.MatchedDialog"
@@ -62,31 +72,24 @@
         <argument
             android:name="userEmail"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="false" />
         <argument
             android:name="userName"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="false" />
     </fragment>
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment" />
-    <action android:id="@+id/navigate_to_chat_fragment" app:destination="@id/chatFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_chat_fragment" app:destination="@id/chatFragment" />
     <action android:id="@+id/navigate_to_map_fragment" app:destination="@id/mapFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
-    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment" />
     <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@id/chatRoomFragment" />
     <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
     <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
-
 
 
 </navigation>
