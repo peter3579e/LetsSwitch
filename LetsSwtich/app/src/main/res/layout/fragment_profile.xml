@@ -53,6 +53,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/ic_cute_avatar" />
+        <ImageButton
+            android:id="@+id/edit_profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:elevation="5dp"
+            android:background="@drawable/ic_baseline_edit_24"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintStart_toStartOf="@id/profile_image"
+            android:layout_marginStart="70dp"
+            android:onClick="@{()->viewModel.navigateToEditProfile()}"/>
 
         <TextView
             android:id="@+id/profille_status"
