@@ -2,6 +2,10 @@ package com.peter.letsswtich.data.source.remote
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -122,22 +126,22 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     override suspend fun updateIsRead(friendEmail:String,documentId: String):Result<Boolean> = suspendCoroutine { continuation ->
         val chat = FirebaseFirestore.getInstance().collection(PATH_CHATLIST).document(documentId)
-        Log.d("RemoteDataSource","updateIsRead has run")
+//        Log.d("RemoteDataSource","updateIsRead has run")
         chat.collection("message")
             .whereEqualTo("senderEmail",friendEmail)
             .get()
             .addOnCompleteListener { task ->
-                Log.d("RemoteDataSource","updateIsRead has run1")
+//                Log.d("RemoteDataSource","updateIsRead has run1")
                 if (!task.isSuccessful) {
-                    Log.d("RemoteDataSource","updateIsRead has run2")
+//                    Log.d("RemoteDataSource","updateIsRead has run2")
                     if (task.exception != null) {
-                        Log.d("RemoteDataSource","updateIsRead has run3")
+//                        Log.d("RemoteDataSource","updateIsRead has run3")
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                             continuation.resume(Result.Error(it))
                         }
                     } else {
-                        Log.d("RemoteDataSource","updateIsRead has run4")
+//                        Log.d("RemoteDataSource","updateIsRead has run4")
                         continuation.resume(Result.Fail(LetsSwtichApplication.appContext.getString(R.string.you_shall_not_pass)))
                     }
                 }
@@ -507,40 +511,89 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     }
 
 
-    override suspend fun postUser() {
+    override suspend fun postfake() {
         val user = FirebaseFirestore.getInstance().collection(PATH_USER)
-        val document = user.document("peter3579e@gmail.com")
+        val document = user.document("shireny@gmail.com")
         val data = hashMapOf(
-                "personImages" to listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
+                "personImages" to listOf("https://img.onl/CHR1wx",
                         "https://api.appworks-school.tw/assets/201807201824/main.jpg",
                         "https://api.appworks-school.tw/assets/201807201824/main.jpg",
                         "https://api.appworks-school.tw/assets/201807201824/main.jpg"),
-                "description" to "Hello",
-                "status" to "boring",
+                "description" to "想看電影",
+                "status" to "Busy",
                 "id" to "123",
                 "googleId" to "12345",
-                "age" to 25,
+                "age" to 22,
                 "latitude" to 25.034070787981246,
                 "lngti" to 121.53106153460475,
-                "gender" to "Male",
+                "gender" to "Female",
                 "likeList" to listOf("jsidfjisdjfiasf", "sfdasdfasdf"),
-                "name" to "Peter",
-                "email" to "peter3579e@gmail.com",
+                "name" to "shireny",
+                "email" to "shireny@gmail.com",
                 "city" to "Taipei",
                 "district" to "Hawai",
+            "backGroundPic" to "https://img.onl/ah0ION",
                 "role" to "teacher",
                 "fluentLanguage" to listOf("English", "Chinese"),
                 "preferLanguage" to listOf("Japanese", "French")
         )
         Log.d("Peter", "The post has run")
-
-
-
-
         document.set(data)
                 .addOnSuccessListener { Log.d("Update", "DocumentSnapshot successfully written!") }
                 .addOnFailureListener { e -> Log.w("Update", "Error writing document", e) }
     }
+
+    override suspend fun postUser(user: User): Result<Boolean> = suspendCoroutine { continuation ->
+
+        val users = FirebaseFirestore.getInstance().collection(PATH_USER)
+        val document = users.document(user.email)
+        user.id = document.id
+//        user.joinedTime = Calendar.getInstance().timeInMillis
+
+        users.whereEqualTo("email", user.email)
+            .get()
+            .addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    document
+                        .set(user)
+                        .addOnSuccessListener {
+                            Logger.d("DocumentSnapshot added with ID: ${users}")
+                        }
+                        .addOnFailureListener { e ->
+                            Logger.w("Error adding document $e")
+                        }
+                } else {
+                    for (myDocument in result) {
+                        Logger.d("Already initialized")
+                    }
+                }
+            }
+
+
+    }
+
+    override suspend fun firebaseAuthWithGoogle(account: GoogleSignInAccount?): Result<FirebaseUser> = suspendCoroutine { continuation ->
+        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+        val auth = FirebaseAuth.getInstance()
+        auth?.signInWithCredential(credential)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("Post: $credential")
+                    task.result?.let {
+                        continuation.resume(Result.Success(it.user!!))
+                    }
+                } else {
+                    task.exception?.let {
+
+                        Logger.w("[${this::class.simpleName}] Error getting documents.")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)))
+                }
+            }
+    }
+
 
     override suspend fun getMessageItem(): List<Message> {
         var mock = mutableListOf<Message>()

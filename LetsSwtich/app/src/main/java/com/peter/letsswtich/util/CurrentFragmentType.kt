@@ -6,5 +6,6 @@ enum class CurrentFragmentType(val value: String) {
     CHATROOM(""),
     MAP(""),
     PROFILE(""),
+    EDITPROFILE("")
 
 }

@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "941167381207",
-    "project_id": "letswtich",
-    "storage_bucket": "letswtich.appspot.com"
+    "project_number": "764080131691",
+    "project_id": "letsswtich",
+    "storage_bucket": "letsswtich.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:941167381207:android:a3d1990ec2c0e2098e3e92",
+        "mobilesdk_app_id": "1:764080131691:android:11d49206e889174c112b2e",
         "android_client_info": {
-          "package_name": "com.peter.letsswitch"
+          "package_name": "com.peter.letsswtich"
         }
       },
       "oauth_client": [
         {
-          "client_id": "941167381207-nfnnq9v522sa3ksvj4qis3os3n3epaga.apps.googleusercontent.com",
+          "client_id": "764080131691-54qst9eskogkmkqtggm2vjlt0kimc3vi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peter.letsswtich",
+            "certificate_hash": "2da09197594b5f9e5542fda9a0991a61c7d65e5e"
+          }
+        },
+        {
+          "client_id": "764080131691-h8dq7v2qorbe9vc2gn0l0cfqlb8049m3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJaCA3-8DJfUpcDr64lkqrBjSoahnuevg"
+          "current_key": "AIzaSyCUHMLvos3OQsi_JxLUuT90O9Bl6kmcjdw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "941167381207-nfnnq9v522sa3ksvj4qis3os3n3epaga.apps.googleusercontent.com",
+              "client_id": "764080131691-h8dq7v2qorbe9vc2gn0l0cfqlb8049m3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -2,6 +2,7 @@ package com.peter.letsswtich.ext
 
 
 import com.peter.letsswtich.data.ChatRoom
+import com.peter.letsswtich.data.Message
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.login.UserManager
@@ -11,6 +12,15 @@ fun List<User>?.excludeUser() : List<User> {
     return this?.filter {
         it?.let {
             it.email != UserManager.user.email
+        }
+    }
+            ?: listOf()
+}
+
+fun List<Message>?.excludeFriend(friendEmail:String) : List<Message>{
+    return this?.filter {
+        it?.let {
+            it.senderEmail != friendEmail
         }
     }
             ?: listOf()

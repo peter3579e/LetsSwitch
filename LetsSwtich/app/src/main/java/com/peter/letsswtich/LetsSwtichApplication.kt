@@ -13,6 +13,10 @@ class LetsSwtichApplication: Application() {
   companion object{
       var instance: LetsSwtichApplication by Delegates.notNull()
       lateinit var appContext: Context
+
+      fun applicationContext() : Context {
+          return instance!!.applicationContext
+      }
   }
 
     override fun onCreate() {

@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.peter.letsswtich.*
 import com.peter.letsswtich.databinding.FragmentChatRoomBinding
+import com.peter.letsswtich.ext.excludeFriend
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.util.Logger
@@ -30,6 +31,7 @@ class ChatRoomFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentChatRoomBinding
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,8 +81,14 @@ class ChatRoomFragment : Fragment() {
 
 
         // Observers
+
+
         viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer {message ->
             viewModel.updateIsRead(viewModel.currentChattingUser,message.documentId)
+            viewModel.filterMessage =  message.message.excludeFriend(friendUserEmail)
+
+            Log.d("ChatRoomAdapter","the value of filteredMessage = ${viewModel.filterMessage}")
+
 
             viewModel.userDetail.observe(viewLifecycleOwner, Observer {
                 Log.d("ChatRoomFragment","the detail of User is = $it")
@@ -91,6 +99,11 @@ class ChatRoomFragment : Fragment() {
 
         viewModel.enterMessage.observe(viewLifecycleOwner, Observer {
             Logger.d(it)
+            binding.sendwithblue.visibility = View.VISIBLE
+
+            if( it == ""){
+                binding.sendwithblue.visibility = View.GONE
+            }
         })
 
         binding.editMessage.doOnTextChanged { text, start, before, count ->
@@ -114,9 +127,11 @@ class ChatRoomFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
+            Log.d("ChatRoomFragment","Pressed!!! true")
             findNavController().navigate(NavigationDirections.navigateToChatFragment())
             return true
         }
+        Log.d("ChatRoomFragment","Pressed!!! false")
         return false
     }
 

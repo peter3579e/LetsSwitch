@@ -148,15 +148,28 @@ class HomeFragment : Fragment(), CardStackListener {
 
 //            Log.d("HomeViewFragment", "matchlist has detected!!")
 
-            for (match in it){
-                Log.d("matchList","value of matchList = ${match.matchTime}")
-            }
+            Log.d("matchList","the value of matchList = ${it}")
+
+//            for (match in it){
+//                Log.d("matchList","value of matchList = ${match.matchTime}")
+//            }
 
             Log.d("matchList","value of likedUser =$likedUser")
 
-            if (it[0].email != likedUser.email && likedUser.email !=""){
-                findNavController().navigate(NavigationDirections.navigateToMatchedDialog(it[0]))
+            if (viewModel.matchList.value != null) {
+
+                Log.d("mathcList","WTF is happeneing?")
+                if ( it[0].email != likedUser.email && likedUser.email !=""){
+                    Log.d("mtachList","Nav has run")
+//                findNavController().navigate(NavigationDirections.navigateToMatchedDialog(it[0]))
+                }else{
+                    Log.d("matchList","Nothing Happened")
+                }
             }
+
+
+
+
 
         })
 

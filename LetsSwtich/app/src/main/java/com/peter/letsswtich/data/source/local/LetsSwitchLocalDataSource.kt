@@ -2,6 +2,8 @@ package com.peter.letsswtich.data.source.local
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseUser
 import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 
@@ -26,7 +28,7 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun postUser() {
+    override suspend fun postUser(user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -67,6 +69,14 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun firebaseAuthWithGoogle(account: GoogleSignInAccount?): Result<FirebaseUser> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postfake() {
         TODO("Not yet implemented")
     }
 }

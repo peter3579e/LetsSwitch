@@ -18,7 +18,7 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
 
     fun postUser(){
         coroutineScope.launch {
-            letsSwitchRepository.postUser()
+            letsSwitchRepository.postfake()
         }
     }
 }

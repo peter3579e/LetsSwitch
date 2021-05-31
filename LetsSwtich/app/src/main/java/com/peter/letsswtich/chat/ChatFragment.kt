@@ -59,6 +59,8 @@ class ChatFragment:Fragment() {
                     filteredChatRoom.add(chatRoom)
                 }
 
+                Log.d("ChatFragment","value of filteredChatRoom = $filteredChatRoom")
+
                 viewModel.createFilteredChatRooms(filteredChatRoom)
 
             }
@@ -76,21 +78,17 @@ class ChatFragment:Fragment() {
                 Log.d("ChatFragment","value of list = ${i.latestMessageTime}]")
             }
 
-//            val sort = listOf(3,4,1,2,3,7,8)
-//            val sortto = sort.sortedByDescending { it }
-//
-//            for(i in sortto){
-//                Log.d("ChatFragment","value of list = $i]")
-//            }
 
 
                 viewModel.roomByMessageTime.value = list
                 binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
 
                 if (list.isEmpty()) {
-                    binding.noValue.visibility = View.VISIBLE
-                    binding.noValueImage.visibility = View.VISIBLE
+                    binding.noValue.visibility = View.INVISIBLE
+                    binding.noValueImage.visibility = View.INVISIBLE
                 } else {
+                    binding.noValue.visibility = View.GONE
+                    binding.noValueImage.visibility = View.GONE
                     newMatchesAdapter.submitList(list)
                     adapter.submitList(newList)
                 }

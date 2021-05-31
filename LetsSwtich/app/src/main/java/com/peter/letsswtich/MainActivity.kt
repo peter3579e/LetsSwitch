@@ -58,7 +58,10 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.navigation_profile -> {
 
+                        Log.d("MainActivity","UserManager value = ${UserManager.user}")
+
                         findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment(UserManager.user))
+
                         return@OnNavigationItemSelectedListener true
 
                     }
@@ -90,6 +93,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.mapFragment -> CurrentFragmentType.MAP
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.chatRoomFragment -> CurrentFragmentType.CHATROOM
+                R.id.editProfileFragment -> CurrentFragmentType.EDITPROFILE
                 else -> viewModel.currentFragmentType.value
             }
         }

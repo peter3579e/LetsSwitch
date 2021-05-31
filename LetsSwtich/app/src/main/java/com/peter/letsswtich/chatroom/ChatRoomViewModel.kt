@@ -27,7 +27,7 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
     val currentChattingName = userName
 
     // EditText input
-    val enterMessage = MutableLiveData<String>()
+    var enterMessage = MutableLiveData<String>()
 
     private val _userDetail = MutableLiveData<User>()
 
@@ -35,6 +35,8 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
         get() = _userDetail
 
     var count :Int =0
+
+    var filterMessage = listOf<Message>()
 
 
 

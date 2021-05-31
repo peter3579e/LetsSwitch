@@ -30,7 +30,7 @@
             android:background="@drawable/ic_detail_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        
+
         <ImageView
             android:id="@+id/profileBackground"
             android:layout_width="match_parent"
@@ -55,13 +55,14 @@
             tools:background="@drawable/ic_cute_avatar" />
         <ImageButton
             android:id="@+id/edit_profile_button"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:elevation="5dp"
-            android:background="@drawable/ic_baseline_edit_24"
+            android:src="@drawable/ic_baseline_edit_24"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image"
             app:layout_constraintStart_toStartOf="@id/profile_image"
             android:layout_marginStart="70dp"
+            android:background="@drawable/roundframe"
             android:onClick="@{()->viewModel.navigateToEditProfile()}"/>
 
         <TextView
@@ -235,8 +236,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/photos"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
+            app:spanCount="4"
             tools:itemCount="8"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/item_profile_photos"

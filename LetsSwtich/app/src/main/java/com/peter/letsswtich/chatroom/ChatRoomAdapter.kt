@@ -25,8 +25,10 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
 
+
         fun bind(message: Message, viewModel: ChatRoomViewModel) {
-            viewModel.count++
+
+            Log.d("ChatAdpater","FriendMessageViewHolder has run!!")
 
             binding.message = message
             binding.executePendingBindings()
@@ -54,6 +56,7 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
         val read = binding.read
         fun bind(message: Message, viewModel: ChatRoomViewModel) {
             viewModel.count++
+            Log.d("ChatRoomAdpater","MyMessageViewHolder has run!!")
 
             binding.viewModel = viewModel
 
@@ -61,10 +64,15 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
 
             val read = binding.read
 
-            val allMessage = viewModel.allLiveMessage.value
-            val size = allMessage!!.message.size
 
-                if (allMessage.message[size - 1].read && viewModel.count == size) {
+            val size = viewModel.filterMessage.size
+            Log.d("ChatRoomAdapter","value of size $size")
+            Log.d("ChatRoomAdapter","value of count ${viewModel.count}")
+//            Log.d("ChatRoomAdapter"," the last message ${viewModel.filterMessage[size].read}")
+
+            Log.d("ChatRoomAdapter","the value of boolean = ${viewModel.filterMessage[size-1].read}")
+
+                if (viewModel.filterMessage[size-1].read && viewModel.count == size) {
                     Log.d("ChatRoomAdapter","the visible has run")
                     read.visibility = View.VISIBLE
                 } else {

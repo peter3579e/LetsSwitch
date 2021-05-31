@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.peter.letsswtich.editprofile.preview.PreviewViewModel" />
+
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/image_card_user"
+                    images="@{viewModel.userImages}"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/roundframe"
+                    android:orientation="horizontal"
+                    android:scaleType="centerCrop"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:spanCount="1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_image_circles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    addDecoration="@{viewModel.decoration}"
+                    tools:listitem="@layout/item_image_circle"
+                    tools:itemCount="4"
+                    count="@{viewModel.userImages.size}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_card_user" />
+
+
+                <ImageView
+                    android:id="@+id/card_image_minus"
+                    android:layout_width="180dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/card_image_plus"
+                    android:layout_width="180dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="0dp"
+                    android:layout_marginTop="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_card_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    tools:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:text="@{viewModel.userDetail.name}"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@id/image_card_location"
+                    app:layout_constraintStart_toStartOf="@id/image_card_location"
+                    tools:text="Sirius Black" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_card_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toEndOf="@id/image_card_location"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+
+                    <TextView
+                        android:id="@+id/text_card_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/white"
+                        tools:textColor="@color/black"
+                        android:text="@{viewModel.userDetail.city}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Taipei" />
+
+                    <TextView
+                        android:id="@+id/divider_card_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=", "
+                        android:textColor="@color/white"
+                        tools:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/text_card_city"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_card_district"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.userDetail.city}"
+                        android:textColor="@color/white"
+                        tools:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/divider_card_location"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Da'an" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/image_card_location"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toBottomOf="@id/layout_card_location"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/layout_card_location"
+                    app:srcCompat="@drawable/ic_baseline_location_on_24"
+                    tools:tint="@color/black"
+                    app:tint="@color/white" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="6dp"
+                    android:theme="@style/Theme.MaterialComponents.Light"
+                    app:chipSpacingVertical="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintStart_toStartOf="@id/image_card_location"
+                    app:layout_constraintTop_toBottomOf="@id/layout_card_location">
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/title_card_about"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="24dp"-->
+                <!--                    android:layout_marginTop="16dp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    android:text="@string/card_about"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/chipGroup"-->
+                <!--                    tools:text="About"></TextView>-->
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/title_card_name"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="4dp"-->
+                <!--                    android:layout_marginTop="16dp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    android:text="@{item.name}"-->
+                <!--                    app:layout_constraintStart_toEndOf="@id/title_card_about"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/chipGroup"-->
+                <!--                    tools:text="Sirius Black"></TextView>-->
+
+                <TextView
+                    android:id="@+id/text_card_introduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text='@{String.valueOf(viewModel.userDetail.age)}'
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/text_card_name"
+                    app:layout_constraintStart_toEndOf="@id/text_card_name"
+                    app:layout_constraintTop_toTopOf="@id/text_card_name"
+                    app:layout_constraintVertical_bias="0.6"
+                    tools:text="26"
+                    tools:textColor="@color/black" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

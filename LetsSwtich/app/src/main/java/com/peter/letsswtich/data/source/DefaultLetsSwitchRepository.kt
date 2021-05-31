@@ -1,6 +1,8 @@
 package com.peter.letsswtich.data.source
 
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseUser
 import com.peter.letsswtich.data.*
 
 
@@ -51,8 +53,8 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.postMessage(emails, message)
     }
 
-    override suspend fun postUser(){
-        return remoteDataSource.postUser()
+    override suspend fun postUser(user: User): Result<Boolean>{
+        return remoteDataSource.postUser(user)
     }
 
     override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
@@ -72,6 +74,14 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean>{
         return remoteDataSource.removeUserFromLikeList(myEmail,user)
+    }
+
+    override suspend fun firebaseAuthWithGoogle(account : GoogleSignInAccount?): Result<FirebaseUser> {
+        return remoteDataSource.firebaseAuthWithGoogle(account)
+    }
+
+    override suspend fun postfake(){
+        return remoteDataSource.postfake()
     }
 
 }

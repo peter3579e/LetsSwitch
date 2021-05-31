@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
@@ -28,16 +29,15 @@ class ProfileFragment : Fragment() {
 
     private val viewModel by viewModels<ProfileViewModel> {
         getVmFactory(
-            ProfileFragmentArgs.fromBundle(requireArguments()).userDetail
+                ProfileFragmentArgs.fromBundle(requireArguments()).userDetail
         )
     }
 
 
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -47,24 +47,34 @@ class ProfileFragment : Fragment() {
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
 
-        if(viewModel.userDetail.email != UserManager.user.email){
+        if (viewModel.userDetail.email != UserManager.user.email) {
             binding.buttonBack.visibility = View.VISIBLE
+            binding.editProfileButton.visibility = View.GONE
             mainViewModel.navigateToFriendProfile()
-            Log.d("ProfileFragment","valeu of navigation = ${mainViewModel.navigateToFriendsProfile.value}")
-            binding.buttonBack.setOnClickListener{
-                findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.userDetail.email,viewModel.userDetail.name))
+            Log.d("ProfileFragment", "valeu of navigation = ${mainViewModel.navigateToFriendsProfile.value}")
+            binding.buttonBack.setOnClickListener {
+                findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.userDetail.email, viewModel.userDetail.name))
             }
         }
 
-        val nativeChip = binding.chipGroup
-        val chip = Chip(nativeChip.context)
-        chip.text = viewModel.userDetail.fluentLanguage[0]
-        nativeChip.addView(chip)
-        val fluentChip = binding.chipAlso
-        val chip2 = Chip(fluentChip.context)
-        chip2.text = viewModel.userDetail.fluentLanguage[1]
-        fluentChip.addView(chip2)
+        if(UserManager.user.fluentLanguage.isNotEmpty()){
+            val nativeChip = binding.chipGroup
+            val chip = Chip(nativeChip.context)
+            chip.text = viewModel.userDetail.fluentLanguage[0]
+            nativeChip.addView(chip)
+            val fluentChip = binding.chipAlso
+            val chip2 = Chip(fluentChip.context)
+            chip2.text = viewModel.userDetail.fluentLanguage[1]
+            fluentChip.addView(chip2)
+        }
 
+
+        viewModel.navigateToEditProfile.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                findNavController().navigate(NavigationDirections.navigateToEditProfilePage(viewModel.userDetail))
+                viewModel.editProfileNavigated()
+            }
+        })
 
 
         val adapter = PhotosAdapter()
@@ -72,12 +82,15 @@ class ProfileFragment : Fragment() {
         binding.photosRecycleView.adapter = adapter
 
 
-        for (language in viewModel.userDetail.preferLanguage) {
-            val learningChip = binding.chipLearning
-            val chip3 = Chip(learningChip.context)
-            chip3.text = language
-            learningChip.addView(chip3)
-        }
+
+       if (UserManager.user.preferLanguage.isNotEmpty()){
+           for (language in viewModel.userDetail.preferLanguage) {
+               val learningChip = binding.chipLearning
+               val chip3 = Chip(learningChip.context)
+               chip3.text = language
+               learningChip.addView(chip3)
+           }
+       }
 
 
 

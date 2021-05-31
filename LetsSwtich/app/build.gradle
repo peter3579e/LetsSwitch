@@ -1,3 +1,5 @@
+apply plugin: 'com.google.gms.google-services'
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -7,13 +9,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
     defaultConfig {
-        applicationId "com.peter.letsswitch"
+        applicationId "com.peter.letsswtich"
         minSdkVersion 26
 
         targetSdkVersion 30
@@ -91,6 +92,11 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$version_glide"
     implementation 'com.google.firebase:firebase-firestore:23.0.0'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
     kapt "com.github.bumptech.glide:compiler:$version_glide"
 
     // RecyclerView
@@ -121,6 +127,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+
+
+
+
+    implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+
+
 
 
 

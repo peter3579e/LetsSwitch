@@ -77,6 +77,21 @@
                 app:layout_constraintVertical_bias="0.451"
                 app:srcCompat="@drawable/ic_send_message" />
 
+            <ImageView
+                android:id="@+id/sendwithblue"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:alpha="0.6"
+                android:visibility="gone"
+                app:tint="@color/blue_voyage"
+                app:layout_constraintBottom_toBottomOf="@id/edit_message"
+                app:layout_constraintEnd_toEndOf="@id/edit_message"
+                app:layout_constraintHorizontal_bias="0.976"
+                app:layout_constraintStart_toStartOf="@id/edit_message"
+                app:layout_constraintTop_toTopOf="@id/edit_message"
+                app:layout_constraintVertical_bias="0.451"
+                app:srcCompat="@drawable/ic_send_message" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_message"
                 android:layout_width="0dp"

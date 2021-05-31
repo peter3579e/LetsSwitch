@@ -47,10 +47,10 @@
         android:id="@+id/editProfileFragment"
         android:name="com.peter.letsswtich.editprofile.EditProfileFragment"
         android:label="EditProfileFragment">
-<!--        <argument-->
-<!--            android:name="userDetail"-->
-<!--            app:argType="com.peter.letsswitch.data.User"-->
-<!--            app:nullable="false" />-->
+        <argument
+            android:name="userDetail"
+            app:argType="com.peter.letsswtich.data.User"
+            app:nullable="false" />
     </fragment>
 
     <dialog
@@ -63,6 +63,12 @@
             app:argType="com.peter.letsswtich.data.User"
             app:nullable="false"/>
     </dialog>
+
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.peter.letsswtich.login.LoginActivity"
+        android:label="LoginActivity"
+        tools:layout="@layout/activity_login"/>
 
     <fragment
         android:id="@+id/chatRoomFragment"
@@ -79,6 +85,19 @@
             app:nullable="false" />
     </fragment>
 
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.peter.letsswtich.editprofile.EditFragment"
+        android:label="EditFragment"
+        tools:layout="@layout/fragment_edit"/>
+    <fragment
+        android:id="@+id/previewFragment"
+        android:name="com.peter.letsswtich.editprofile.preview.PreviewFragment"
+        android:label="PreviewFragment"
+        tools:layout="@layout/fragment_preview"/>
+
+
+
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment" />
     <action android:id="@+id/navigate_to_chat_fragment" app:destination="@id/chatFragment" />
     <action android:id="@+id/navigate_to_map_fragment" app:destination="@id/mapFragment"
@@ -90,6 +109,8 @@
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
     <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
+    <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
+
 
 
 </navigation>

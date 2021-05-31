@@ -15,4 +15,30 @@
     <string name="reminder_chatroom_message">Please send something</string>
     <string name="google_maps_key">AIzaSyAYu63fvKcvAeii9ngoIcC_CRBjgUajUN8</string>
     <string name="get_nothing_from_firebase">Get Nothing From FireBase</string>
+
+
+    <string name="edit_add_photo">拍照</string>
+    <string name="edit_choose_from_gallery">選擇相片</string>
+    <string name="edit_cancel">取消</string>
+    <string name="edit_add_photo_title">新增照片</string>
+    <string name="edit_start_camera_camera">Camera</string>
+    <string name="edit_start_camera_jpg">.jpg</string>
+    <string name="edit_start_camera_provider">.provider</string>
+    <string name="edit_show_gallery_intent_type">image/*</string>
+    <string name="edit_show_gallery_select_picture">Select Picture</string>
+    <string name="edit_upload_permission_hint">記得到系統設定相機和相簿權限才能上傳喔</string>
+    <string name="firebase_storage_reference">images/users/%s/%s.jpg</string>
+
+    <string name="token_id">764080131691-jpm6h5bqjnknqpaet5qe14a79p6jkdsp.apps.googleusercontent.com</string>
+
+
+    <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
+    <string name="simpledateformat_MM_dd">MM-dd</string>
+    <string name="simpledateformat_yyyy_MM">yyyy-MM</string>
+    <string name="simpledateformat_HH_mm">HH:mm</string>
+    <string name="simpledateformat_HH_mm_ss_fffffffff">HH:mm:ss.%s</string>
+    <string name="simpledateformat_yyyy_MM_dd_HHmmss">yyyy-MM-dd-HHmmss</string>
+    <string name="simpledateformat_date_time_to_timestamp">%s %s:00.000000000</string>
+    <string name="simpledateformat_yyyy_MM_dd_HH_mm_ss_fffffffff">yyyy-MM-dd HH:mm:ss.%s</string>
+
 </resources>

@@ -6,9 +6,13 @@ import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.chat.ChatViewModel
 import com.peter.letsswtich.chatroom.ChatRoomViewModel
 import com.peter.letsswtich.data.source.LetsSwitchRepository
+import com.peter.letsswtich.editprofile.EditViewModel
+import com.peter.letsswtich.editprofile.preview.PreviewViewModel
 import com.peter.letsswtich.home.HomeViewModel
+import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.map.MapViewModel
 import com.peter.letsswtich.question.FirstQuestionnaireViewModel
+import kotlin.math.E
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -35,6 +39,15 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(MapViewModel::class.java)->
                     MapViewModel(letsSwitchRepository)
+
+                isAssignableFrom(EditViewModel::class.java)->
+                    EditViewModel(letsSwitchRepository)
+
+                isAssignableFrom(LoginViewModel::class.java) ->
+                    LoginViewModel(letsSwitchRepository)
+
+                isAssignableFrom(PreviewViewModel::class.java) ->
+                    PreviewViewModel(letsSwitchRepository)
 
 //
 //                isAssignableFrom(CartViewModel::class.java) ->
