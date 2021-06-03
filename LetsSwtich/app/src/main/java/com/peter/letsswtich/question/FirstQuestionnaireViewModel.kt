@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
 
-//    val usrInfo = UserManager.user
+    val usrInfo = UserManager.user
 
     private val _selectedAge = MutableLiveData<Int>()
 
@@ -92,37 +92,37 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
 
     }
 
-//    fun getUserDetail(userEmail:String) {
-//        coroutineScope.launch {
-//            _status.value = LoadApiStatus.LOADING
-//
-//            val result = letsSwitchRepository.getUserDetail(userEmail)
-//
-//            _userDetail.value = when (result) {
-//                is Result.Success -> {
-//                    _error.value = null
-//                    _status.value = LoadApiStatus.DONE
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                else -> {
-//                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//            }
-////            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
-//        }
-//    }
+    fun getUserDetail(userEmail:String) {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            val result = letsSwitchRepository.getUserDetail(userEmail)
+
+            _userDetail.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
+        }
+    }
 
 
 //    fun postUser(){

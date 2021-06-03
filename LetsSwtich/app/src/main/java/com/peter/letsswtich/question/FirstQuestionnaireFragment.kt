@@ -44,22 +44,6 @@ class FirstQuestionnaireFragment:Fragment() {
 //            val userInfo = viewModel.userDetail.value!!
 //
 //            Log.d("FirstQuestion","the value of user from firebase = $userInfo")
-//            fun moveToSecondQuestion():Boolean{
-//                return when{
-//
-//                    userInfo.age != 0 && userInfo.fluentLanguage.isNotEmpty() &&
-//                            userInfo.gender.isNotEmpty() -> {
-//                        true
-//                    }
-//                    else -> {
-//                        false
-//                    }
-//                }
-//            }
-////            if (moveToSecondQuestion()){
-////                findNavController().navigate(NavigationDirections.navigateToSecondQuestionnaire())
-////                Log.d("FirstQuestion","Run2")
-////            }
 //
 //        })
 //

@@ -22,7 +22,7 @@
             android:layout_marginTop="30dp"
             android:clipChildren="false"
             android:elevation="4dp"
-            imageUrl="@{viewModel.userDetail.personImages[0]}"
+            imageUrl="@{viewModel.usrInfo.personImages[0]}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/progress_line"
@@ -76,7 +76,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="30dp"
-            android:text='@{"Welcome "+viewModel.userDetail.name+"!!"}'
+            android:text='@{"Welcome "+viewModel.usrInfo.name+"!!"}'
             tools:text="Welcome Peter!!"
             android:textStyle="bold"
             android:textColor="@color/white"

@@ -161,6 +161,7 @@ class SecondQutionnaireFragment : Fragment() {
                 viewModel.postRequirement(UserManager.user.email,requirement)
 
                 startActivity(Intent(context, MainActivity::class.java))
+                requireActivity().finish()
 
 
 

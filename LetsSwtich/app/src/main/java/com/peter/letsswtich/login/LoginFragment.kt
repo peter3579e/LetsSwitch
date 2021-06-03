@@ -41,7 +41,7 @@ class LoginFragment :Fragment(){
 
     override fun onStart() {
         super.onStart()
-        moveMainPage(auth?.currentUser)
+//        moveMainPage(auth?.currentUser)
         Log.d("LoginActivity","Run4")
     }
 
@@ -72,7 +72,8 @@ class LoginFragment :Fragment(){
 
         viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {
             it?.let {
-                findNavController().navigate(LoginNavigationDirections.navigateToFirstQuestionnaire())
+//                findNavController().navigate(LoginNavigationDirections.navigateToFirstQuestionnaire())
+                moveToQuestion(it)
 
                 Log.d("user","the observe has run = $it")
             }
@@ -115,72 +116,6 @@ class LoginFragment :Fragment(){
 //        }
     }
 
-//    private fun handleResult(completedTask: Task<GoogleSignInAccount>){
-//        try {
-//            val account: GoogleSignInAccount? =completedTask.getResult(ApiException::class.java)
-//            if (account != null) {
-//                UpdateUI(account)
-//                viewModel.loginAuth(account)
-//            }
-//        } catch (e:ApiException){
-//            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show()
-//            Log.d("error","$e")
-//        }
-//    }
-//
-//    private fun UpdateUI(account: GoogleSignInAccount){
-//        val credential= GoogleAuthProvider.getCredential(account.idToken,null)
-//        auth!!.signInWithCredential(credential).addOnCompleteListener {task->
-//            if(task.isSuccessful) {
-//                SavedPreference.setEmail(this,account.email.toString())
-//                SavedPreference.setUsername(this,account.displayName.toString())
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-//        }
-//    }
-//
-//    object SavedPreference {
-//
-//        const val EMAIL= "email"
-//        const val USERNAME="username"
-//
-//        private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
-//            return PreferenceManager.getDefaultSharedPreferences(ctx)
-//        }
-//
-//        private fun  editor(context: Context, const:String, string: String){
-//            getSharedPreference(
-//                context
-//            )?.edit()?.putString(const,string)?.apply()
-//        }
-//
-//        fun getEmail(context: Context)= getSharedPreference(
-//            context
-//        )?.getString(EMAIL,"")
-//
-//        fun setEmail(context: Context, email: String){
-//            editor(
-//                context,
-//                EMAIL,
-//                email
-//            )
-//        }
-//
-//        fun setUsername(context: Context, username:String){
-//            editor(
-//                context,
-//                USERNAME,
-//                username
-//            )
-//        }
-//
-//        fun getUsername(context: Context) = getSharedPreference(
-//            context
-//        )?.getString(USERNAME,"")
-//
-//    }
 
     private fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
@@ -202,6 +137,33 @@ class LoginFragment :Fragment(){
 
             requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
             requireActivity().finish()
+        }
+    }
+
+    private fun moveToQuestion(user: FirebaseUser?) {
+        if (user != null) {
+            Log.d("LoginActivity","google has return 5")
+            val currentUser = User(personImages = listOf(user.photoUrl.toString()),
+                    email = user.email.toString(),
+                    name = user.displayName.toString(),
+                    googleId = user.uid
+            )
+
+            UserManager.user = currentUser
+
+            Log.d("LogActivity","PostUser has run")
+            Log.d("LogActivity","the value of User =${UserManager.user}")
+//            viewModel.postUser(currentUser)
+
+            findNavController().navigate(LoginNavigationDirections.navigateToFirstQuestionnaire())
+
+            Log.d("LogActivity","thing has changed jhon show")
+
+
+
+//            startActivity(Intent(this, SplashActivity::class.java))
+//            startActivity(Intent(context, MainActivity::class.java))
+//            requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
         }
     }
 
