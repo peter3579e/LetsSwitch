@@ -40,5 +40,46 @@
     <string name="simpledateformat_yyyy_MM_dd_HHmmss">yyyy-MM-dd-HHmmss</string>
     <string name="simpledateformat_date_time_to_timestamp">%s %s:00.000000000</string>
     <string name="simpledateformat_yyyy_MM_dd_HH_mm_ss_fffffffff">yyyy-MM-dd HH:mm:ss.%s</string>
+    <string name="btn_next">NEXT</string>
+
+    <string name="spinner_select_age">Age</string>
+    <string name="spinner_select_gender">Gender</string>
+    <string name="spinner_select_city">City</string>
+    <string name="spinner_select_mothertongue">Mothertongue</string>
+    <string name="spinner_select_fluent">Second language</string>
+    <string name="select_requiremnt">Please select what kind of person you are looking for</string>
+    <string name="remindertofillInfor">Please complete the question</string>
+
+    <string-array name="city_array">
+        <item>Taipei</item>
+        <item>New Taipei</item>
+        <item>Taoyuan</item>
+        <item>Taichung</item>
+        <item>Kaohsiung</item>
+    </string-array>
+
+
+    <string-array name="language_array">
+        <item>English</item>
+        <item>French</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>German</item>
+        <item>Spanish</item>
+        <item>Chinese</item>
+    </string-array>
+
+    <string-array name="gender_array">
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+
+    <array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </array>
+
+
+
 
 </resources>

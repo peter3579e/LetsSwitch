@@ -32,6 +32,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun removeFromChatList(myEmail: String, friendEmail: String): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun postMessage(emails: List<String>, message: Message): Result<Boolean> {
         TODO("Not yet implemented")
     }
@@ -45,6 +49,14 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postRequirement(myEmail: String, require: Requirement): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getRequirement (myEmail: String): Result<Requirement> {
         TODO("Not yet implemented")
     }
 

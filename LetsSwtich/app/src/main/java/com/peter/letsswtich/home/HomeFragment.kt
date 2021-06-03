@@ -12,17 +12,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.NavigationDirections
+import com.peter.letsswtich.R
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentHomeBinding
 import com.peter.letsswtich.ext.excludeUser
 import com.peter.letsswtich.ext.getVmFactory
+import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.network.LoadApiStatus
+import com.peter.letsswtich.util.CurrentFragmentType
 import com.yuyakaido.android.cardstackview.*
 import com.peter.letsswtich.util.Logger
 import java.util.*
@@ -30,11 +34,7 @@ import java.util.*
 
 class HomeFragment : Fragment(), CardStackListener {
 
-    private val viewModel: HomeViewModel by viewModels<HomeViewModel> {
-        getVmFactory(
-                HomeFragmentArgs.fromBundle(requireArguments()).selectedAnswer
-        )
-    }
+    val viewModel by viewModels<HomeViewModel> { getVmFactory() }
 
     private lateinit var binding: FragmentHomeBinding
     lateinit var adapter: HomeAdapter
@@ -45,6 +45,23 @@ class HomeFragment : Fragment(), CardStackListener {
     var likedUser = requireNotNull(com.peter.letsswtich.data.User())
     private var oldMatchList: List<User> = listOf()
 
+    override fun onStart() {
+        super.onStart()
+
+        Log.d("UserManager","value of UserManager = ${UserManager.user}")
+
+        viewModel.requirement.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            Log.d("HomeFragment","value of requirment = ${viewModel.requirement.value}")
+
+            it?.let {
+                viewModel.getAllUser()
+            }
+
+        })
+
+    }
+
 
 
     override fun onCreateView(
@@ -53,7 +70,7 @@ class HomeFragment : Fragment(), CardStackListener {
             savedInstanceState: Bundle?
     ): View? {
 
-        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+//        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
@@ -122,6 +139,7 @@ class HomeFragment : Fragment(), CardStackListener {
             adapter.submitList(sortedList)
         })
 
+
         viewModel.userLikeList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             if (it != null) {
@@ -132,48 +150,71 @@ class HomeFragment : Fragment(), CardStackListener {
 //                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.name}")
                     Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
                     viewModel.updateMatch(myEmail, likedUser)
+                    Log.d("HomeFragment","value of likedUser = $likedUser")
                 } else {
                     Log.d("HomeFragment", "No match!")
                 }
             }
         })
 
+        var count = 0
+        var oldMatch =0
 
-        viewModel.oldMatchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            oldMatchList = it
-//            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
-        })
+        viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newMatch ->
 
-        mainViewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Log.d("HomeFragmentBefroe","value of count = $count")
 
-//            Log.d("HomeViewFragment", "matchlist has detected!!")
-
-            Log.d("matchList","the value of matchList = ${it}")
-
-//            for (match in it){
-//                Log.d("matchList","value of matchList = ${match.matchTime}")
-//            }
-
-            Log.d("matchList","value of likedUser =$likedUser")
-
-            if (viewModel.matchList.value != null) {
-
-                Log.d("mathcList","WTF is happeneing?")
-                if ( it[0].email != likedUser.email && likedUser.email !=""){
-                    Log.d("mtachList","Nav has run")
-//                findNavController().navigate(NavigationDirections.navigateToMatchedDialog(it[0]))
-                }else{
-                    Log.d("matchList","Nothing Happened")
-                }
+            for ( i in newMatch){
+                Log.d("HomeFragment","the name of match user = ${i.name}")
             }
 
+            if (viewModel.matchList.value!!.isNotEmpty()){
 
+                Log.d("the match list","the value of name ${newMatch[0].name} ")
+                Log.d("HomeFragmentBefore","newMatchSize = ${newMatch.size}")
+                Log.d("HomeFragmentBefore","oldMatchSize = ${oldMatch}")
+                val newPerson = newMatch[0]
+                if (count >0 && newMatch.size > oldMatch && newPerson != likedUser) {
+                    Log.d("HomeFragment","match has run!!!!")
+                    findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson))
+                }
+                oldMatch = newMatch.size
+                count ++
 
-
-
+                Log.d("HomeFragmentAfter","newMatchSize = ${newMatch.size}")
+                Log.d("HomeFragmentAfter","oldMatchSize = ${oldMatch}")
+                Log.d("HomeFragmentAfter","value of count = $count")
+            }else if (viewModel.matchList.value!!.isEmpty()){
+                oldMatch = 0
+                Logger.d("else if is working")
+                Log.d("HomeFragmentAfter","oldMatchSize = ${oldMatch}")
+            }
         })
 
-        mainViewModel.likeList.value = likedUser
+
+//        viewModel.oldMatchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+//            oldMatchList = it
+////            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
+//        })
+
+//        mainViewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+//
+//            if (viewModel.matchList.value != null ) {
+//                Log.d("mathcList","WTF is happeneing?")
+//                if ( it[0].email != likedUser.email && count > 0){
+//                    Log.d("matchList","value of likedUser =$likedUser")
+//                    Log.d("matchList","the value of matchList = ${it[0].email}")
+//                    Log.d("mtachList","Nav has run")
+//                findNavController().navigate(NavigationDirections.navigateToMatchedDialog(it[0]))
+//                }else{
+//                    Log.d("matchList","Nothing Happened")
+//                }
+//                count ++
+//                Log.d("HomeFragment","the value of count = $count")
+//            }
+//        })
+//
+//        mainViewModel.likeList.value = likedUser
 
 
 
@@ -252,9 +293,12 @@ class HomeFragment : Fragment(), CardStackListener {
 
             Log.d("HomeFragment", "value of like = $likedUser ")
 
+
             viewModel.updateMyLike(myEmail, likedUser)
             viewModel.getLikeList(myEmail, likedUser)
             viewModel.snapPosition.value = 0
+
+
 
 //            Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
         }
@@ -263,6 +307,7 @@ class HomeFragment : Fragment(), CardStackListener {
             likedUser = requireNotNull(viewModel.usersWithMatch.value)[count]
             Toast.makeText(LetsSwtichApplication.appContext, "Remove from likeList", Toast.LENGTH_SHORT).show()
             viewModel.removeFromLikeList(myEmail, likedUser)
+            viewModel.removeUserFromChatList(myEmail,likedUser.email)
             viewModel.snapPosition.value = 0
         }
     }

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation"
-            app:startDestination="@+id/firstQuestionnaireFragment">
+            app:startDestination="@+id/homeFragment">
 
 
     <fragment
@@ -10,17 +10,17 @@
         android:name="com.peter.letsswtich.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
-        <argument
-            android:name="selectedAnswer"
-            app:argType="com.peter.letsswtich.data.Requirement"
-            app:nullable="false"/>
+<!--        <argument-->
+<!--            android:name="selectedAnswer"-->
+<!--            app:argType="com.peter.letsswtich.data.Requirement"-->
+<!--            app:nullable="false"/>-->
     </fragment>
 
-    <fragment
-        android:id="@+id/firstQuestionnaireFragment"
-        android:name="com.peter.letsswtich.question.FirstQuestionnaireFragment"
-        android:label="FirstQuestionnaireFragment"
-        tools:layout="@layout/fragment_first_questionnaire"/>
+<!--    <fragment-->
+<!--        android:id="@+id/firstQuestionnaireFragment"-->
+<!--        android:name="com.peter.letsswtich.question.FirstQuestionnaireFragment"-->
+<!--        android:label="FirstQuestionnaireFragment"-->
+<!--        tools:layout="@layout/fragment_first_questionnaire"/>-->
 
     <fragment
         android:id="@+id/chatFragment"
@@ -64,11 +64,11 @@
             app:nullable="false"/>
     </dialog>
 
-    <activity
-        android:id="@+id/loginActivity"
-        android:name="com.peter.letsswtich.login.LoginActivity"
-        android:label="LoginActivity"
-        tools:layout="@layout/activity_login"/>
+<!--    <activity-->
+<!--        android:id="@+id/loginActivity"-->
+<!--        android:name="com.peter.letsswtich.login.LoginActivity"-->
+<!--        android:label="LoginActivity"-->
+<!--        tools:layout="@layout/activity_login"/>-->
 
     <fragment
         android:id="@+id/chatRoomFragment"
@@ -96,6 +96,13 @@
         android:label="PreviewFragment"
         tools:layout="@layout/fragment_preview"/>
 
+<!--    <fragment-->
+<!--        android:id="@+id/secondQutionnaireFragment"-->
+<!--        android:name="com.peter.letsswtich.question.SecondQutionnaireFragment"-->
+<!--        android:label="SecondQutionnaireFragment"-->
+<!--        tools:layout="@layout/fragment_second_questionnaire"/>-->
+
+
 
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment" />
@@ -105,12 +112,12 @@
         app:popUpToInclusive="true"/>
     <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment" />
     <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@id/chatRoomFragment" />
-    <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+<!--    <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment"-->
+<!--        app:popUpTo="@id/navigation"-->
+<!--        app:popUpToInclusive="true"/>-->
     <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
     <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
-
+<!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
 
 
 </navigation>

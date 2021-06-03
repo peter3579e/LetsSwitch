@@ -18,6 +18,7 @@ import com.peter.letsswtich.data.Result
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.data.source.remote.LetsSwitchRemoteDataSource
+import com.peter.letsswtich.ext.excludeUser
 import com.peter.letsswtich.ext.filterByTraits
 import com.peter.letsswtich.login.UserManager
 
@@ -28,7 +29,7 @@ import kotlinx.coroutines.*
 import java.util.logging.Handler
 import kotlin.coroutines.suspendCoroutine
 
-class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requirement: Requirement) : ViewModel() {
+class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     val answer = requirement
 
@@ -55,6 +56,13 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
 
     val userLikeList: LiveData<List<String>>
         get() = _userLikeList
+
+
+    private val _requirement = MutableLiveData<Requirement>()
+
+    val requirement: LiveData<Requirement>
+        get() = _requirement
+
 
 
     var count: Boolean = false
@@ -125,14 +133,17 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         Logger.i("------------------------------------")
 
 
-        getAllUser()
+
+        getRequirement(UserManager.user.email)
+
+
 //        myDetail("peter324234@yahoo.com.tw", user = User(listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
 //                "https://img.onl/6zU8bQ",
 //                "https://api.appworks-school.tw/assets/201807201824/main.jpg",
 //                "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "Hello", "boring", "123", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "12345", 25, 25.034070787981246, 121.53106153460475, "Male", listOf("jsidfjisdjfiasf", "sfdasdfasdf"), listOf("Sdfasdf", "sdfasf"), listOf("sdfasdfasdf", "sdfasdfdfs"), listOf("sadfadfadfadsf", "asdfadsfasdf"), "Peter", "peter3579e@gmail.com", "Taipei", "Hawai", "teacher", listOf("English", "Chinese"), listOf("Japanese", "French")))
-        getMyOldMatchList(UserManager.user.email)
+//        getMyOldMatchList(UserManager.user.email)
 
-//            getNewMatchListener(UserManager.user.email)
+            getNewMatchListener(UserManager.user.email)
 
 
 
@@ -183,8 +194,31 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
         }
     }
 
+    fun removeUserFromChatList(myEmail: String,friendEmail: String){
+        Log.d("HomeViewModel","RemoveList ChatList has run!!!!!!!")
+        coroutineScope.launch {
+
+            when (val result = letsSwitchRepository.removeFromChatList(myEmail, friendEmail)) {
+                is Result.Success -> {
+                    _error.value = null
+                    leave(true)
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                }
+
+            }
+        }
+    }
+
     fun removeFromLikeList(myEmail: String,user: User){
-        Log.d("HomeViewModel","RemoveList has run!!!!!!!")
+//        Log.d("HomeViewModel","RemoveList has run!!!!!!!")
         coroutineScope.launch {
 
             when (val result = letsSwitchRepository.removeUserFromLikeList(myEmail, user)) {
@@ -220,6 +254,36 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
                     Logger.w("Error adding document $e")
                 }
     }
+
+    fun getRequirement(myEmail: String) {
+//        Log.d("HomeViewModel", "GetLxikeList has run!!")
+        coroutineScope.launch {
+
+            val result = letsSwitchRepository.getRequirement(myEmail)
+
+            _requirement.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    null
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    null
+                }
+            }
+            _refreshStatus.value = false
+
+        }
+    }
+
 
     fun getLikeList(myEmail: String, user: User) {
 //        Log.d("HomeViewModel", "GetLxikeList has run!!")
@@ -340,8 +404,12 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository, requ
     }
 
     fun filteredUserList(users: List<User>) {
-        _usersWithMatch.value = users.filterByTraits(answer)
-        Log.d("HomeViewModel", "value of users = $users")
+        _usersWithMatch.value = users.filterByTraits(requirement.value!!)
+
+        for (i in _usersWithMatch.value!!){
+            Log.d("HomeViewModel", "value of users = ${i.name}")
+        }
+
         Log.d("HomeViewModel", "here here here!!!")
     }
 

@@ -14,7 +14,6 @@ import com.peter.letsswtich.MainActivity
 import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.databinding.FragmentEditProfileBinding
 import com.peter.letsswtich.ext.getVmFactory
-import com.peter.letsswtich.home.HomeFragmentArgs
 import com.peter.letsswtich.profile.ProfileFragmentArgs
 import com.peter.letsswtich.profile.ProfileViewModel
 

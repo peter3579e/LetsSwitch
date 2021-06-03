@@ -17,5 +17,6 @@
     <dimen name="space_inside_horizontal_photo_item">10dp</dimen>
     <dimen name="space_outside_vertical_photo_item">10dp</dimen>
     <dimen name="space_inside_vertical_photo_item">12dp</dimen>
+    <dimen name="full_size_button_height">48dp</dimen>
 
 </resources>

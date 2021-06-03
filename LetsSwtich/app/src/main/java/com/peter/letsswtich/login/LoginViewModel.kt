@@ -11,6 +11,7 @@ import com.peter.letsswtich.data.Result
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.network.LoadApiStatus
+import com.peter.letsswtich.util.CurrentFragmentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,6 +28,7 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
 
     val firebaseUser: LiveData<FirebaseUser>
         get() = _firebaseUser
+
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()

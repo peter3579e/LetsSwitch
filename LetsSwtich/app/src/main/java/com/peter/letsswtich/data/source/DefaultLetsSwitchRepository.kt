@@ -57,6 +57,15 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.postUser(user)
     }
 
+    override suspend fun postRequirement(myEmail: String, require: Requirement): Result<Boolean>{
+        return remoteDataSource.postRequirement(myEmail,require)
+    }
+
+    override suspend fun removeFromChatList(myEmail: String,friendEmail: String):Result<Boolean>{
+        return  remoteDataSource.removeFromChatList(myEmail,friendEmail)
+    }
+
+
     override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
         return remoteDataSource.postChatRoom(chatRoom)
     }
@@ -67,6 +76,10 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun updateIsRead(friendEmail:String,documentId: String): Result<Boolean>{
         return remoteDataSource.updateIsRead(friendEmail,documentId)
+    }
+
+    override suspend fun getRequirement(myEmail: String): Result<Requirement> {
+        return remoteDataSource.getRequirement(myEmail)
     }
 
     override suspend fun updateMatch(myEmail: String, user: User): Result<Boolean> {

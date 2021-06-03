@@ -17,6 +17,7 @@ import com.peter.letsswtich.data.UserInfo
 import com.peter.letsswtich.databinding.FragmentChatBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
+import com.peter.letsswtich.util.Logger
 
 class ChatFragment:Fragment() {
 
@@ -40,28 +41,30 @@ class ChatFragment:Fragment() {
 
 
 
-        viewModel.matchList.observe(viewLifecycleOwner, Observer {
-            Log.d("ChatFragment","the value of matchlist = ${viewModel.matchList.value!!.size}")
-            viewModel.getChatRoom()
-        })
 
-
-        viewModel.allLiveChatRooms.observe(viewLifecycleOwner, Observer {
-            it.let {
-                Log.d("ChatFragment", "value of allLiveChatRoom = $it")
+        viewModel.allLiveChatRooms.observe(viewLifecycleOwner, Observer { oldList ->
+            oldList.let {
+                Log.d("ChatFragment", "value of allLiveChatRoom = $oldList")
                 val filteredChatRoom = mutableListOf<ChatRoom>()
 
-                it.forEach {chatRoom ->
+                if (oldList.isEmpty()) {
+                    Logger.d("no value has run!!")
+                    binding.noValue.visibility = View.VISIBLE
+                    binding.noValueImage.visibility = View.VISIBLE
+                } else {
 
-                    // Remove my info to make the new info list contains only the other user's info
-                    chatRoom.attendeesInfo = excludeMyInfo(chatRoom.attendeesInfo)
+                    oldList.forEach {chatRoom ->
 
-                    filteredChatRoom.add(chatRoom)
+                        // Remove my info to make the new info list contains only the other user's info
+                        chatRoom.attendeesInfo = excludeMyInfo(chatRoom.attendeesInfo)
+
+                        filteredChatRoom.add(chatRoom)
+                    }
+
+                    Log.d("ChatFragment","value of filteredChatRoom = ${filteredChatRoom.size}")
+
+                    viewModel.createFilteredChatRooms(filteredChatRoom)
                 }
-
-                Log.d("ChatFragment","value of filteredChatRoom = $filteredChatRoom")
-
-                viewModel.createFilteredChatRooms(filteredChatRoom)
 
             }
         })
@@ -78,20 +81,16 @@ class ChatFragment:Fragment() {
                 Log.d("ChatFragment","value of list = ${i.latestMessageTime}]")
             }
 
+            Log.d("ChatFragment","value of list = $list")
+
 
 
                 viewModel.roomByMessageTime.value = list
                 binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
 
-                if (list.isEmpty()) {
-                    binding.noValue.visibility = View.INVISIBLE
-                    binding.noValueImage.visibility = View.INVISIBLE
-                } else {
-                    binding.noValue.visibility = View.GONE
-                    binding.noValueImage.visibility = View.GONE
                     newMatchesAdapter.submitList(list)
                     adapter.submitList(newList)
-                }
+
             }
         )
 

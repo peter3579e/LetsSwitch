@@ -9,9 +9,11 @@ import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.editprofile.EditViewModel
 import com.peter.letsswtich.editprofile.preview.PreviewViewModel
 import com.peter.letsswtich.home.HomeViewModel
+import com.peter.letsswtich.login.LoginActivityViewModel
 import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.map.MapViewModel
 import com.peter.letsswtich.question.FirstQuestionnaireViewModel
+import com.peter.letsswtich.question.SecondQuestionnaireViewModel
 import kotlin.math.E
 
 /**
@@ -48,6 +50,15 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(PreviewViewModel::class.java) ->
                     PreviewViewModel(letsSwitchRepository)
+
+                isAssignableFrom(SecondQuestionnaireViewModel::class.java) ->
+                    SecondQuestionnaireViewModel(letsSwitchRepository)
+
+                isAssignableFrom(LoginActivityViewModel::class.java) ->
+                    LoginActivityViewModel(letsSwitchRepository)
+
+                isAssignableFrom(HomeViewModel::class.java) ->
+                    HomeViewModel(letsSwitchRepository)
 
 //
 //                isAssignableFrom(CartViewModel::class.java) ->
