@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +29,7 @@ import java.io.File
 class EditPhotoAdapter(val viewModel: EditViewModel) : ListAdapter<String, EditPhotoAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private var binding: ItemEditPhotosBinding):
-            RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String) {
             image.let {
                 binding.images = image
@@ -38,7 +40,7 @@ class EditPhotoAdapter(val viewModel: EditViewModel) : ListAdapter<String, EditP
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(ItemEditPhotosBinding.inflate(
-                LayoutInflater.from(parent.context),parent,false))
+            LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -46,7 +48,7 @@ class EditPhotoAdapter(val viewModel: EditViewModel) : ListAdapter<String, EditP
 
         Log.d("EditPhotoAdapter","value of click list before = ${viewModel.photoList.value}")
         holder.itemView.setOnClickListener {
-            Log.d("EditPhotoAdapter","click value = ${getItem(position)}")
+            Log.d("EditPhotoAdapter","click value = $position")
             if(getItem(position) != "") {
                 viewModel.photoList.value!!.remove(getItem((position)))
             }else {

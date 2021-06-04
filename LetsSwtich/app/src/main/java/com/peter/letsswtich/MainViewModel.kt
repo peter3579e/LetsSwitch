@@ -54,12 +54,14 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
 
     private val _refreshStatus = MutableLiveData<Boolean>()
 
+    val userdetail = MutableLiveData<User>()
+
     val refreshStatus: LiveData<Boolean>
         get() = _refreshStatus
 
     val _navigateToFriendsProfile = MutableLiveData<Boolean>()
     val navigateToFriendsProfile: MutableLiveData<Boolean>
-    get() = _navigateToFriendsProfile
+        get() = _navigateToFriendsProfile
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -72,6 +74,8 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
+
+        userdetail.value = UserManager.user
 
 //        getMyOldMatchList(UserManager.user.email)
         getNewMatchListener(UserManager.user.email)

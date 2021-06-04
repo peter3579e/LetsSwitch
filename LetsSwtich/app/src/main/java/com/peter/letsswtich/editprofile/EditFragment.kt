@@ -30,10 +30,12 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.MainActivity
+import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentEditBinding
@@ -70,6 +72,7 @@ class EditFragment(user: User):Fragment() {
         val adapter = EditPhotoAdapter(viewModel)
         binding.photosRecycleView.adapter = adapter
 
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
 
 
@@ -88,6 +91,35 @@ class EditFragment(user: User):Fragment() {
             list.add(nothing)
         }
 
+        viewModel.photoUri.observe(viewLifecycleOwner, Observer {
+            Log.d("EditFragment","Photo has run")
+            val newlist = viewModel.photoList.value!!
+
+            Log.d("EditFragment","the value of newlist = $newlist")
+
+            var stop:Boolean = false
+
+
+
+            for (i in 1..newlist.size){
+                if (newlist[i-1] == "" && !stop){
+                    Log.d("EditFramgent","if has run")
+                    newlist[i-1] = it.toString()
+                    stop = true
+                }
+                Log.d("EditFragment","the value of $i")
+            }
+
+            Log.d("EditFragment","the value of ${UserManager.user.personImages}")
+
+
+
+
+
+            viewModel.newPhotoList.value = newlist
+            Log.d("EditFragment","list after photo uploaded = ${viewModel.photoList.value}")
+        })
+
         viewModel.photoList.value = list
 
         adapter.submitList(list)
@@ -96,16 +128,39 @@ class EditFragment(user: User):Fragment() {
             Log.d("EditFragment", "the submistList has run")
 
 
-            val newSize = 6 - it.size
+            val newSize = 8 - it.size
 
             for (i in 1..newSize) {
                 it!!.add("")
             }
 
             Log.d("EditFragmnet", "the new list value = $it")
+
             adapter.submitList(it)
 
             adapter.notifyDataSetChanged()
+
+            var filteredList = it
+            val oldPicList = mainViewModel.userdetail.value
+
+            Log.d("EditFragment","the old pic list = ${oldPicList!!.personImages}")
+            Log.d("EditFragment","the value of $filteredList")
+
+            var filteredNewList = mutableListOf<String>()
+
+            for (i in 1..filteredList.size){
+                if (filteredList[i-1] != "" ){
+                    Log.d("EditFramgent","filter has run")
+                    Log.d("EditFramgent","filter = ${filteredList[i-1]}")
+                    filteredNewList.add(filteredList[i-1])
+                }
+            }
+
+            Log.d("EditFragment","the value of $filteredList")
+
+            oldPicList.personImages = filteredNewList
+            Log.d("EditFragment","the value of $oldPicList")
+            mainViewModel.userdetail.value = oldPicList
         })
 
         viewModel.camera.observe(viewLifecycleOwner, Observer {
@@ -196,7 +251,7 @@ class EditFragment(user: User):Fragment() {
                                 Log.d("Peter","Run3")
 
                                 filePath = data
-//                                uploadFile()
+                                uploadFile()
                                 Log.d("Peter","Run4")
 
                                 try {
@@ -232,13 +287,13 @@ class EditFragment(user: User):Fragment() {
 
 //                                    scalePic(outBitmap, 100)
 
-                                    val bitmapToString = BitMaptoString(outBitmap)
-
-                                    Log.d("Peter","BitMapToString = $bitmapToString")
-
-                                    viewModel.newPhotoList.value!!.add(bitmapToString)
-
-                                    Log.d("Peter","value of photolist = ${viewModel.newPhotoList.value}")
+//                                    val bitmapToString = BitMaptoString(outBitmap)
+//
+//                                    Log.d("Peter","BitMapToString = $bitmapToString")
+//
+//                                    viewModel.newPhotoList.value!!.add(bitmapToString)
+//
+//                                    Log.d("Peter","value of photolist = ${viewModel.newPhotoList.value}")
 
 //                                    binding.foodiePhoto.setImageBitmap(outBitmap)
 
@@ -349,10 +404,10 @@ class EditFragment(user: User):Fragment() {
             val exifInterface = ExifInterface(stream!!)
             Log.d("Peter","Ya3")
             val exifOrientation =
-                    exifInterface.getAttributeInt(
-                        ExifInterface.TAG_ORIENTATION,
-                        ExifInterface.ORIENTATION_NORMAL
-                    )
+                exifInterface.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL
+                )
             Log.d("Peter","Ya4")
             when (exifOrientation) {
                 ExifInterface.ORIENTATION_ROTATE_90 -> 90
@@ -435,7 +490,12 @@ class EditFragment(user: User):Fragment() {
 
                 Log.d("Peter","Hey5")
 
-                val imageReference = FirebaseStorage.getInstance().reference
+                Log.d("Peter","the value of date = ${viewModel.date.value}")
+
+                val imageReference = FirebaseStorage.getInstance().reference.child(LetsSwtichApplication.applicationContext().
+                getString(R.string.firebase_storage_reference,uid,viewModel.date.value.toDateFormat(
+                    FORMAT_YYYY_MM_DDHHMMSS)))
+
                 Log.d("Peter","Hey6")
 
                 compress(filePath)?.let { compressResult ->
@@ -443,15 +503,17 @@ class EditFragment(user: User):Fragment() {
                     Log.d("Peter","Hey7")
 
                     imageReference.putBytes(compressResult)
-                            .addOnCompleteListener{
+                        .addOnCompleteListener{
 
-                                imageReference.downloadUrl.addOnCompleteListener { task ->
+                            imageReference.downloadUrl.addOnCompleteListener { task ->
 
-                                    task.result?.let { taskResult ->
+                                task.result?.let { taskResult ->
 
-                                        viewModel.setPhoto(taskResult)}
-                                }
+                                    Log.d("Peter","the result of pic = $taskResult")
+
+                                    viewModel.setPhoto(taskResult)}
                             }
+                        }
                 }
             }
         }

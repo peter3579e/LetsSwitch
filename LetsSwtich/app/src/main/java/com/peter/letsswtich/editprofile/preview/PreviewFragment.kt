@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.chip.Chip
+import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentPreviewBinding
 import com.peter.letsswtich.ext.getVmFactory
@@ -42,6 +45,16 @@ class PreviewFragment(user: User): Fragment() {
 
         binding.imageCardUser.adapter = imageAdapter
 
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+        mainViewModel.userdetail.observe(viewLifecycleOwner, Observer {
+            Log.d("PreviewFragment","the value of userdetail from main viewModel = ${it.personImages}")
+            viewModel.userDetail.personImages = it.personImages
+            imageAdapter.submitImages(viewModel.userDetail.personImages)
+            imageAdapter.notifyDataSetChanged()
+        })
+
+
 
 
         val circleAdapeter = ImageCircleAdapter()
@@ -62,21 +75,21 @@ class PreviewFragment(user: User): Fragment() {
                     linearSnapHelper
             )
         }
-
-
-
+//
+//
+//
         viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
                 (binding.recyclerImageCircles.adapter as ImageCircleAdapter).selectedPosition.value =
-                        (it % (viewModel.userImages.size))
+                        (it % (viewModel.userDetail.personImages.size))
 
         })
-
+//
         val layoutManager = binding.imageCardUser.layoutManager
-
+//
         binding.cardImagePlus.setOnClickListener {
                 viewModel.snapPosition.value?.let {
-                    if(viewModel.snapPosition.value!!< viewModel.userImages.size-1){
+                    if(viewModel.snapPosition.value!!< viewModel.userDetail.personImages.size-1){
                         layoutManager?.smoothScrollToPosition(
                                 binding.imageCardUser, RecyclerView.State(),
                                 it.plus(1)

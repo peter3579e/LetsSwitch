@@ -35,8 +35,8 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
     private val isUploadPhoto: LiveData<Boolean>
         get() = _isUploadPhoto
 
-    private val _photoUri = MutableLiveData<Uri>()
-    private val photoUri: LiveData<Uri>
+    val _photoUri = MutableLiveData<Uri>()
+    val photoUri: LiveData<Uri>
         get() = _photoUri
 
     fun setPhoto(photo: Uri){
@@ -46,6 +46,10 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
     fun setCurrentDate(date: Date){
         _date.value = date
         _time.value = Time(date.time)
+    }
+
+    init {
+        setCurrentDate(Date())
     }
 
     val camera = MutableLiveData<Boolean>()

@@ -150,6 +150,7 @@ class LoginFragment :Fragment(){
             )
 
             UserManager.user = currentUser
+            UserManager.uid = user.email.toString()
 
             Log.d("LogActivity","PostUser has run")
             Log.d("LogActivity","the value of User =${UserManager.user}")

@@ -8,6 +8,7 @@
             name="viewModel"
             type="com.peter.letsswtich.editprofile.EditViewModel" />
 
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,33 +27,6 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:listitem="@layout/item_profile_photos" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.startCamera()}"
-            app:layout_constraintTop_toBottomOf="@id/photos_recycleView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-
-        <ImageView
-            android:id="@+id/foodiePhoto"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:cropToPadding="false"
-            android:scaleType="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
