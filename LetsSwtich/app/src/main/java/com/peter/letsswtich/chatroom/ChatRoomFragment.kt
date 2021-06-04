@@ -60,15 +60,15 @@ class ChatRoomFragment : Fragment() {
         val friendUserEmail = viewModel.currentChattingUser
         val myEmail = UserManager.user.email
 
-        Log.d("ChatRoomFragment"," value of useremail = $myEmail")
-        Log.d("ChatRoomFragment", "value of friendsEmail = $friendUserEmail")
+//        Log.d("ChatRoomFragment"," value of useremail = $myEmail")
+//        Log.d("ChatRoomFragment", "value of friendsEmail = $friendUserEmail")
 
         // Setup custom toolbar
         if (activity is MainActivity) {
             (activity as MainActivity).setSupportActionBar(binding.toolbar)
         }
 
-        Log.d("ChatRoomFragment","value of enterMessage = ${viewModel.enterMessage.value}")
+//        Log.d("ChatRoomFragment","value of enterMessage = ${viewModel.enterMessage.value}")
 
         binding.send.setOnClickListener {
             if (isEmpty()) {
@@ -79,6 +79,8 @@ class ChatRoomFragment : Fragment() {
             }
         }
 
+        var count = 0
+
 
         // Observers
 
@@ -87,13 +89,25 @@ class ChatRoomFragment : Fragment() {
             viewModel.updateIsRead(viewModel.currentChattingUser,message.documentId)
             viewModel.filterMessage =  message.message.excludeFriend(friendUserEmail)
 
-            Log.d("ChatRoomAdapter","the value of filteredMessage = ${viewModel.filterMessage}")
+            Log.d("ChatRoomFragmenr","the value of count = $count")
+
+            if(count != 0){
+                Log.d("ChatRoomFragmenr","Run Here!!!!")
+//                adapter.submitList(message.message)
+                val size = message.message.size-1
+                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].text}")
+                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].read}")
+//                adapter.notifyDataSetChanged()
+            }
+
+            count++
+
+            adapter.submitList(message.message)
+            adapter.notifyDataSetChanged()
 
 
-            viewModel.userDetail.observe(viewLifecycleOwner, Observer {
-                Log.d("ChatRoomFragment","the detail of User is = $it")
-                adapter.submitList(message.message)
-            })
+            Log.d("ChatRoomFragmen","the value of filteredMessage = ${viewModel.filterMessage}")
+
 //            Log.d("ChatRoomFragment","value of documentID = ${it.documentId}")
         })
 
@@ -127,11 +141,11 @@ class ChatRoomFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            Log.d("ChatRoomFragment","Pressed!!! true")
+//            Log.d("ChatRoomFragment","Pressed!!! true")
             findNavController().navigate(NavigationDirections.navigateToChatFragment())
             return true
         }
-        Log.d("ChatRoomFragment","Pressed!!! false")
+//        Log.d("ChatRoomFragment","Pressed!!! false")
         return false
     }
 

@@ -5,9 +5,9 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="com.peter.letsswtich.editprofile.preview.PreviewViewModel" />
+                <variable
+                    name="viewModel"
+                    type="com.peter.letsswtich.editprofile.preview.PreviewViewModel" />
 
 
 
@@ -20,11 +20,11 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="10dp"
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
             android:layout_marginTop="40dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="90dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,13 +36,11 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/image_card_user"
-                    images="@{viewModel.userImages}"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    images="@{viewModel.userDetail.personImages}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     android:background="@drawable/roundframe"
                     android:orientation="horizontal"
                     android:scaleType="centerCrop"
@@ -53,8 +51,7 @@
                     android:id="@+id/recycler_image_circles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     addDecoration="@{viewModel.decoration}"
@@ -62,7 +59,8 @@
                     tools:itemCount="4"
                     count="@{viewModel.userImages.size}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_card_user" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/image_card_user" />
 
 
                 <ImageView
@@ -83,6 +81,14 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toTopOf="@id/text_card_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@drawable/bg_transulcent_gradient"/>
 
                 <TextView
                     android:id="@+id/text_card_name"
@@ -136,7 +142,7 @@
                         android:id="@+id/text_card_district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.userDetail.city}"
+                        android:text="@{viewModel.userDetail.district}"
                         android:textColor="@color/white"
                         tools:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"

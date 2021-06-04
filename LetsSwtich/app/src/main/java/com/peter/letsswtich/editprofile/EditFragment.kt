@@ -80,7 +80,7 @@ class EditFragment(user: User):Fragment() {
             list.add(user)
         }
 
-        val size = 6 - userdetail.personImages.size
+        val size = 8 - userdetail.personImages.size
 
 
         for (i in 1..size){
