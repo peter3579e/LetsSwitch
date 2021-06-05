@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.GeolocationPermissions
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,6 +33,7 @@ import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.databinding.FragmentMapBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.home.HomeViewModel
+import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.util.Logger
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -133,6 +135,18 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
                     Log.d("MapFragment","Has run here!")
                     Log.d("MapFragment", "newlocation value = $newLocation")
+                    viewModel.mylocation.value = newLocation
+
+                    Log.d("location","my email = ${UserManager.user.email}")
+
+                    viewModel.mylocation.observe(viewLifecycleOwner, Observer {location ->
+
+                        viewModel.postlocaion(location.longitude,location.latitude,UserManager.user.email)
+
+                        Log.d("location","the value of lat = ${location}")
+                    })
+
+
                     googleMap.animateCamera(
                         CameraUpdateFactory.newLatLngZoom(
                             newLocation,

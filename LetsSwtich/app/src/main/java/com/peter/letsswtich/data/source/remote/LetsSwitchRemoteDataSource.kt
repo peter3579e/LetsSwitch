@@ -30,37 +30,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     private const val PATH_REQUIREMENT = "requirement"
 
 
-//    override suspend fun getChatList(): List<ChatRoom> {
-//        var mock = mutableListOf<ChatRoom>()
-//        mock.run {
-//            add(
-//                    ChatRoom(
-//                            "123",
-//                            1620355603699, listOf(UserInfo("peter7788@gmail.com", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg")),
-//                            listOf("Peter", "Wency"), "Hello How are you doing?"
-//                    )
-//            )
-//
-//            add(
-//                    ChatRoom(
-//                            "123",
-//                            1620355603699, listOf(UserInfo("peter3434@gmail.com", "Chloe", "https://api.appworks-school.tw/assets/201807202150/main.jpg")),
-//                            listOf("Peter", "Chloe"), "Hello How are you doing?"
-//                    )
-//            )
-//
-//            add(
-//                    ChatRoom(
-//                            "123",
-//                            1620355603699, listOf(UserInfo("peter123@gmail.com", "Gillan", "https://api.appworks-school.tw/assets/201807201824/main.jpg")),
-//                            listOf("Peter", "Gillan"), "Hello How are you doing?"
-//                    )
-//            )
-//
-//        }
-//        return mock
-//    }
-
     override fun getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>> {
         val liveData = MutableLiveData<List<ChatRoom>>()
         FirebaseFirestore.getInstance()
@@ -664,6 +633,26 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
+    override suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean> = suspendCoroutine {
+        val users = FirebaseFirestore.getInstance().collection(PATH_USER)
+        users.document(myEmail)
+                .update("lngti",longitude)
+                .addOnCanceledListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+        users.document(myEmail)
+                .update("latitude",latitude)
+                .addOnCanceledListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+    }
+
     override suspend fun updateUser(user: User): Result<Boolean> = suspendCoroutine {
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
         users.document(user.email)
@@ -736,4 +725,5 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
         }
         return mock
     }
+
 }

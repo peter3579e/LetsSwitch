@@ -24,6 +24,7 @@ interface LetsSwitchDataSource {
     suspend fun updateIsRead(friendEmail:String,documentId: String):Result<Boolean>
     suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>
     suspend fun postRequirement (myEmail: String, require: Requirement): Result<Boolean>
+    suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean>
     suspend fun getRequirement (myEmail: String): Result<Requirement>
     suspend fun updateMatch(myEmail: String, user: User): Result<Boolean>
     suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean>

@@ -60,6 +60,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getRequirement (myEmail: String): Result<Requirement> {
         TODO("Not yet implemented")
     }

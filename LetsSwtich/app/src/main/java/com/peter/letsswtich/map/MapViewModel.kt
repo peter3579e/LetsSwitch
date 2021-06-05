@@ -4,15 +4,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
+import com.peter.letsswtich.LetsSwtichApplication
+import com.peter.letsswtich.R
 import com.peter.letsswtich.data.Comment
 import com.peter.letsswtich.data.Store
 import com.peter.letsswtich.data.StoreLocation
+import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
+import com.peter.letsswtich.network.LoadApiStatus
 import com.peter.letsswtich.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.xml.transform.dom.DOMLocator
 
 class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
 
@@ -29,10 +35,25 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         value = false
     }
 
+
+    val mylocation = MutableLiveData<LatLng>()
+
     private val _storeLocation = MutableLiveData<List<StoreLocation>>()
 
     val storeLocation: LiveData<List<StoreLocation>>
         get() = _storeLocation
+
+    private val _status = MutableLiveData<LoadApiStatus>()
+
+    val status: LiveData<LoadApiStatus>
+        get() = _status
+
+    // error: The internal MutableLiveData that stores the error of the most recent request
+    private val _error = MutableLiveData<String>()
+
+    val error: LiveData<String>
+        get() = _error
+
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -86,6 +107,34 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         storeDrinkStatus.value?.let {
             storeDrinkStatus.value = false
         }
+    }
+
+    fun postlocaion(longitude:Double,latitude:Double,myEmail:String) {
+
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            when (val result = letsSwitchRepository.postmyLocation(longitude,latitude,myEmail)) {
+                is com.peter.letsswtich.data.Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                }
+                is com.peter.letsswtich.data.Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is com.peter.letsswtich.data.Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
+
     }
 
 }

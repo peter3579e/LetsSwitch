@@ -21,6 +21,7 @@ interface LetsSwitchRepository {
     suspend fun removeFromChatList(myEmail: String,friendEmail: String): Result<Boolean>
     suspend fun postMessage(emails: List<String>, message: Message): Result<Boolean>
     suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean>
+    suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean>
     suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>
     suspend fun updateMatch(myEmail: String, user: User): Result<Boolean>
     suspend fun getRequirement (myEmail: String): Result<Requirement>

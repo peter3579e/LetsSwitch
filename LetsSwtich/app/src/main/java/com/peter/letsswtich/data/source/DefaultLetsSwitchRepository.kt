@@ -69,6 +69,10 @@ class DefaultLetsSwitchRepository(
         return  remoteDataSource.removeFromChatList(myEmail,friendEmail)
     }
 
+    override suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean>{
+        return remoteDataSource.postmyLocation(longitude,latitude,myEmail)
+    }
+
 
     override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
         return remoteDataSource.postChatRoom(chatRoom)
