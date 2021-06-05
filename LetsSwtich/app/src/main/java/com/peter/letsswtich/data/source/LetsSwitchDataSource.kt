@@ -17,6 +17,7 @@ interface LetsSwitchDataSource {
     suspend fun getUserDetail(userEmail:String): Result<User>
     suspend fun getMyOldMatchList(myEmail: String): Result<List<User>>
     suspend fun postUser(user: User): Result<Boolean>
+    suspend fun updateUser (user: User): Result<Boolean>
     suspend fun removeFromChatList(myEmail: String,friendEmail: String): Result<Boolean>
     suspend fun postMessage(emails: List<String>, message: Message): Result<Boolean>
     suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean>

@@ -1,49 +1,40 @@
-package com.peter.letsswtich.question
+package com.peter.letsswtich.setting
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
-import com.peter.letsswtich.data.Result
-import com.peter.letsswtich.data.User
+import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.data.source.LetsSwitchRepository
-import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.network.LoadApiStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class SettingViewModel(private val letsSwitchRepository: LetsSwitchRepository , requirement: Requirement):ViewModel() {
 
-    val usrInfo = UserManager.user
+    val need =requirement
 
-    private val _selectedAge = MutableLiveData<Int>()
+    private val _profile = MutableLiveData<Boolean>()
 
-    val selectedAge: LiveData<Int>
-        get() = _selectedAge
+    val profile: LiveData<Boolean>
+        get() = _profile
+
+    val maxAge = MutableLiveData<Int>()
+    val minAge = MutableLiveData<Int>()
 
     private val _selectedGender = MutableLiveData<String>()
 
-    val selectedGender: LiveData<String>
+    val selectedGender: MutableLiveData<String>
         get() = _selectedGender
 
-    private val _selectedCity = MutableLiveData<String>()
-    val selectedCity: LiveData<String>
-        get() = _selectedCity
+    private val _selectedFirstLanguage = MutableLiveData<String>()
 
-    private val _selectedMothertongue = MutableLiveData<String>()
+    val selectedFirstLanguage: LiveData<String>
+        get() = _selectedFirstLanguage
 
-    val selectedMothertongue: LiveData<String>
-        get() = _selectedMothertongue
-
-    private val _selectedFluent = MutableLiveData<String>()
-
-    val selectedFluent: LiveData<String>
-        get() = _selectedFluent
-
-    // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
@@ -58,18 +49,41 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
-
-    // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    private val _city = MutableLiveData<String>()
 
-    fun postUser(user: User) {
+    val city: LiveData<String>
+        get() = _city
+
+
+    fun navigateToProfile(){
+        _profile.value = true
+    }
+
+    fun profileNavigated(){
+        _profile.value= false
+    }
+
+    fun setupGender(gender: String) {
+        _selectedGender.value = gender
+    }
+
+    fun setupMothertongue(language:String){
+        _selectedFirstLanguage.value = language
+    }
+
+    fun setupFluent(language:String){
+        _city.value = language
+    }
+
+    fun postRequirement(myEmail: String , require:Requirement) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = letsSwitchRepository.postUser(user)) {
+            when (val result = letsSwitchRepository.postRequirement(myEmail,require)) {
                 is com.peter.letsswtich.data.Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -89,34 +103,5 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
             }
         }
 
-    }
-
-
-
-
-//    fun postUser(){
-//        coroutineScope.launch {
-//            letsSwitchRepository.postfake()
-//        }
-//    }
-
-    fun setupCity(city: String) {
-        _selectedCity.value = city
-    }
-
-    fun setupAge(age: Int) {
-        _selectedAge.value = age
-    }
-
-    fun setupGender(gender: String) {
-        _selectedGender.value = gender
-    }
-
-    fun setupMothertongue(language:String){
-        _selectedMothertongue.value = language
-    }
-
-    fun setupFluent(language:String){
-        _selectedFluent.value = language
     }
 }

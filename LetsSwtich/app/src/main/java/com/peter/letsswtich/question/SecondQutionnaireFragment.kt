@@ -11,13 +11,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.slider.RangeSlider
-import com.google.android.material.slider.Slider
-import com.peter.letsswtich.LetsSwtichApplication
-import com.peter.letsswtich.MainActivity
-import com.peter.letsswtich.NavigationDirections
-import com.peter.letsswtich.R
+import com.peter.letsswtich.*
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.databinding.FragmentSecondQuestionnaireBinding
 import com.peter.letsswtich.ext.getVmFactory

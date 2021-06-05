@@ -14,6 +14,7 @@ import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.map.MapViewModel
 import com.peter.letsswtich.question.FirstQuestionnaireViewModel
 import com.peter.letsswtich.question.SecondQuestionnaireViewModel
+import com.peter.letsswtich.setting.SettingViewModel
 import kotlin.math.E
 
 /**
@@ -60,24 +61,7 @@ class ViewModelFactory constructor(
                 isAssignableFrom(HomeViewModel::class.java) ->
                     HomeViewModel(letsSwitchRepository)
 
-//
-//                isAssignableFrom(CartViewModel::class.java) ->
-//                    CartViewModel(letsSwitchReposityoryy)
-//
-//                isAssignableFrom(PaymentViewModel::class.java) ->
-//                    PaymentViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(LoginViewModel::class.java) ->
-//                    LoginViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(CheckoutSuccessViewModel::class.java) ->
-//                    CheckoutSuccessViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(HistoryViewModel::class.java) ->
-//                    HistoryViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(WebViewModel::class.java) ->
-//                    WebViewModel(letsSwitchReposityory)
+
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

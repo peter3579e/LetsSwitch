@@ -19,7 +19,6 @@ data class User (
         var city: String = "",
         var district: String = "",
         var likeList: List<String> = listOf(),
-        var role: String = "",
         var fluentLanguage: List<String> = listOf(),
         var preferLanguage: List<String> = listOf(),
         var backGroundPic: String = "",

@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.editProfileFragment -> CurrentFragmentType.EDITPROFILE
                 R.id.firstQuestionnaireFragment -> CurrentFragmentType.FIRSTQUESTION
                 R.id.secondQutionnaireFragment -> CurrentFragmentType.SECONDQUESTION
+                R.id.settingFragment -> CurrentFragmentType.SETTING
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -121,6 +122,8 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomNav()
         setupNavController()
+
+        Log.d("initail","the initial value of UserManage =${UserManager.user}")
 
 
         viewModel.currentFragmentType.observe(this, Observer {
@@ -163,6 +166,14 @@ class MainActivity : AppCompatActivity() {
 //        })
 //
 //        })
+
+        viewModel.userInfo.observe(this, Observer {
+            UserManager.user = it
+            viewModel.userdetail.value = it
+            Log.d("Mainactivity","the vaue of User Manager = ${UserManager.user}")
+            Log.d("Mainactivity","the vaue of userdetail = ${viewModel.userdetail.value}")
+
+        })
 
 
         var count = 0

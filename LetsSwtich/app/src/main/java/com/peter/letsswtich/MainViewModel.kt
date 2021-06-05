@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.peter.letsswtich.data.ChatRoom
-import com.peter.letsswtich.data.Result
-import com.peter.letsswtich.data.User
-import com.peter.letsswtich.data.UserInfo
+import com.peter.letsswtich.data.*
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.network.LoadApiStatus
@@ -30,6 +27,8 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val likeList = MutableLiveData<User>()
 
     private val _leave = MutableLiveData<Boolean>()
+
+    val requirment = MutableLiveData<Requirement>()
 
 
     val leave: LiveData<Boolean>
@@ -59,6 +58,11 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val refreshStatus: LiveData<Boolean>
         get() = _refreshStatus
 
+    private val _userInfo = MutableLiveData<User>()
+
+    val userInfo: LiveData<User>
+        get() = _userInfo
+
     val _navigateToFriendsProfile = MutableLiveData<Boolean>()
     val navigateToFriendsProfile: MutableLiveData<Boolean>
         get() = _navigateToFriendsProfile
@@ -75,10 +79,10 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
 
-        userdetail.value = UserManager.user
 
 //        getMyOldMatchList(UserManager.user.email)
         getNewMatchListener(UserManager.user.email)
+        getUserDetail(UserManager.user.email)
 
     }
 
@@ -153,6 +157,38 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
 
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
+    }
+
+    fun getUserDetail(userEmail:String) {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            val result = letsSwitchRepository.getUserDetail(userEmail)
+
+            _userInfo.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
+        }
     }
 
 

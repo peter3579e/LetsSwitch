@@ -17,7 +17,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
 
 
-    class UserViewHolder(private var binding: ItemProfilecardBinding, viewModel: HomeViewModel): RecyclerView.ViewHolder(binding.root),LifecycleOwner {
+    class UserViewHolder(private var binding: ItemProfilecardBinding): RecyclerView.ViewHolder(binding.root),LifecycleOwner {
         fun bind(user: User,viewModel: HomeViewModel){
 
 
@@ -129,7 +129,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_USER -> UserViewHolder(ItemProfilecardBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false),viewModel)
+                LayoutInflater.from(parent.context), parent, false))
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }

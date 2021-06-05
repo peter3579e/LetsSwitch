@@ -664,6 +664,27 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
+    override suspend fun updateUser(user: User): Result<Boolean> = suspendCoroutine {
+        val users = FirebaseFirestore.getInstance().collection(PATH_USER)
+        users.document(user.email)
+            .update("description", user.description,
+                "backGroundPic", user.backGroundPic,
+                "city", user.city,
+                "district", user.district,
+                "gender", user.gender,
+                "fluentLanguage", user.fluentLanguage,
+                "preferLanguage", user.preferLanguage,
+            "status",user.status,
+            "personImages", user.personImages)
+            .addOnSuccessListener {
+                Logger.d("DocumentSnapshot added with ID: ${users}")
+            }
+            .addOnFailureListener { e ->
+                Logger.w("Error adding document $e")
+            }
+
+    }
+
     override suspend fun firebaseAuthWithGoogle(account: GoogleSignInAccount?): Result<FirebaseUser> = suspendCoroutine { continuation ->
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         val auth = FirebaseAuth.getInstance()

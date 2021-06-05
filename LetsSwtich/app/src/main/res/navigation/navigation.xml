@@ -96,7 +96,17 @@
         android:label="PreviewFragment"
         tools:layout="@layout/fragment_preview"/>
 
-<!--    <fragment-->
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.peter.letsswtich.setting.SettingFragment"
+        android:label="SettingFragment" >
+    <argument
+        android:name="selectedAnswer"
+        app:argType="com.peter.letsswtich.data.Requirement"
+        app:nullable="false"/>
+        </fragment>
+
+    <!--    <fragment-->
 <!--        android:id="@+id/secondQutionnaireFragment"-->
 <!--        android:name="com.peter.letsswtich.question.SecondQutionnaireFragment"-->
 <!--        android:label="SecondQutionnaireFragment"-->
@@ -117,7 +127,9 @@
 <!--        app:popUpToInclusive="true"/>-->
     <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
     <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
-<!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
+    <action android:id="@+id/navigate_to_setting_fragment" app:destination="@id/settingFragment"/>
+
+    <!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
 
 
 </navigation>

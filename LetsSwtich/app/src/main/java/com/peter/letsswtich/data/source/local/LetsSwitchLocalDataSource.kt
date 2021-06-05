@@ -32,6 +32,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateUser(user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun removeFromChatList(myEmail: String, friendEmail: String): Result<Boolean> {
         TODO("Not yet implemented")
     }

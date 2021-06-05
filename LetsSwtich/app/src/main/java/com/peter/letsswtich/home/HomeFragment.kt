@@ -48,14 +48,23 @@ class HomeFragment : Fragment(), CardStackListener {
     override fun onStart() {
         super.onStart()
 
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
         Log.d("UserManager","value of UserManager = ${UserManager.user}")
 
-        viewModel.requirement.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.requirement.observe(viewLifecycleOwner, androidx.lifecycle.Observer {requirement ->
 
             Log.d("HomeFragment","value of requirment = ${viewModel.requirement.value}")
 
-            it?.let {
+            requirement?.let {
                 viewModel.getAllUser()
+                mainViewModel.requirment.value = requirement
+                mainViewModel.userdetail.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+                    UserManager.user.preferLanguage = listOf(requirement.language)
+                    it.preferLanguage = listOf(requirement.language)
+                })
+                Log.d("HomeFragment","the value of Use with requirement = ${UserManager.user}")
             }
 
         })

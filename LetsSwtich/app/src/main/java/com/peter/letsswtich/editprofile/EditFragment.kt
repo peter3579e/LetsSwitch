@@ -1,7 +1,6 @@
 package com.peter.letsswtich.editprofile
 
 import android.Manifest
-import android.R.attr
 import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
 import android.content.Context
@@ -22,11 +21,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -43,16 +44,18 @@ import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.ext.toDateFormat
 import com.peter.letsswtich.login.UserManager
+import com.peter.letsswtich.question.SpinnerAdapter
+import com.peter.letsswtich.util.Logger
 import java.io.*
 
 
-class EditFragment(user: User):Fragment() {
+class EditFragment(user: User) : Fragment() {
 
     private var userdetail = user
 
-    private lateinit var binding:FragmentEditBinding
+    private lateinit var binding: FragmentEditBinding
 
-    private val viewModel : EditViewModel by viewModels<EditViewModel> { getVmFactory() }
+    private val viewModel: EditViewModel by viewModels<EditViewModel> { getVmFactory() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,92 +78,112 @@ class EditFragment(user: User):Fragment() {
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
 
+        val list: MutableList<String> = mutableListOf()
 
-
-        val list : MutableList<String> = mutableListOf()
-
-        for (user in userdetail.personImages){
+        for (user in userdetail.personImages) {
             list.add(user)
         }
 
         val size = 8 - userdetail.personImages.size
 
 
-        for (i in 1..size){
+        for (i in 1..size) {
             val nothing = ""
             list.add(nothing)
         }
 
         viewModel.photoUri.observe(viewLifecycleOwner, Observer {
-            Log.d("EditFragment","Photo has run")
+            Log.d("EditFragment", "Photo has run")
             val newlist = viewModel.photoList.value!!
 
-            Log.d("EditFragment","the value of newlist = $newlist")
+            Log.d("EditFragment", "the value of newlist = $newlist")
 
-            var stop:Boolean = false
+            var stop: Boolean = false
 
 
 
-            for (i in 1..newlist.size){
-                if (newlist[i-1] == "" && !stop){
-                    Log.d("EditFramgent","if has run")
-                    newlist[i-1] = it.toString()
+            for (i in 1..newlist.size) {
+                if (newlist[i - 1] == "" && !stop) {
+                    Log.d("EditFramgent", "if has run")
+                    newlist[i - 1] = it.toString()
                     stop = true
                 }
-                Log.d("EditFragment","the value of $i")
+                Log.d("EditFragment", "the value of $i")
             }
 
-            Log.d("EditFragment","the value of ${UserManager.user.personImages}")
+            Log.d("EditFragment", "the value of ${UserManager.user.personImages}")
 
 
 
 
 
             viewModel.newPhotoList.value = newlist
-            Log.d("EditFragment","list after photo uploaded = ${viewModel.photoList.value}")
+            Log.d("EditFragment", "list after photo uploaded = ${viewModel.photoList.value}")
         })
 
         viewModel.photoList.value = list
+        val fake = listOf<String>("", "")
 
         adapter.submitList(list)
 
         viewModel.newPhotoList.observe(viewLifecycleOwner, Observer {
             Log.d("EditFragment", "the submistList has run")
 
-
+            Log.d("Jason", "Run1")
             val newSize = 8 - it.size
+            Log.d("Jason", "Run2")
 
             for (i in 1..newSize) {
                 it!!.add("")
             }
+            Log.d("Jason", "Run3")
 
             Log.d("EditFragmnet", "the new list value = $it")
 
             adapter.submitList(it)
 
+            Log.d("Jason", "Run4")
+
             adapter.notifyDataSetChanged()
 
-            var filteredList = it
-            val oldPicList = mainViewModel.userdetail.value
+            Log.d("Jason", "Run5")
 
-            Log.d("EditFragment","the old pic list = ${oldPicList!!.personImages}")
-            Log.d("EditFragment","the value of $filteredList")
+            var filteredList = it
+            Log.d("Jason", "Run6")
+            val oldPicList = mainViewModel.userdetail.value
+            Log.d("Jason", "Run7")
+
+            Log.d("EditFragment", "the old pic list = ${oldPicList!!.personImages}")
+            Log.d("EditFragment", "the value of $filteredList")
 
             var filteredNewList = mutableListOf<String>()
+            Log.d("Jason", "Run8")
 
-            for (i in 1..filteredList.size){
-                if (filteredList[i-1] != "" ){
-                    Log.d("EditFramgent","filter has run")
-                    Log.d("EditFramgent","filter = ${filteredList[i-1]}")
-                    filteredNewList.add(filteredList[i-1])
+            if (filteredList[0] == "") {
+                Log.d("EditFragment", "the value of $filteredList")
+                mainViewModel.userdetail.value!!.personImages = filteredList
+                Log.d("Alex", "the filter 0 has been identified")
+
+            } else {
+                for (i in 1..filteredList.size) {
+                    if (filteredList[i - 1] != "") {
+                        Log.d("EditFramgent", "filter has run")
+                        Log.d("EditFramgent", "filter = ${filteredList[i - 1]}")
+                        filteredNewList.add(filteredList[i - 1])
+                    }
                 }
+
+                Log.d("Jason", "Run9")
+
+                Log.d("EditFragment", "the value of $filteredList")
+
+                oldPicList.personImages = filteredNewList
+                Log.d("Jason", "Run10")
+                Log.d("EditFragment", "the value of $oldPicList")
+                mainViewModel.userdetail.value = oldPicList
+                Log.d("Jason", "Run11")
             }
 
-            Log.d("EditFragment","the value of $filteredList")
-
-            oldPicList.personImages = filteredNewList
-            Log.d("EditFragment","the value of $oldPicList")
-            mainViewModel.userdetail.value = oldPicList
         })
 
         viewModel.camera.observe(viewLifecycleOwner, Observer {
@@ -170,8 +193,160 @@ class EditFragment(user: User):Fragment() {
             }
         })
 
+        binding.editText.doOnTextChanged { text, start, before, count ->
+            viewModel.enterMessage.value = text.toString()
+            mainViewModel.userdetail.value!!.description = viewModel.enterMessage.value!!
+            Log.d("Peter", "${viewModel.enterMessage.value}")
+        }
+
+        val cityIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_city)
+        val districtIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_district)
+        val defaultContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.default_array)
+        val cityContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
 
 
+
+        //Setup Spinner
+        binding.citySpinner.adapter =
+            EditSpinnerAdapter(cityContent, cityIndicator)
+        binding.districtSpinner.adapter =
+            EditSpinnerAdapter(defaultContent, districtIndicator)
+
+        //When city is selected, change the related content of district
+        binding.citySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+                    setupDistrictSpinner(pos)
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupCity(parent.selectedItem.toString())
+                    }
+
+                }
+            }
+
+        binding.districtSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+                    if (parent != null && pos != 0) {
+                        viewModel.setupDistrict(parent.selectedItem.toString())
+                    }
+                }
+            }
+
+
+        val genderIndicator = userdetail.gender
+        val mothertongue = userdetail.fluentLanguage[0]
+        val fluentLanguage = userdetail.fluentLanguage[1]
+        val genderContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.gender_array)
+        val languageContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.language_array)
+
+        binding.genderSpinner.adapter =
+            EditSpinnerAdapter(genderContent, genderIndicator)
+        binding.languageSpinner.adapter =
+            EditSpinnerAdapter(languageContent, mothertongue)
+        binding.secondlanguageSpinner.adapter =
+            EditSpinnerAdapter(languageContent, fluentLanguage)
+
+        binding.genderSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupGender(parent.selectedItem.toString())
+                    }
+
+                }
+            }
+
+        binding.languageSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupMothertongue(parent.selectedItem.toString())
+                    }
+
+                }
+            }
+
+        binding.secondlanguageSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupFluent(parent.selectedItem.toString())
+                    }
+
+                }
+            }
+
+
+        val oldUserDetail = mainViewModel.userdetail.value!!
+        val languageList = mutableListOf<String>()
+
+
+        // Observers
+        viewModel.selectedCity.observe(viewLifecycleOwner, Observer {
+            Logger.d(it.toString())
+            oldUserDetail.city = it
+            mainViewModel.userdetail.value = oldUserDetail
+        })
+        viewModel.selectedDistrict.observe(viewLifecycleOwner, Observer {
+            Logger.d(it.toString())
+            oldUserDetail.district = it
+            mainViewModel.userdetail.value = oldUserDetail
+        })
+
+        viewModel.selectedGender.observe(viewLifecycleOwner, Observer {
+            Log.d("chose value", "value = $it")
+            oldUserDetail.gender = it
+            mainViewModel.userdetail.value = oldUserDetail
+        })
+
+        viewModel.selectedMothertongue.observe(viewLifecycleOwner, Observer {
+            Log.d("chose value", "value = $it")
+            languageList.add(it)
+
+
+        })
+
+        viewModel.selectedFluent.observe(viewLifecycleOwner, Observer {
+            Log.d("chose value", "value = $it")
+            languageList.add(it)
+            Log.d("EditFragment","the value of = $languageList")
+            oldUserDetail.fluentLanguage = languageList
+            mainViewModel.userdetail.value = oldUserDetail
+        })
 
 
 //        Log.d("EditFragment","the user detail is = ${userdetail}")
@@ -179,12 +354,34 @@ class EditFragment(user: User):Fragment() {
         return binding.root
     }
 
-    fun activateCamera(){
+
+    fun setupDistrictSpinner(pos: Int) {
+        binding.districtSpinner.adapter = setSpinnerContent(
+            when (pos) {
+                1 -> R.array.taipei_array
+                2 -> R.array.new_taipei_array
+                3 -> R.array.taoyuan_array
+                4 -> R.array.taichung_array
+                5 -> R.array.kaohsiung_array
+                else -> R.array.default_array
+
+            }
+        )
+    }
+
+    private fun setSpinnerContent(array: Int): android.widget.SpinnerAdapter {
+        return EditSpinnerAdapter(
+            LetsSwtichApplication.instance.resources.getStringArray(array),
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_district)
+        )
+    }
+
+    private fun activateCamera() {
         getPermissions()
-        if (isUploadPermissionsGranted){
+        if (isUploadPermissionsGranted) {
 
             selectImage()
-        } else if (!isUploadPermissionsGranted){
+        } else if (!isUploadPermissionsGranted) {
 
             Toast.makeText(
                 LetsSwtichApplication.applicationContext(),
@@ -198,7 +395,8 @@ class EditFragment(user: User):Fragment() {
     private fun showGallery() {
 
         val intent = Intent()
-        intent.type = LetsSwtichApplication.applicationContext().getString(R.string.edit_show_gallery_intent_type)
+        intent.type = LetsSwtichApplication.applicationContext()
+            .getString(R.string.edit_show_gallery_intent_type)
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(
             Intent.createChooser(
@@ -240,50 +438,50 @@ class EditFragment(user: User):Fragment() {
                 when (requestCode) {
                     IMAGE_FROM_GALLERY -> {
 
-                        Log.d("Peter","Run1")
+                        Log.d("Peter", "Run1")
 
                         data?.let {
 
-                            Log.d("Peter","Run2")
+                            Log.d("Peter", "Run2")
 
                             it.data?.let { data ->
 
-                                Log.d("Peter","Run3")
+                                Log.d("Peter", "Run3")
 
                                 filePath = data
                                 uploadFile()
-                                Log.d("Peter","Run4")
+                                Log.d("Peter", "Run4")
 
                                 try {
                                     bitmap = MediaStore.Images.Media.getBitmap(
                                         (activity as MainActivity).contentResolver, filePath
                                     )
-                                    Log.d("Peter","Run5")
+                                    Log.d("Peter", "Run5")
 
                                     val matrix = Matrix()
-                                    Log.d("Peter","Run6")
+                                    Log.d("Peter", "Run6")
                                     matrix.postRotate(
                                         getImageRotation(
                                             LetsSwtichApplication.applicationContext(),
                                             data
                                         ).toFloat()
                                     )
-                                    Log.d("Peter","Run7")
+                                    Log.d("Peter", "Run7")
 
                                     val outBitmap = Bitmap.createBitmap(
                                         bitmap!!, 0, 0,
                                         bitmap!!.width, bitmap!!.height, matrix, false
                                     )
-                                    Log.d("Peter","Run8")
+                                    Log.d("Peter", "Run8")
 
                                     outBitmap.compress(
                                         Bitmap.CompressFormat.JPEG,
                                         15,
                                         ByteArrayOutputStream()
                                     )
-                                    Log.d("Peter","Run9")
+                                    Log.d("Peter", "Run9")
 
-                                    Log.d("Peter","value of OutBitmap = $outBitmap")
+                                    Log.d("Peter", "value of OutBitmap = $outBitmap")
 
 //                                    scalePic(outBitmap, 100)
 
@@ -297,10 +495,10 @@ class EditFragment(user: User):Fragment() {
 
 //                                    binding.foodiePhoto.setImageBitmap(outBitmap)
 
-                                    Log.d("Peter","Run10")
+                                    Log.d("Peter", "Run10")
 
                                 } catch (e: IOException) {
-                                    Log.d("Peter","Run11")
+                                    Log.d("Peter", "Run11")
                                     e.printStackTrace()
                                 }
                             }
@@ -386,29 +584,29 @@ class EditFragment(user: User):Fragment() {
 //    }
 
     fun BitMaptoString(bitmap: Bitmap): String {
-        Log.d("Peter","Yes1")
+        Log.d("Peter", "Yes1")
         val ByteStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, ByteStream)
-        Log.d("Peter","Yes2")
+        Log.d("Peter", "Yes2")
         val b = ByteStream.toByteArray()
-        Log.d("Peter","Yes3")
+        Log.d("Peter", "Yes3")
         return Base64.encodeToString(b, Base64.DEFAULT)
     }
 
     private fun getImageRotation(context: Context, uri: Uri): Int {
         var stream: InputStream? = null
         return try {
-            Log.d("Peter","Ya1")
+            Log.d("Peter", "Ya1")
             stream = context.contentResolver.openInputStream(uri)
-            Log.d("Peter","Ya2")
+            Log.d("Peter", "Ya2")
             val exifInterface = ExifInterface(stream!!)
-            Log.d("Peter","Ya3")
+            Log.d("Peter", "Ya3")
             val exifOrientation =
                 exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL
                 )
-            Log.d("Peter","Ya4")
+            Log.d("Peter", "Ya4")
             when (exifOrientation) {
                 ExifInterface.ORIENTATION_ROTATE_90 -> 90
                 ExifInterface.ORIENTATION_ROTATE_180 -> 180
@@ -416,10 +614,10 @@ class EditFragment(user: User):Fragment() {
                 else -> 0
             }
         } catch (e: Exception) {
-            Log.d("Peter","Ya6")
+            Log.d("Peter", "Ya6")
             0
         } finally {
-            Log.d("Peter","Ya7")
+            Log.d("Peter", "Ya7")
             stream?.close()
         }
     }
@@ -454,7 +652,7 @@ class EditFragment(user: User):Fragment() {
 
         chooseCameraOrGallery?.let {
 
-            when(it){
+            when (it) {
 
                 LetsSwtichApplication.applicationContext().resources.getString(R.string.edit_add_photo) -> {
 
@@ -469,49 +667,54 @@ class EditFragment(user: User):Fragment() {
 
     }
 
-    private fun uploadFile(){
+    private fun uploadFile() {
 
-        Log.d("Peter","Hey1")
+        Log.d("Peter", "Hey1")
 
         filePath?.let { filePath ->
 
-            Log.d("Peter","Hey2")
+            Log.d("Peter", "Hey2")
 
             viewModel.uploadPhoto()
 
-            Log.d("Peter","Hey3")
+            Log.d("Peter", "Hey3")
 
             UserManager.uid?.let { uid ->
 
-                Log.d("Peter","Hey4")
+                Log.d("Peter", "Hey4")
 
                 // Firebase storage
                 auth = FirebaseAuth.getInstance()
 
-                Log.d("Peter","Hey5")
+                Log.d("Peter", "Hey5")
 
-                Log.d("Peter","the value of date = ${viewModel.date.value}")
+                Log.d("Peter", "the value of date = ${viewModel.date.value}")
 
-                val imageReference = FirebaseStorage.getInstance().reference.child(LetsSwtichApplication.applicationContext().
-                getString(R.string.firebase_storage_reference,uid,viewModel.date.value.toDateFormat(
-                    FORMAT_YYYY_MM_DDHHMMSS)))
+                val imageReference = FirebaseStorage.getInstance().reference.child(
+                    LetsSwtichApplication.applicationContext().getString(
+                        R.string.firebase_storage_reference, uid, viewModel.date.value.toDateFormat(
+                            FORMAT_YYYY_MM_DDHHMMSS
+                        )
+                    )
+                )
 
-                Log.d("Peter","Hey6")
+                Log.d("Peter", "Hey6")
 
                 compress(filePath)?.let { compressResult ->
 
-                    Log.d("Peter","Hey7")
+                    Log.d("Peter", "Hey7")
 
                     imageReference.putBytes(compressResult)
-                        .addOnCompleteListener{
+                        .addOnCompleteListener {
 
                             imageReference.downloadUrl.addOnCompleteListener { task ->
 
                                 task.result?.let { taskResult ->
 
-                                    Log.d("Peter","the result of pic = $taskResult")
+                                    Log.d("Peter", "the result of pic = $taskResult")
 
-                                    viewModel.setPhoto(taskResult)}
+                                    viewModel.setPhoto(taskResult)
+                                }
                             }
                         }
                 }
@@ -525,9 +728,10 @@ class EditFragment(user: User):Fragment() {
         var imageStream: InputStream? = null
 
         try {
-            imageStream = LetsSwtichApplication.applicationContext().contentResolver.openInputStream(
-                image
-            )
+            imageStream =
+                LetsSwtichApplication.applicationContext().contentResolver.openInputStream(
+                    image
+                )
         } catch (e: FileNotFoundException) {
 
             e.printStackTrace()
@@ -563,7 +767,7 @@ class EditFragment(user: User):Fragment() {
         when (ContextCompat.checkSelfPermission(
             LetsSwtichApplication.applicationContext(),
             PERMISSION_CAMERA
-        )){
+        )) {
 
             PackageManager.PERMISSION_GRANTED -> {
 
@@ -642,17 +846,17 @@ class EditFragment(user: User):Fragment() {
     private fun startCamera() {
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(LetsSwtichApplication.applicationContext().packageManager)!= null){
+        if (intent.resolveActivity(LetsSwtichApplication.applicationContext().packageManager) != null) {
 
             try {
                 fileFromCamera = createImageFile()
 
                 Log.d("EditFragment", "the value of return photo = $fileFromCamera")
 
-            }catch (ex: IOException){
+            } catch (ex: IOException) {
                 return
             }
-            if (fileFromCamera != null){
+            if (fileFromCamera != null) {
                 val photoURI = FileProvider.getUriForFile(
                     requireContext(), LetsSwtichApplication.applicationContext().packageName +
                             LetsSwtichApplication.applicationContext()
@@ -668,8 +872,10 @@ class EditFragment(user: User):Fragment() {
 
     companion object {
         private const val PERMISSION_CAMERA = Manifest.permission.CAMERA
-        private const val PERMISSION_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        private const val PERMISSION_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
+        private const val PERMISSION_WRITE_EXTERNAL_STORAGE =
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        private const val PERMISSION_READ_EXTERNAL_STORAGE =
+            Manifest.permission.READ_EXTERNAL_STORAGE
         private const val SELECT_PHOTO_PERMISSION_REQUEST_CODE = 1234
 
         //Image request code
@@ -679,12 +885,13 @@ class EditFragment(user: User):Fragment() {
 
         //Uri to store the image uri
         private var filePath: Uri? = null
+
         //Bitmap to get image from gallery
         private var bitmap: Bitmap? = null
-        private var auth: FirebaseAuth ?= null
-        private var displayMetrics: DisplayMetrics?= null
+        private var auth: FirebaseAuth? = null
+        private var displayMetrics: DisplayMetrics? = null
         private var windowManager: WindowManager? = null
-        private var fileFromCamera: File?= null
+        private var fileFromCamera: File? = null
         var isUploadPermissionsGranted = false
 //            private var foodie: Foodie? = null
     }

@@ -113,7 +113,18 @@
             android:background="@drawable/bg_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/mothertongue"  />
+            app:layout_constraintBottom_toTopOf="@id/city"  />
+
+        <Spinner
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/mothertongue" />
 
         <Spinner
             android:id="@+id/mothertongue"

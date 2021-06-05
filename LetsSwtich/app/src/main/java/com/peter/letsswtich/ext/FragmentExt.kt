@@ -6,6 +6,7 @@ import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.factory.ChatRoomViewModelFactory
+import com.peter.letsswtich.factory.RequirementViewModelFactory
 import com.peter.letsswtich.factory.UserViewModelFactory
 import com.peter.letsswtich.factory.ViewModelFactory
 
@@ -19,10 +20,10 @@ fun Fragment.getVmFactory(userEmail: String, userName: String) : ChatRoomViewMod
     return ChatRoomViewModelFactory(repository, userEmail, userName)
 }
 
-//fun Fragment.getVmFactory(userRequiremnet: Requirement) : RequirementViewModelFactory {
-//    val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
-//    return RequirementViewModelFactory(repository, userRequiremnet)
-//}
+fun Fragment.getVmFactory(userRequiremnet: Requirement) : RequirementViewModelFactory {
+    val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
+    return RequirementViewModelFactory(repository, userRequiremnet)
+}
 
 fun Fragment.getVmFactory(matchedUser: User) : UserViewModelFactory {
     val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository

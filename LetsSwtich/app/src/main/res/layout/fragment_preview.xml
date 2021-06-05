@@ -8,6 +8,16 @@
                 <variable
                     name="viewModel"
                     type="com.peter.letsswtich.editprofile.preview.PreviewViewModel" />
+        <variable
+            name="name"
+            type="String" />
+        <variable
+            name="city"
+            type="String" />
+
+        <variable
+            name="district"
+            type="String" />
 
 
 
@@ -23,8 +33,8 @@
             android:layout_marginHorizontal="10dp"
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +67,7 @@
                     addDecoration="@{viewModel.decoration}"
                     tools:listitem="@layout/item_image_circle"
                     tools:itemCount="4"
-                    count="@{viewModel.userImages.size}"
+                    count="@{viewModel.userDetail.personImages.size}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/image_card_user" />
@@ -97,7 +107,7 @@
                     android:textColor="@color/white"
                     tools:textColor="@color/black"
                     android:textSize="30sp"
-                    android:text="@{viewModel.userDetail.name}"
+                    android:text="@{name}"
                     android:layout_marginBottom="5dp"
                     app:layout_constraintBottom_toTopOf="@id/image_card_location"
                     app:layout_constraintStart_toStartOf="@id/image_card_location"
@@ -121,7 +131,7 @@
                         android:layout_marginStart="4dp"
                         android:textColor="@color/white"
                         tools:textColor="@color/black"
-                        android:text="@{viewModel.userDetail.city}"
+                        android:text="@{city}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -142,7 +152,7 @@
                         android:id="@+id/text_card_district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.userDetail.district}"
+                        android:text="@{district}"
                         android:textColor="@color/white"
                         tools:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"

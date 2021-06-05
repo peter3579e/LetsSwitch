@@ -1,22 +1,15 @@
-package com.peter.letsswtich.question
+package com.peter.letsswtich.editprofile
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
 import com.peter.letsswtich.LetsSwtichApplication
-import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.ItemMyquestionSpinnerBinding
-import com.peter.letsswtich.util.CurrentFragmentType
 
-class SpinnerAdapter(private val strings: Array<String>, private val indicator: String) : BaseAdapter() {
+class EditSpinnerAdapter (private val strings: Array<String>, private val indicator: String) : BaseAdapter() {
 
 
 
@@ -26,7 +19,9 @@ class SpinnerAdapter(private val strings: Array<String>, private val indicator: 
 
         if(position == 0){
             binding.user = indicator
-            binding.textSpinnerTitle.setTextColor(LetsSwtichApplication.appContext.resources.getColor(R.color.black_12_alpha))
+            binding.textSpinnerTitle.setTextColor(
+                LetsSwtichApplication.appContext.resources.getColor(
+                    R.color.black))
 
         } else {
             binding.user = strings[position-1]

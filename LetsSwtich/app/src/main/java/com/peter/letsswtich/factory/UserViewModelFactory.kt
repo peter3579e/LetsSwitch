@@ -11,6 +11,7 @@ import com.peter.letsswtich.editprofile.EditProfileViewModel
 import com.peter.letsswtich.login.LoginActivity
 import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.profile.ProfileViewModel
+import com.peter.letsswtich.setting.SettingViewModel
 
 class UserViewModelFactory constructor(
         private val repository: LetsSwitchRepository,

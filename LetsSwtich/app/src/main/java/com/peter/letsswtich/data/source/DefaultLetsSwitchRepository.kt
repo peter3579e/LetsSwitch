@@ -57,6 +57,10 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.postUser(user)
     }
 
+    override suspend fun updateUser(user: User): Result<Boolean> {
+        return remoteDataSource.updateUser(user)
+    }
+
     override suspend fun postRequirement(myEmail: String, require: Requirement): Result<Boolean>{
         return remoteDataSource.postRequirement(myEmail,require)
     }

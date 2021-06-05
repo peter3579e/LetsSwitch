@@ -15,11 +15,6 @@ import com.peter.letsswtich.data.source.LetsSwitchRepository
 class PreviewViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
 
     var userDetail = User()
-    var userImages = listOf<String>()
-    val fake = listOf("https://img.onl/3zX6",
-        "https://api.appworks-school.tw/assets/201807202150/main.jpg",
-        "https://api.appworks-school.tw/assets/201807201824/main.jpg",
-        "https://api.appworks-school.tw/assets/201807201824/main.jpg")
 
     val _snapPosition = MutableLiveData<Int>()
     val snapPosition: MutableLiveData<Int>
