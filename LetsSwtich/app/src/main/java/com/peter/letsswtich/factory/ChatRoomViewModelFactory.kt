@@ -8,14 +8,15 @@ import com.peter.letsswtich.data.source.LetsSwitchRepository
 class ChatRoomViewModelFactory constructor(
         private val repository: LetsSwitchRepository,
         private val userEmail: String,
-        private val userName: String
+        private val userName: String,
+        private val fromMap: Boolean
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
             with(modelClass) {
                 when {
                     isAssignableFrom(ChatRoomViewModel::class.java) ->
-                        ChatRoomViewModel(repository, userEmail, userName)
+                        ChatRoomViewModel(repository, userEmail, userName, fromMap)
 
 
                     else ->

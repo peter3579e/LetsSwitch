@@ -75,6 +75,8 @@ class EditFragment(user: User) : Fragment() {
         val adapter = EditPhotoAdapter(viewModel)
         binding.photosRecycleView.adapter = adapter
 
+        viewModel.enterMessage.value = userdetail.description
+
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
 

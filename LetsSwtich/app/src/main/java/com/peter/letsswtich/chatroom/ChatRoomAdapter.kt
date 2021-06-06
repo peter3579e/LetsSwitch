@@ -35,7 +35,7 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
 
             binding.root.setOnClickListener { view: View ->
                 view.findNavController()
-                    .navigate(NavigationDirections.navigateToProfileFragment(viewModel.userDetail.value!!))
+                    .navigate(NavigationDirections.navigateToProfileFragment(viewModel.userDetail.value!!,false))
 
             }
         }

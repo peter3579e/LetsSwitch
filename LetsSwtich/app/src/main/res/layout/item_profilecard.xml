@@ -27,7 +27,7 @@
             android:layout_marginHorizontal="10dp"
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="110dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

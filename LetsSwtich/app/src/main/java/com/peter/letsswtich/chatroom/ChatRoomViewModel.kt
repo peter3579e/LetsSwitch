@@ -20,11 +20,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, userEmail:String, userName: String) : ViewModel() {
+class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, userEmail:String, userName: String, fromMap: Boolean) : ViewModel() {
 
     val currentChattingUser = userEmail
 
     val currentChattingName = userName
+
+    val ifMap = fromMap
 
     // EditText input
     var enterMessage = MutableLiveData<String>()

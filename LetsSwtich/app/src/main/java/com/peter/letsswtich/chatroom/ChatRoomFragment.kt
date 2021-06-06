@@ -26,7 +26,8 @@ class ChatRoomFragment : Fragment() {
     private val viewModel by viewModels<ChatRoomViewModel> {
         getVmFactory(
             ChatRoomFragmentArgs.fromBundle(requireArguments()).userEmail,
-            ChatRoomFragmentArgs.fromBundle(requireArguments()).userName
+            ChatRoomFragmentArgs.fromBundle(requireArguments()).userName,
+                ChatRoomFragmentArgs.fromBundle(requireArguments()).fromMap
         )
     }
 
@@ -142,7 +143,11 @@ class ChatRoomFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
 //            Log.d("ChatRoomFragment","Pressed!!! true")
-            findNavController().navigate(NavigationDirections.navigateToChatFragment())
+              if (viewModel.ifMap){
+                  findNavController().navigate(NavigationDirections.navigateToMapFragment())
+              }else{
+                  findNavController().navigate(NavigationDirections.navigateToChatFragment())
+              }
             return true
         }
 //        Log.d("ChatRoomFragment","Pressed!!! false")

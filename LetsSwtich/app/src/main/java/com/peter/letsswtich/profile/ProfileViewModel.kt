@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
 import com.peter.letsswtich.component.GridSpacingItemDecoration
@@ -18,9 +19,15 @@ import kotlinx.coroutines.launch
 import java.sql.Time
 import java.util.*
 
-class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, user: com.peter.letsswtich.data.User):ViewModel() {
+class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, user: com.peter.letsswtich.data.User,fromMap:Boolean):ViewModel() {
 
     val userDetail = user
+
+    val ifMap = fromMap
+
+    val locatMe = MutableLiveData<Boolean>()
+
+    val mylocation = MutableLiveData<LatLng>()
 
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()

@@ -41,6 +41,10 @@
             android:name="userDetail"
             app:argType="com.peter.letsswtich.data.User"
             app:nullable="false" />
+        <argument
+            android:name="fromMap"
+            app:argType="boolean"
+            app:nullable="false"/>
     </fragment>
 
     <fragment
@@ -83,6 +87,10 @@
             android:name="userName"
             app:argType="string"
             app:nullable="false" />
+        <argument
+            android:name="fromMap"
+            app:argType="boolean"
+            app:nullable="false"/>
     </fragment>
 
     <fragment

@@ -76,7 +76,7 @@ class EditProfileFragment : Fragment(){
                 UserManager.user = mainViewModel.userdetail.value!!
                 viewModel.user = mainViewModel.userdetail.value!!
                 Log.d("EditProfileFragment","the value of UserManager = ${UserManager.user}")
-                findNavController().navigate(NavigationDirections.navigateToProfileFragment(viewModel.user))
+                findNavController().navigate(NavigationDirections.navigateToProfileFragment(viewModel.user,false))
                 viewModel.updateUser(mainViewModel.userdetail.value!!)
                 viewModel.profileNavigated()
             }

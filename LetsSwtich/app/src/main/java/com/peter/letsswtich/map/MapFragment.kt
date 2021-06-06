@@ -21,15 +21,16 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
-import com.peter.letsswtich.LetsSwtichApplication
-import com.peter.letsswtich.MainActivity
-import com.peter.letsswtich.MapsActivity
+import com.peter.letsswtich.*
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.StoreLocation
+import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentMapBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.home.HomeViewModel
@@ -69,6 +70,12 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         return false
     }
 
+    override fun onStart() {
+        super.onStart()
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        mainViewModel.friendsProfileNavigated()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,6 +85,67 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        val adpter = FriendsImageAdapter(viewModel)
+        binding.friendsRecycleView.adapter = adpter
+
+
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+        mainViewModel.matchList.observe(viewLifecycleOwner, Observer {
+            viewModel.matchList.value = it
+            Log.d("the matchlist", "the value of matchlist = ${viewModel.matchList.value}")
+
+            val userEmail = mutableListOf<String>()
+            for(users in it){
+                userEmail.add(users.email)
+                viewModel.getUserDetail(users.email)
+            }
+
+            val list = mutableListOf<User>()
+            val images = mutableListOf<String>()
+
+            var count = 1
+
+            viewModel.userInfo.observe(viewLifecycleOwner, Observer { userInfo ->
+              list.add(userInfo)
+                images.add(userInfo.personImages[0])
+
+                if (count == userEmail.size){
+                    viewModel.listofMatchUserInfo.value = list
+                    Log.d("MapFragment","the livedata list = ${viewModel.listofMatchUserInfo.value!!.size}")
+                    Log.d("the value of images","the value of images = ${images.size}")
+                    viewModel.imagesLive.value = images
+                    adpter.submitList(list)
+                }
+
+                Log.d("the value of count","the value of count = $count")
+
+                count++
+
+                Log.d("the value of count","the value of count after = $count")
+            })
+
+
+        })
+
+        viewModel.showsMore.observe(viewLifecycleOwner, Observer {
+            binding.detail.visibility = View.VISIBLE
+        })
+
+        viewModel.navigateToProfile.observe(viewLifecycleOwner, Observer {
+            if (it == true){
+                findNavController().navigate(NavigationDirections.navigateToProfileFragment(viewModel.clickedUserDetail.value!!,true))
+                viewModel.profilenavigated()
+            }
+        })
+
+        viewModel.navigateToChatRoom.observe(viewLifecycleOwner, Observer {
+            if (it == true){
+                findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.clickedUserDetail.value!!.email,viewModel.clickedUserDetail.value!!.name,true))
+                viewModel.chatRoomNavigated()
+            }
+        })
+
 
         map = binding.radarMap
         initGoogleMap(savedInstanceState)
@@ -123,100 +191,112 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             )
         }
 
+        fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
 
-        viewModel.storeLocation.observe(this, Observer {
-            it.let { storeLocationList ->
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
+            val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
+            Log.d("MapFragment","Has run here!")
+            Log.d("MapFragment", "newlocation value = $newLocation")
+            viewModel.mylocation.value = newLocation
 
+            Log.d("location","my email = ${UserManager.user.email}")
 
-                fusedLocationProviderClient =
-                    LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
+            viewModel.mylocation.observe(viewLifecycleOwner, Observer {location ->
 
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
-                    val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
-                    Log.d("MapFragment","Has run here!")
-                    Log.d("MapFragment", "newlocation value = $newLocation")
-                    viewModel.mylocation.value = newLocation
+                viewModel.postlocaion(location.longitude,location.latitude,UserManager.user.email)
 
-                    Log.d("location","my email = ${UserManager.user.email}")
-
-                    viewModel.mylocation.observe(viewLifecycleOwner, Observer {location ->
-
-                        viewModel.postlocaion(location.longitude,location.latitude,UserManager.user.email)
-
-                        Log.d("location","the value of lat = ${location}")
-                    })
+                Log.d("location","the value of lat = ${location}")
+            })
 
 
-                    googleMap.animateCamera(
-                        CameraUpdateFactory.newLatLngZoom(
+            googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
                             newLocation,
                             15.toFloat()
-                        )
+                    )
+            )
+
+            val queryRadius = 1
+
+            val circleOptions = CircleOptions()
+            circleOptions.center(newLocation)
+                    .radius(queryRadius.toDouble() * 500)
+                    .fillColor(Color.argb(70, 150, 50, 50))
+                    .strokeWidth(3F)
+                    .strokeColor(Color.RED)
+            googleMap.addCircle(circleOptions)
+
+        }
+
+        viewModel.friendslocation.observe(viewLifecycleOwner, Observer {
+            googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                            it,
+                            15.toFloat()
+                    )
+            )
+        })
+
+
+        viewModel.listofMatchUserInfo.observe(this, Observer { usersList ->
+            usersList.let {
+
+                Log.d("Map Fragment","Map has run!!")
+
+
+                for (userInfo in usersList) {
+
+
+                    val queryResult = LatLng(
+                            userInfo.latitude
+                            , userInfo.lngti
                     )
 
-                    val queryRadius = 1
+                    Log.d("MapFragment","value of queryResult = $queryResult")
 
-                    val circleOptions = CircleOptions()
-                    circleOptions.center(newLocation)
-                        .radius(queryRadius.toDouble() * 500)
-                        .fillColor(Color.argb(70, 150, 50, 50))
-                        .strokeWidth(3F)
-                        .strokeColor(Color.RED)
-                        googleMap.addCircle(circleOptions)
-
-
-                    for (storeLocation in storeLocationList) {
-
-
-                        val queryResult = LatLng(
-                            storeLocation.latitude
-                            , storeLocation.longitude
-                        )
-
-                        Log.d("MapFragment","value of queryResult = $queryResult")
-
-                        val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
-                        val bitmapDraw = LetsSwtichApplication.instance.getDrawable(R.drawable.drink_map_icon_1)
-                        val b = bitmapDraw?.toBitmap()
-                        val smallMarker =
+                    val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
+                    val bitmapDraw = LetsSwtichApplication.instance.getDrawable(R.drawable.drink_map_icon_1)
+                    val b = bitmapDraw?.toBitmap()
+                    val smallMarker =
                             Bitmap.createScaledBitmap(b!!, widthIcon, widthIcon, false)
-                        val iconDraw = BitmapDescriptorFactory.fromBitmap(smallMarker)
+                    val iconDraw = BitmapDescriptorFactory.fromBitmap(smallMarker)
 
 //                        if (queryResult.latitude in lowerLat..greaterLat
 //                            && queryResult.longitude in lowerLon..greaterLon
 //                        ) {
 
-                        val image = storeLocation.store.uri
+                    val image = userInfo.personImages[0]
 
-                        Log.d("Peter","value of = $image")
+                    Log.d("Peter","value of = $image")
 
-                        val url  = URL(image)
+                    val url  = URL(image)
 
 
-                        val result: Deferred<Bitmap?> = GlobalScope.async {
-                            url.toBitmap()
+                    val result: Deferred<Bitmap?> = GlobalScope.async {
+                        url.toBitmap()
+                    }
+
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        // show bitmap on image view when available
+                        val figureMarker = result.await()?.let { it1 ->
+                            Bitmap.createScaledBitmap(
+                                    it1, widthIcon, widthIcon, false)
                         }
 
-
-                        GlobalScope.launch(Dispatchers.Main) {
-                            // show bitmap on image view when available
-                            val figureMarker = result.await()?.let { it1 ->
-                                Bitmap.createScaledBitmap(
-                                    it1, widthIcon, widthIcon, false)
-                            }
-
-                            val addMarker = googleMap.addMarker(
+                        val addMarker = googleMap.addMarker(
                                 MarkerOptions().position(queryResult)
-                                    .flat(true)
+                                        .flat(true)
 //                                    .alpha(0.5F)
 //                                .icon(iconDraw)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(figureMarker))
-                                    .snippet(storeLocation.branchName)
-                                    .title(storeLocation.store.storeName)
-                            )
-                            addMarker.tag = storeLocation
+                                        .icon(BitmapDescriptorFactory.fromBitmap(figureMarker))
+                                        .snippet(userInfo.name)
+                                        .title(userInfo.description)
+                        )
+                        addMarker.tag = userInfo
 
-                        }
+                    }
 
 //                        }
 
@@ -226,7 +306,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 //                                15.toFloat()
 //                            )
 //                        )
-                    }
                 }
 
             }

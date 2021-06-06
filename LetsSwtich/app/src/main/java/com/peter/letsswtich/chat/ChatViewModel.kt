@@ -29,6 +29,11 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val filteredChatRooms : LiveData<List<ChatRoom>>
         get() = _filteredChatRooms
 
+    private val _leave = MutableLiveData<Boolean>()
+
+    val leave: LiveData<Boolean>
+        get() = _leave
+
     private val _roomByMessageTime = MutableLiveData<List<ChatRoom>>()
 
 
@@ -76,6 +81,7 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
 
+
         getLiveChatList(UserManager.user.email)
     }
 
@@ -83,6 +89,74 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         Log.d("ChatViewModel","getLiveChatList has run!!")
         allLiveChatRooms = letsSwitchRepository.getLiveChatList(myEmail)
         _status.value = LoadApiStatus.DONE
+    }
+
+    fun getChatRoom(): List<ChatRoom>{
+
+        Log.d("ChatViewModel","getChatRoom has run!!")
+
+        var chatList: MutableList<UserInfo> = mutableListOf()
+//        var attendeesList : MutableList<String> = mutableListOf()
+        var chatRoom :MutableList<ChatRoom> = mutableListOf()
+        _matchList.value!!.forEach { it ->
+            val myInfo = UserInfo().apply {
+                userEmail = UserManager.user.email
+                userImage = UserManager.user.personImages[0]
+                userName = UserManager.user.name
+            }
+
+            val friendInfo = UserInfo().apply {
+                userEmail = it.email
+                userName = it.name
+                userImage = it.personImages[0]
+            }
+
+            chatList.add(friendInfo)
+            val attendlist = listOf<String>(UserManager.user.email,it.email)
+            val chat = ChatRoom()
+
+            chat.apply {
+                chatRoomId = ""
+                latestTime = 0
+                latestMessageTime = 0
+                attendeesInfo = listOf(myInfo,friendInfo)
+                attendees = attendlist
+            }
+            postChatList(chat)
+            chatRoom.add(chat)
+        }
+
+        Log.d("ChatViewModel","value of ChatRoom $chatRoom")
+
+        return chatRoom
+    }
+
+    fun leave(needRefresh: Boolean = false) {
+        _leave.value = needRefresh
+    }
+
+    fun postChatList(chatRoom: ChatRoom){
+        Log.d("ChatViewModel","postChatList has run!!")
+        coroutineScope.launch {
+            when (val result = letsSwitchRepository.postChatRoom(chatRoom)) {
+                is com.peter.letsswtich.data.Result.Success -> {
+                    _error.value = null
+                    leave(true)
+                }
+                is com.peter.letsswtich.data.Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is com.peter.letsswtich.data.Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.instance.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
     }
 
 //    fun getMatchList(myEmail:String){

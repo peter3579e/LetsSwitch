@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
                         Log.d("MainActivity", "UserManager value = ${UserManager.user}")
 
-                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment(UserManager.user))
+                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment(UserManager.user,false))
 
                         return@OnNavigationItemSelectedListener true
 
@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.matchList.observe(this, androidx.lifecycle.Observer { newMatch ->
 
-            viewModel.getChatRoom()
+//            viewModel.getChatRoom()
 
             Log.d("Before", "value of count = $count")
             if (viewModel.matchList.value!!.isNotEmpty() && viewModel.currentFragmentType.value != CurrentFragmentType.HOME) {

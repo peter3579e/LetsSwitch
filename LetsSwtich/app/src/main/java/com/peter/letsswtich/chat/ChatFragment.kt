@@ -25,6 +25,16 @@ class ChatFragment:Fragment() {
 
     private val viewModel : ChatViewModel by viewModels<ChatViewModel> { getVmFactory() }
 
+    override fun onStart() {
+        super.onStart()
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        mainViewModel.matchList.observe(viewLifecycleOwner, Observer {
+            viewModel.matchList.value = it
+            viewModel.getChatRoom()
+
+        })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

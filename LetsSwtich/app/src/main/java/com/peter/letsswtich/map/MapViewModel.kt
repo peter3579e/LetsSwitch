@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
 import com.peter.letsswtich.data.Comment
+import com.peter.letsswtich.data.Result
 import com.peter.letsswtich.data.Store
 import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.data.User
@@ -35,6 +36,25 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         value = false
     }
 
+    val showsMore = MutableLiveData<Boolean>()
+
+    val friendslocation = MutableLiveData<LatLng>()
+
+    val _snapPosition = MutableLiveData<Int>()
+    val snapPosition: MutableLiveData<Int>
+        get() = _snapPosition
+
+    val matchList = MutableLiveData<List<User>>()
+
+    private val _userInfo = MutableLiveData<User>()
+
+    val userInfo: LiveData<User>
+        get() = _userInfo
+
+    val listofMatchUserInfo = MutableLiveData<MutableList<User>>()
+
+    val imagesLive = MutableLiveData<List<String>>()
+
 
     val mylocation = MutableLiveData<LatLng>()
 
@@ -42,6 +62,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 
     val storeLocation: LiveData<List<StoreLocation>>
         get() = _storeLocation
+
+    val clickedUserDetail = MutableLiveData<User>()
 
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -53,6 +75,16 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 
     val error: LiveData<String>
         get() = _error
+
+    private val _navigateToProfile = MutableLiveData<Boolean>()
+
+    val navigateToProfile: LiveData<Boolean>
+        get() = _navigateToProfile
+
+    private val _navigateToChatRoom = MutableLiveData<Boolean>()
+
+    val navigateToChatRoom: LiveData<Boolean>
+        get() = _navigateToChatRoom
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -75,17 +107,66 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
-        getMapItemLocation()
+//        getMapItemLocation()
     }
 
 
 
 
-    fun getMapItemLocation() {
+//    fun getMapItemLocation() {
+//        coroutineScope.launch {
+//            _storeLocation.value = letsSwitchRepository.getMapItem()
+//            Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
+//        }
+//    }
+
+
+    fun getUserDetail(userEmail:String) {
         coroutineScope.launch {
-            _storeLocation.value = letsSwitchRepository.getMapItem()
-            Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
+            _status.value = LoadApiStatus.LOADING
+
+            val result = letsSwitchRepository.getUserDetail(userEmail)
+
+            _userInfo.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
         }
+    }
+
+    fun navigateToChatRoom(){
+        _navigateToChatRoom.value = true
+    }
+
+    fun chatRoomNavigated() {
+        _navigateToChatRoom.value = false
+    }
+
+    fun navigateToProfile(){
+        _navigateToProfile.value = true
+    }
+
+    fun profilenavigated(){
+        _navigateToProfile.value = false
     }
 
 

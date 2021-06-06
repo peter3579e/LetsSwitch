@@ -19,6 +19,7 @@ import com.peter.letsswtich.editprofile.preview.PreviewImageAdapter
 import com.peter.letsswtich.home.HomeAdapter
 import com.peter.letsswtich.home.ImageAdapter
 import com.peter.letsswtich.home.ImageCircleAdapter
+import com.peter.letsswtich.map.FriendsImageAdapter
 import com.peter.letsswtich.profile.PhotosAdapter
 import com.peter.letsswtich.util.TimeUtil
 import com.peter.letsswtich.util.Util.getColor
@@ -121,6 +122,20 @@ fun setupPaddingForGridItems(layout: ConstraintLayout, position: Int, count: Int
 
     layout.layoutParams = layoutParams
 }
+
+//@BindingAdapter("userImages")
+//fun bindRecyclerViewWithUsersImages(recyclerView: RecyclerView, users: List<String>?) {
+//    users?.let {
+//        recyclerView.adapter?.apply {
+//            when (this) {
+//                is FriendsImageAdapter -> {
+//                    submitImages(it)
+//                }
+//
+//            }
+//        }
+//    }
+//}
 
 @BindingAdapter("images")
 fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<String>?) {

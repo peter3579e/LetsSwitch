@@ -39,7 +39,7 @@ class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, Chat
 
             binding.root.setOnClickListener{
                 view: View ->
-                view.findNavController().navigate(NavigationDirections.navigateToChatroomFragment(friendInfo.userEmail,friendInfo.userName))
+                view.findNavController().navigate(NavigationDirections.navigateToChatroomFragment(friendInfo.userEmail,friendInfo.userName,false))
                 Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userEmail}")
                 Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userName}")
             }

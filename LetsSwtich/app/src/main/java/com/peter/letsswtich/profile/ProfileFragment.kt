@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
@@ -25,16 +27,25 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.*
 import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.peter.letsswtich.*
+import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.databinding.FragmentProfileBinding
 import com.peter.letsswtich.dialog.MatchedDialogArgs
 import com.peter.letsswtich.dialog.MatchedDialogViewModel
@@ -42,18 +53,28 @@ import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.ext.toDateFormat
 import com.peter.letsswtich.login.UserManager
+import kotlinx.coroutines.*
 import java.io.*
+import java.net.URL
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel by viewModels<ProfileViewModel> {
         getVmFactory(
-                ProfileFragmentArgs.fromBundle(requireArguments()).userDetail
+                ProfileFragmentArgs.fromBundle(requireArguments()).userDetail,
+                ProfileFragmentArgs.fromBundle(requireArguments()).fromMap
         )
     }
+
+    private val MAPVIEW_BUNDLE_KEY: String? = "MapViewBundleKey"
+    private lateinit var map: MapView
+    private lateinit var googleMap: GoogleMap
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var markerOld: Marker? = null
+    private val LOCATION_PERMISSION_REQUEST = 1
 
 
     override fun onCreateView(
@@ -85,6 +106,7 @@ class ProfileFragment : Fragment() {
                 val chip2 = Chip(fluentChip.context)
                 chip2.text = viewModel.userDetail.fluentLanguage[1]
                 fluentChip.addView(chip2)
+                viewModel.locatMe.value = false
             }
 
             if (viewModel.userDetail.preferLanguage.isNotEmpty()){
@@ -98,7 +120,11 @@ class ProfileFragment : Fragment() {
 
             Log.d("ProfileFragment", "valeu of navigation = ${mainViewModel.navigateToFriendsProfile.value}")
             binding.buttonBack.setOnClickListener {
-                findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.userDetail.email, viewModel.userDetail.name))
+                if (viewModel.ifMap == true){
+                    findNavController().navigate(NavigationDirections.navigateToMapFragment())
+                }else{
+                    findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.userDetail.email, viewModel.userDetail.name,false))
+                }
             }
 
         }else{
@@ -111,6 +137,7 @@ class ProfileFragment : Fragment() {
                 val chip2 = Chip(fluentChip.context)
                 chip2.text = viewModel.userDetail.fluentLanguage[1]
                 fluentChip.addView(chip2)
+                viewModel.locatMe.value = true
             }
 
             if (UserManager.user.preferLanguage.isNotEmpty()){
@@ -180,11 +207,25 @@ class ProfileFragment : Fragment() {
 
         })
 
+        map = binding.mapView
+        initGoogleMap(savedInstanceState)
 
 
 
 
         return binding.root
+    }
+
+    private fun initGoogleMap(savedInstanceState: Bundle?) {
+        // *** IMPORTANT ***
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+        // objects or sub-Bundles.
+        var mapViewBundle: Bundle? = null
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
+        }
+        map.onCreate(mapViewBundle)
+        map.getMapAsync(this)
     }
 
 
@@ -707,6 +748,155 @@ class ProfileFragment : Fragment() {
         var isUploadPermissionsGranted = false
 //            private var foodie: Foodie? = null
     }
+
+    override fun onMapReady(gMap: GoogleMap) {
+        googleMap = gMap
+        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+        if (ActivityCompat.checkSelfPermission(
+                        LetsSwtichApplication.appContext,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        LetsSwtichApplication.appContext,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                == PackageManager.PERMISSION_GRANTED
+        ) {
+            googleMap.isMyLocationEnabled = true
+            googleMap.uiSettings.isMyLocationButtonEnabled = true
+            Log.d("Run", "456")
+        } else {
+            ActivityCompat.requestPermissions(
+                    activity as MainActivity,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST
+            )
+        }
+
+        viewModel.locatMe.observe(viewLifecycleOwner, Observer {
+            if (it == true){
+                Log.d("ProfileFragment","value of $it")
+                fusedLocationProviderClient =
+                        LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
+
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
+                    val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
+                    Log.d("MapFragment","Has run here!")
+                    Log.d("MapFragment", "newlocation value = $newLocation")
+                    viewModel.mylocation.value = newLocation
+
+                    Log.d("location","my email = ${UserManager.user.email}")
+
+
+                    googleMap.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                    newLocation,
+                                    15.toFloat()
+                            )
+                    )
+
+                    val queryRadius = 1
+
+                    val circleOptions = CircleOptions()
+                    circleOptions.center(newLocation)
+                            .radius(queryRadius.toDouble() * 500)
+                            .fillColor(Color.argb(70, 150, 50, 50))
+                            .strokeWidth(3F)
+                            .strokeColor(Color.RED)
+                    googleMap.addCircle(circleOptions)
+
+                }
+            }else if (it == false){
+                Log.d("Map Fragment","Map has run!!")
+
+                    val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
+                    val image = viewModel.userDetail.personImages[0]
+
+                    Log.d("Peter","value of = $image")
+
+                    val url  = URL(image)
+                    val position = LatLng(viewModel.userDetail.latitude,viewModel.userDetail.lngti)
+
+
+                    val result: Deferred<Bitmap?> = GlobalScope.async {
+                        url.toBitmap()
+                    }
+
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        // show bitmap on image view when available
+                        val figureMarker = result.await()?.let { it1 ->
+                            Bitmap.createScaledBitmap(
+                                    it1, widthIcon, widthIcon, false)
+                        }
+
+                        val addMarker = googleMap.addMarker(
+                                MarkerOptions().position(position)
+                                        .flat(true)
+//                                    .alpha(0.5F)
+//                                .icon(iconDraw)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(figureMarker))
+                        )
+                        addMarker.tag = viewModel.userDetail
+
+                    }
+
+                    googleMap.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                    position,
+                                    20.toFloat()
+                            )
+                    )
+
+
+            }
+        })
+    }
+
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        markerOld?.let {
+            it.alpha = 0.5F
+        }
+
+        marker?.let {
+            markerOld = it
+            it.alpha = 1F
+            val storeLocation = (it.tag as StoreLocation)
+            val store = storeLocation.store
+        }
+        return false
+    }
+
+    fun URL.toBitmap(): Bitmap?{
+        return try {
+            BitmapFactory.decodeStream(openStream())
+        }catch (e: IOException){
+            null
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        map.onResume()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        map.onLowMemory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        map.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        map.onDestroy()
+    }
+
 
 
 }

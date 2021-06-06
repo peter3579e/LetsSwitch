@@ -63,7 +63,7 @@ class SettingFragment:Fragment() {
 
                     Log.d("settingFragment", "the value of requirement = ${UserManager.user}")
 
-                    findNavController().navigate(NavigationDirections.navigateToProfileFragment(mainViewModel.userdetail.value!!))
+                    findNavController().navigate(NavigationDirections.navigateToProfileFragment(mainViewModel.userdetail.value!!,false))
                     viewModel.profileNavigated()
                 }
         })
