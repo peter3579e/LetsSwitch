@@ -40,6 +40,9 @@ class SettingFragment:Fragment() {
         binding = FragmentSettingBinding.inflate(inflater,container,false)
         binding.viewModel = viewModel
 
+        binding.minAge = viewModel.need.age[0]
+        binding.maxAge = viewModel.need.age[1]
+
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         Log.d("SettingFragment","main = ${mainViewModel.requirment.value}")
@@ -92,8 +95,7 @@ class SettingFragment:Fragment() {
                     override fun onStartTrackingTouch(slider: RangeSlider) {
                         viewModel.minAge.value = slider.values[0].toInt()
                         viewModel.maxAge.value = slider.values[1].toInt()
-                        binding.maxAge = slider.values[1].toString()
-                        binding.minAge = slider.values[0].toString()
+                        binding.maxAge = slider.values[1].toInt()
                         Log.d("onStartTrackingTouch", "${slider.values}")
 
                     }
@@ -101,8 +103,8 @@ class SettingFragment:Fragment() {
                     override fun onStopTrackingTouch(slider: RangeSlider) {
                         viewModel.minAge.value = slider.values[0].toInt()
                         viewModel.maxAge.value = slider.values[1].toInt()
-                        binding.maxAge = slider.values[1].toString()
-                        binding.minAge = slider.values[0].toString()
+                        binding.maxAge = slider.values[1].toInt()
+                        binding.minAge = slider.values[0].toInt()
                         viewModel.need.age = listOf(slider.values[0].toInt(),slider.values[1].toInt())
                         Log.d("onStopTrackingTouch min", "${viewModel.minAge.value}")
                         Log.d("onStopTrackingTouch min", "${viewModel.maxAge.value}")

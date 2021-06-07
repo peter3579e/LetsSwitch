@@ -29,6 +29,8 @@ class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, u
 
     val mylocation = MutableLiveData<LatLng>()
 
+    val clickedPic = MutableLiveData<String>()
+
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
@@ -55,6 +57,11 @@ class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, u
 
     val setting: LiveData<Boolean>
         get() = _setting
+
+    private val _picDialog = MutableLiveData<Boolean>()
+
+    val picDialog: LiveData<Boolean>
+        get() = _picDialog
 
     private val _date = MutableLiveData<Date>()
     val date: LiveData<Date>
@@ -130,6 +137,14 @@ class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, u
 
     fun settingNavigated(){
         _setting.value = false
+    }
+
+    fun navigateToPicDialog(){
+        _picDialog.value = true
+    }
+
+    fun picDialogNavigated(){
+        _picDialog.value = false
     }
 
     fun updateUser(user: User) {

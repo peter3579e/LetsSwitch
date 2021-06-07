@@ -114,6 +114,17 @@
         app:nullable="false"/>
         </fragment>
 
+    <dialog
+        android:id="@+id/picDialog"
+        android:name="com.peter.letsswtich.profile.PicDialog"
+        android:label="PicDialog"
+        tools:layout="@layout/dialog_pic">
+        <argument
+            android:name="userImage"
+            app:argType="string"
+            app:nullable="false"/>
+    </dialog>
+
     <!--    <fragment-->
 <!--        android:id="@+id/secondQutionnaireFragment"-->
 <!--        android:name="com.peter.letsswtich.question.SecondQutionnaireFragment"-->
@@ -136,6 +147,7 @@
     <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
     <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
     <action android:id="@+id/navigate_to_setting_fragment" app:destination="@id/settingFragment"/>
+    <action android:id="@+id/navigate_to_pic_dialog" app:destination="@+id/picDialog"/>
 
     <!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
 

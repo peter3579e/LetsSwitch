@@ -34,6 +34,8 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val leave: LiveData<Boolean>
         get() = _leave
 
+    var newestFriendDetail : List<User>? = null
+
     private val _roomByMessageTime = MutableLiveData<List<ChatRoom>>()
 
 

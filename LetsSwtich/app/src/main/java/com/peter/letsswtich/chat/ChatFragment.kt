@@ -33,6 +33,10 @@ class ChatFragment:Fragment() {
             viewModel.getChatRoom()
 
         })
+        mainViewModel.newestFriendDetail.observe(viewLifecycleOwner, Observer {
+            viewModel.newestFriendDetail  = it
+
+        })
     }
 
     override fun onCreateView(
@@ -97,6 +101,7 @@ class ChatFragment:Fragment() {
 
                 viewModel.roomByMessageTime.value = list
                 binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
+                binding.recyclerNewMatches.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
 
                     newMatchesAdapter.submitList(list)
                     adapter.submitList(newList)

@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="210dp"
             imageUrl="@{backgroundImage}"
+            android:onClick="@{() -> viewModel.picDialogNavigated()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/bg_profile"
@@ -51,6 +52,7 @@
             android:layout_marginTop="150dp"
             android:clipChildren="false"
             android:elevation="4dp"
+            android:onClick="@{() -> viewModel.navigateToPicDialog()}"
             imageUrl="@{viewModel.userDetail.personImages[0]}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -117,17 +119,19 @@
 
             <TextView
                 android:id="@+id/profile_description"
-                android:layout_width="wrap_content"
+                android:layout_width="360dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto"
+                android:maxLines="3"
+                android:textColor="@color/black"
+                android:text="@{viewModel.userDetail.description}"
+                android:textAlignment="textStart"
+                android:textSize="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"
-                android:text="@{viewModel.userDetail.description}"
-                android:textSize="15dp"
-                android:maxLines="3"
-                android:fontFamily="@font/roboto"
-                tools:text="I would like to learn how to write my name in English"/>
+                tools:text="I would like to learn how to write my name in English" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -165,7 +169,7 @@
             android:id="@+id/language_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray_light"
+            android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@id/profile_map_frame">
 
             <TextView

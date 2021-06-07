@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.webkit.GeolocationPermissions
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -32,6 +33,7 @@ import com.peter.letsswtich.R
 import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentMapBinding
+import com.peter.letsswtich.ext.excludeUser
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.home.HomeViewModel
 import com.peter.letsswtich.login.UserManager
@@ -62,10 +64,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         marker?.let {
             markerOld = it
             it.alpha = 1F
-            val storeLocation = (it.tag as StoreLocation)
-            val store = storeLocation.store
-            viewModel.selectStore(storeLocation)
-            viewModel.storeCardOpen()
         }
         return false
     }
@@ -87,6 +85,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         binding.lifecycleOwner = this
         val adpter = FriendsImageAdapter(viewModel)
         binding.friendsRecycleView.adapter = adpter
+        binding.friendsRecycleView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
 
 
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
@@ -112,6 +111,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
                 if (count == userEmail.size){
                     viewModel.listofMatchUserInfo.value = list
+                    mainViewModel.newestFriendDetail.value = list
                     Log.d("MapFragment","the livedata list = ${viewModel.listofMatchUserInfo.value!!.size}")
                     Log.d("the value of images","the value of images = ${images.size}")
                     viewModel.imagesLive.value = images
@@ -242,10 +242,14 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         viewModel.listofMatchUserInfo.observe(this, Observer { usersList ->
             usersList.let {
 
+
                 Log.d("Map Fragment","Map has run!!")
 
 
+
+
                 for (userInfo in usersList) {
+
 
 
                     val queryResult = LatLng(

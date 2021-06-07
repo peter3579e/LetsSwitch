@@ -9,11 +9,11 @@
             type="com.peter.letsswtich.question.SecondQuestionnaireViewModel" />
         <variable
             name="maxAge"
-            type="String" />
+            type="Integer" />
 
         <variable
             name="minAge"
-            type="String" />
+            type="Integer" />
 
     </data>
 
@@ -95,7 +95,7 @@
             app:layout_constraintBottom_toTopOf="@id/ageSlider"
             android:layout_marginEnd="30dp"
             app:layout_constraintEnd_toEndOf="@id/ageSlider"
-            android:text='@{minAge+" -- "}'
+            android:text='@{String.valueOf(minAge)+" -- "}'
             tools:text ="20 -- " />
         <TextView
             android:id="@+id/max"
@@ -105,7 +105,7 @@
             android:textSize="15dp"
             app:layout_constraintBottom_toTopOf="@id/ageSlider"
             app:layout_constraintStart_toEndOf="@id/min"
-            android:text="@{maxAge}"
+            android:text="@{String.valueOf(maxAge)}"
             tools:text ="60" />
 
 

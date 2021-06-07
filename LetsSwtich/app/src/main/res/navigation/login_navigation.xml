@@ -18,6 +18,13 @@
         android:name="com.peter.letsswtich.login.LoginFragment"
         android:label="LoginFragment" />
 
+    <fragment
+        android:id="@+id/loginProcessFragment"
+        android:name="com.peter.letsswtich.login_process.LoginProcessFragment"
+        android:label="LoginProcessFragment" />
+
     <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>
     <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment" />
+    <action android:id="@+id/navigate_to_login_process" app:destination="@id/loginProcessFragment"/>
+
 </navigation>

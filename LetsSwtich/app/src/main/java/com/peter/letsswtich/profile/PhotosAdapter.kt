@@ -1,5 +1,6 @@
 package com.peter.letsswtich.profile
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +11,7 @@ import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.databinding.ItemNewMatchesBinding
 import com.peter.letsswtich.databinding.ItemProfilePhotosBinding
 
-class PhotosAdapter(): ListAdapter<String, PhotosAdapter.ViewHolder>(DiffCallback) {
+class PhotosAdapter(val viewModel: ProfileViewModel): ListAdapter<String, PhotosAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private var binding: ItemProfilePhotosBinding):
             RecyclerView.ViewHolder(binding.root) {
@@ -29,6 +30,10 @@ class PhotosAdapter(): ListAdapter<String, PhotosAdapter.ViewHolder>(DiffCallbac
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            Log.d("PhotosAdapter","the value of Pic = ${getItem(position)}")
+            viewModel.clickedPic.value = getItem(position)
+        }
     }
 
 

@@ -28,7 +28,7 @@
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
             android:layout_marginTop="50dp"
-            android:layout_marginBottom="110dp"
+            android:layout_marginBottom="120dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,6 @@
                     addDecoration="@{viewModel.decoration}"
                     tools:listitem="@layout/item_image_circle"
                     tools:itemCount="4"
-                    count="@{viewModel.userPersonImage.size()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/image_card_user" />

@@ -44,22 +44,24 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
             }
 
             viewModel.snapPosition.observe(this, androidx.lifecycle.Observer {
-                viewModel.userPersonImage.value?.let {images ->
+                    Log.d("ima","images value = $user")
                     (binding.recyclerImageCircles.adapter as ImageCircleAdapter).selectedPosition.value =
-                            (it % (images.size))
-                }
+                            (it % (user.personImages.size))
+
             })
 
             val layoutManager = binding.imageCardUser.layoutManager
 
+            circleAdapter.submitCount(user.personImages.size)
 
 
 
 
             binding.cardImagePlus.setOnClickListener {
-                viewModel.userPersonImage.value?.let {images ->
+
                     viewModel.snapPosition.value?.let {
-                        if(viewModel.snapPosition.value!!< images.size-1){
+                        Log.d("testing","image size = ")
+                        if(viewModel.snapPosition.value!!< user.personImages.size-1){
                             layoutManager?.smoothScrollToPosition(
                                     binding.imageCardUser, RecyclerView.State(),
                                     it.plus(1)
@@ -68,11 +70,9 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
                         }
                         Log.d("timer", "position ${it}")
                     }
-                }
             }
 
             binding.cardImageMinus.setOnClickListener {
-                viewModel.userPersonImage.value?.let {
                     viewModel.snapPosition.value?.let {
                         if (viewModel.snapPosition.value!! > 0) {
                             layoutManager?.smoothScrollToPosition(
@@ -82,7 +82,6 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
                         }
                         Log.d("timer", "position ${it}")
                     }
-                }
             }
 
             val chipGroup = binding.chipGroup
@@ -140,7 +139,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
                 holder.bind(getItem(position) as User,viewModel)
 
                 val user = getItem(position) as User
-                viewModel.userPersonImage.value = user.personImages
+//                viewModel.userPersonImage.value = user.personImages
 
 //                Log.d("HomeAdapter","User personImages value ${viewModel.userPersonImage.value}")
 

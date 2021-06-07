@@ -23,19 +23,6 @@ import javax.xml.transform.dom.DOMLocator
 
 class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
 
-    private val _selectStore = MutableLiveData<StoreLocation>()
-
-    val selectStore: LiveData<StoreLocation>
-        get() = _selectStore
-
-    val storeCardStatus = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-
-    val storeDrinkStatus = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-
     val showsMore = MutableLiveData<Boolean>()
 
     val friendslocation = MutableLiveData<LatLng>()
@@ -55,13 +42,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 
     val imagesLive = MutableLiveData<List<String>>()
 
-
     val mylocation = MutableLiveData<LatLng>()
-
-    private val _storeLocation = MutableLiveData<List<StoreLocation>>()
-
-    val storeLocation: LiveData<List<StoreLocation>>
-        get() = _storeLocation
 
     val clickedUserDetail = MutableLiveData<User>()
 
@@ -93,15 +74,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    fun selectStore(storeLocation: StoreLocation) {
-        _selectStore.value = storeLocation
-        _storeComment.value = null
-    }
 
-    private val _storeComment = MutableLiveData<List<Comment>>()
-
-    val storeComment: LiveData<List<Comment>>
-        get() = _storeComment
 
     init {
         Logger.i("------------------------------------")
@@ -172,23 +145,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 
 
 
-    fun storeCardOpen() {
-        storeCardStatus.value?.let {
-            storeCardStatus.value = true
-        }
-        storeDrinkStatus.value?.let {
-            storeDrinkStatus.value = false
-        }
-    }
 
-    fun storeCardClose() {
-        storeCardStatus.value?.let {
-            storeCardStatus.value = false
-        }
-        storeDrinkStatus.value?.let {
-            storeDrinkStatus.value = false
-        }
-    }
+
 
     fun postlocaion(longitude:Double,latitude:Double,myEmail:String) {
 

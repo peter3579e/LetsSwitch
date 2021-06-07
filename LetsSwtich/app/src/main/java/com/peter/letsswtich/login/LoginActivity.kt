@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id){
                 R.id.firstQuestionnaireFragment -> CurrentFragmentType.FIRSTQUESTION
                 R.id.secondQutionnaireFragment -> CurrentFragmentType.SECONDQUESTION
+                R.id.loginProcessFragment -> CurrentFragmentType.LOGINPROCESS
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -57,6 +58,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+
+        setupNavController()
 
 
 

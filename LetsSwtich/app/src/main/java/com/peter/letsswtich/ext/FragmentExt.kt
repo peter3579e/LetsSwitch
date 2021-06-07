@@ -31,3 +31,9 @@ fun Fragment.getVmFactory(matchedUser: User, fromMap: Boolean) : ProFileViewMode
     val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
     return ProFileViewModelFactory(repository, matchedUser, fromMap)
 }
+
+fun Fragment.getVmFactory(userImage:String) : PicViewModelFactory {
+    val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
+    return PicViewModelFactory(repository, userImage)
+}
+

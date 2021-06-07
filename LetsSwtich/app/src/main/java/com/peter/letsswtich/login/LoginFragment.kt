@@ -27,6 +27,7 @@ import com.peter.letsswtich.R
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentLoginBinding
 import com.peter.letsswtich.ext.getVmFactory
+import com.peter.letsswtich.login_process.LoginProcessActivity
 import com.peter.letsswtich.util.CurrentFragmentType
 
 
@@ -133,7 +134,8 @@ class LoginFragment :Fragment(){
 //            viewModel.postUser(currentUser)
 
 //            startActivity(Intent(this, SplashActivity::class.java))
-            startActivity(Intent(context, MainActivity::class.java))
+//            startActivity(Intent(context, MainActivity::class.java))
+            startActivity(Intent(context,LoginProcessActivity::class.java))
 
             requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
             requireActivity().finish()
@@ -156,7 +158,7 @@ class LoginFragment :Fragment(){
             Log.d("LogActivity","the value of User =${UserManager.user}")
 //            viewModel.postUser(currentUser)
 
-            findNavController().navigate(LoginNavigationDirections.navigateToFirstQuestionnaire())
+            findNavController().navigate(LoginNavigationDirections.navigateToLoginProcess())
 
             Log.d("LogActivity","thing has changed jhon show")
 

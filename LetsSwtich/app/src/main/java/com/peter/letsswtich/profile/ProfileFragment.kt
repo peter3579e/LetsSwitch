@@ -150,6 +150,14 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
             }
         }
 
+        viewModel.picDialog.observe(viewLifecycleOwner, Observer {
+            if(it == true){
+                findNavController().navigate(NavigationDirections.navigateToPicDialog(viewModel.userDetail.personImages[0]))
+            }else if (it == false){
+                findNavController().navigate(NavigationDirections.navigateToPicDialog(viewModel.userDetail.backGroundPic))
+            }
+        })
+
 
 
         viewModel.navigateToEditProfile.observe(viewLifecycleOwner, Observer {
@@ -168,9 +176,13 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         })
 
 
-        val adapter = PhotosAdapter()
+        val adapter = PhotosAdapter(viewModel)
 
         binding.photosRecycleView.adapter = adapter
+
+        viewModel.clickedPic.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(NavigationDirections.navigateToPicDialog(it))
+        })
 
 
 
@@ -302,7 +314,6 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                                 Log.d("Peter", "Run3")
 
                                 filePath = data
-                                uploadFile()
                                 Log.d("Peter", "Run4")
 
                                 try {
@@ -327,14 +338,19 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                                     )
                                     Log.d("Peter", "Run8")
 
-                                    outBitmap.compress(
-                                        Bitmap.CompressFormat.JPEG,
-                                        15,
-                                        ByteArrayOutputStream()
-                                    )
-                                    Log.d("Peter", "Run9")
+                                    val byte = ByteArrayOutputStream()
 
-                                    Log.d("Peter", "value of OutBitmap = $outBitmap")
+                                    outBitmap.compress(
+                                            Bitmap.CompressFormat.JPEG,
+                                            15,
+                                            byte
+                                    )
+
+                                    val byteArray = byte.toByteArray()
+
+
+
+                                    uploadFile(byteArray)
 
 //                                    scalePic(outBitmap, 100)
 
@@ -520,7 +536,7 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 
     }
 
-    private fun uploadFile() {
+    private fun uploadFile(byteArray: ByteArray) {
 
         Log.d("Peter", "Hey1")
 
@@ -557,7 +573,7 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 
                     Log.d("Peter", "Hey7")
 
-                    imageReference.putBytes(compressResult)
+                    imageReference.putBytes(byteArray)
                         .addOnCompleteListener {
 
                             imageReference.downloadUrl.addOnCompleteListener { task ->
@@ -845,7 +861,7 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                     googleMap.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                     position,
-                                    20.toFloat()
+                                    15.toFloat()
                             )
                     )
 

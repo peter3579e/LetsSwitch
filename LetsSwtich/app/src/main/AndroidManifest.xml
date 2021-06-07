@@ -46,6 +46,12 @@
                   android:label="Map">
         </activity>
 
+        <activity android:name=".login_process.LoginProcessActivity"
+            android:theme="@style/AppTheme.AppNoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

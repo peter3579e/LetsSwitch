@@ -33,6 +33,9 @@ class SecondQutionnaireFragment : Fragment() {
         binding = FragmentSecondQuestionnaireBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
+        binding.maxAge = 70
+        binding.minAge = 20
+
         val genderIndicator =
             LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_gender)
         val cityIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_city)
@@ -66,8 +69,8 @@ class SecondQutionnaireFragment : Fragment() {
                 override fun onStopTrackingTouch(slider: RangeSlider) {
                     viewModel.minAge.value = slider.values[0].toInt()
                     viewModel.maxAge.value = slider.values[1].toInt()
-                    binding.maxAge = slider.values[1].toString()
-                    binding.minAge = slider.values[0].toString()
+                    binding.maxAge = slider.values[1].toInt()
+                    binding.minAge = slider.values[0].toInt()
                     Log.d("onStopTrackingTouch min", "${viewModel.minAge.value}")
                     Log.d("onStopTrackingTouch min", "${viewModel.maxAge.value}")
                 }

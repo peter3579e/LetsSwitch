@@ -65,10 +65,11 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/friends_recycleView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
                         android:orientation="horizontal"
                         android:elevation="2dp"
+                        android:layout_marginStart="10dp"
                         tools:listitem="@layout/item_map_friend_images"
                         map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         map:layout_constraintEnd_toEndOf="parent"
@@ -80,11 +81,11 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/detail"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_height="0dp"
                         map:layout_constraintTop_toBottomOf="@id/friends_recycleView"
                         android:visibility="gone"
                         tools:visibility="visible"
+                        android:layout_marginStart="16dp"
                         map:layout_constraintStart_toStartOf="@id/friends_recycleView">
                         <ImageView
                             android:id="@+id/chat"

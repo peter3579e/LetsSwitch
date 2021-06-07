@@ -32,6 +32,8 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val leave: LiveData<Boolean>
         get() = _leave
 
+    val newestFriendDetail = MutableLiveData<List<User>>()
+
     // Record current fragment to support data binding
     val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 

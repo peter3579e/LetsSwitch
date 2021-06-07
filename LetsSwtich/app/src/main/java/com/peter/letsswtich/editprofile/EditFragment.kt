@@ -34,6 +34,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import com.google.zxing.common.BitArray
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.MainActivity
 import com.peter.letsswtich.MainViewModel
@@ -451,7 +452,7 @@ class EditFragment(user: User) : Fragment() {
                                 Log.d("Peter", "Run3")
 
                                 filePath = data
-                                uploadFile()
+
                                 Log.d("Peter", "Run4")
 
                                 try {
@@ -476,11 +477,19 @@ class EditFragment(user: User) : Fragment() {
                                     )
                                     Log.d("Peter", "Run8")
 
+                                    val byte = ByteArrayOutputStream()
+
                                     outBitmap.compress(
                                         Bitmap.CompressFormat.JPEG,
                                         15,
-                                        ByteArrayOutputStream()
+                                        byte
                                     )
+
+                                    val byteArray = byte.toByteArray()
+
+
+
+                                    uploadFile(byteArray)
                                     Log.d("Peter", "Run9")
 
                                     Log.d("Peter", "value of OutBitmap = $outBitmap")
@@ -669,7 +678,9 @@ class EditFragment(user: User) : Fragment() {
 
     }
 
-    private fun uploadFile() {
+    private fun uploadFile(bitmap: ByteArray) {
+
+
 
         Log.d("Peter", "Hey1")
 
@@ -698,16 +709,18 @@ class EditFragment(user: User) : Fragment() {
                             FORMAT_YYYY_MM_DDHHMMSS
                         )
                     )
-                )
+                ).child(filePath.toString())
+
+
+
 
                 Log.d("Peter", "Hey6")
 
-                compress(filePath)?.let { compressResult ->
-
                     Log.d("Peter", "Hey7")
 
-                    imageReference.putBytes(compressResult)
+                    imageReference.putBytes(bitmap)
                         .addOnCompleteListener {
+
 
                             imageReference.downloadUrl.addOnCompleteListener { task ->
 
@@ -719,7 +732,7 @@ class EditFragment(user: User) : Fragment() {
                                 }
                             }
                         }
-                }
+
             }
         }
     }
