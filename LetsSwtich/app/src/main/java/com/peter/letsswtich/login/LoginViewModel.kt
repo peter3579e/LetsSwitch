@@ -1,5 +1,6 @@
 package com.peter.letsswtich.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,12 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
 
     val firebaseUser: LiveData<FirebaseUser>
         get() = _firebaseUser
+
+    private val _privacy = MutableLiveData<Boolean>()
+
+    val privacy: LiveData<Boolean>
+        get() = _privacy
+
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -84,6 +91,12 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
         }
 
     }
+
+    fun privacychecked() {
+        Log.d("LoginActivity","Run2")
+        _privacy.value = true
+    }
+
 
     fun loginAuth(account: GoogleSignInAccount?) {
 

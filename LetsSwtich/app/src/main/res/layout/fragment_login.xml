@@ -29,6 +29,65 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            app:buttonTint="@color/white"
+            android:text="By signing up you accept the"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/signIn"
+            app:layout_constraintStart_toStartOf="@id/signIn"/>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/termImageView"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            app:layout_constraintStart_toEndOf="@id/privacy"-->
+<!--            app:layout_constraintTop_toTopOf="@id/term"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/term"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/term"-->
+<!--            android:text=" Term of"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/white"/>-->
+
+        <TextView
+            android:id="@+id/term"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/privacy"
+            app:layout_constraintTop_toTopOf="@id/privacy"
+            app:layout_constraintBottom_toBottomOf="@id/privacy"
+            android:text=" Term of"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/policy_view"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:layout_constraintStart_toStartOf="@id/policy"-->
+<!--            app:layout_constraintTop_toTopOf="@id/policy"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/policy"-->
+<!--            android:onClick="@{() -> viewModel.navigateToPrivacy()}"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/policy"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/white"/>-->
+
+        <TextView
+            android:id="@+id/policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/privacy"
+            app:layout_constraintBottom_toTopOf="@id/signIn"
+            android:layout_marginBottom="17dp"
+            android:layout_marginStart="32dp"
+            android:text="Service and Privacy Policy"
+            android:textStyle="bold"
+            android:layout_marginEnd="50dp"
+            android:textColor="@color/white"/>
+
         <androidx.cardview.widget.CardView
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,10 +97,11 @@
             app:cardCornerRadius="20dp"
             app:cardElevation="30dp"
             android:layout_gravity="center"
-            android:layout_margin="70dp"
+            android:layout_margin="60dp"
             android:clickable="true"
             android:focusable="true"
-            android:id="@+id/Signin">
+            android:id="@+id/signIn">
+
 
             <LinearLayout
                 android:id="@+id/google_sign_in_button"

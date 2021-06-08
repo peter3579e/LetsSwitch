@@ -23,8 +23,15 @@
         android:name="com.peter.letsswtich.login_process.LoginProcessFragment"
         android:label="LoginProcessFragment" />
 
+    <dialog
+        android:id="@+id/loginPrivacy"
+        android:name="com.peter.letsswtich.login.LoginPrivacy"
+        android:label="LoginPrivacy" />
+
     <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>
     <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment" />
     <action android:id="@+id/navigate_to_login_process" app:destination="@id/loginProcessFragment"/>
+    <action android:id="@+id/navigate_to_login_privacy_dialog" app:destination="@id/loginPrivacy"/>
+
 
 </navigation>

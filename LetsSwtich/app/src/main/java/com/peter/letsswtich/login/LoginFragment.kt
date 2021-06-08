@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,10 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.peter.letsswtich.LoginNavigationDirections
-import com.peter.letsswtich.MainActivity
-import com.peter.letsswtich.NavigationDirections
-import com.peter.letsswtich.R
+import com.peter.letsswtich.*
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentLoginBinding
 import com.peter.letsswtich.ext.getVmFactory
@@ -42,7 +40,7 @@ class LoginFragment :Fragment(){
 
     override fun onStart() {
         super.onStart()
-        moveMainPage(auth?.currentUser)
+//        moveMainPage(auth?.currentUser)
         Log.d("LoginActivity","Run4")
     }
 
@@ -56,8 +54,14 @@ class LoginFragment :Fragment(){
 
 
         binding.googleSignInButton.setOnClickListener {
-            googleLogin()
-            Log.d("LoginActivity","Run1")
+
+            if (binding.privacy.isChecked){
+                googleLogin()
+                Log.d("LoginActivity","Run1")
+            }else{
+                Log.d("LoginActivity","Run2")
+                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.privacy_requiremnt), Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Configure Google Sign In inside onCreate mentod
@@ -65,10 +69,28 @@ class LoginFragment :Fragment(){
                 .requestIdToken(getString(R.string.token_id))
                 .requestEmail()
                 .build()
-        Log.d("LoginActivity","Run2")
 // getting the value of gso inside the GoogleSigninClient
         googleSignInClient = GoogleSignIn.getClient(requireContext(),gso)
-        Log.d("LoginActivity","Run3")
+
+        binding.term.setOnClickListener {
+            findNavController().navigate(LoginNavigationDirections.navigateToLoginPrivacyDialog())
+            binding.privacy.isChecked = true
+        }
+        binding.policy.setOnClickListener {
+            findNavController().navigate(LoginNavigationDirections.navigateToLoginPrivacyDialog())
+            binding.privacy.isChecked = true
+        }
+
+        binding.privacy.setOnClickListener {
+            binding.privacy.isChecked = true
+        }
+
+
+
+
+
+
+
 // initialize the firebaseAuth variable
 
         viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Let\'sSwtich</string>
+    <string name="app_name">Let\'sSwitch</string>
     <string name="no_match_found">No Match Found</string>
     <string name="try_with_other_traits">Try with other traits</string>
     <string name="follow">Follow</string>
@@ -48,6 +48,7 @@
     <string name="spinner_select_mothertongue">Mothertongue</string>
     <string name="spinner_select_fluent">Second language</string>
     <string name="select_requiremnt">Please select what kind of person you are looking for</string>
+    <string name="privacy_requiremnt">Please read the privacy policy</string>
     <string name="remindertofillInfor">Please complete the question</string>
     <string name="reminderEditProfile">Please fill the compulsory information</string>
     <string name="spinner_select_district">Select district</string>
