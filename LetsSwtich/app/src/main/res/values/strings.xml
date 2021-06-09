@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Let\'sSwtich</string>
+    <string name="app_name">Let\'sSwitch</string>
     <string name="no_match_found">No Match Found</string>
     <string name="try_with_other_traits">Try with other traits</string>
     <string name="follow">Follow</string>
@@ -14,4 +14,138 @@
     <string name="indicator_message">Type a message</string>
     <string name="reminder_chatroom_message">Please send something</string>
     <string name="google_maps_key">AIzaSyAYu63fvKcvAeii9ngoIcC_CRBjgUajUN8</string>
+    <string name="get_nothing_from_firebase">Get Nothing From FireBase</string>
+
+
+    <string name="edit_add_photo">拍照</string>
+    <string name="edit_choose_from_gallery">選擇相片</string>
+    <string name="edit_cancel">取消</string>
+    <string name="edit_add_photo_title">新增照片</string>
+    <string name="edit_start_camera_camera">Camera</string>
+    <string name="edit_start_camera_jpg">.jpg</string>
+    <string name="edit_start_camera_provider">.provider</string>
+    <string name="edit_show_gallery_intent_type">image/*</string>
+    <string name="edit_show_gallery_select_picture">Select Picture</string>
+    <string name="edit_upload_permission_hint">記得到系統設定相機和相簿權限才能上傳喔</string>
+    <string name="firebase_storage_reference">images/users/%s/%s.jpg</string>
+
+    <string name="token_id">764080131691-jpm6h5bqjnknqpaet5qe14a79p6jkdsp.apps.googleusercontent.com</string>
+
+
+    <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
+    <string name="simpledateformat_MM_dd">MM-dd</string>
+    <string name="simpledateformat_yyyy_MM">yyyy-MM</string>
+    <string name="simpledateformat_HH_mm">HH:mm</string>
+    <string name="simpledateformat_HH_mm_ss_fffffffff">HH:mm:ss.%s</string>
+    <string name="simpledateformat_yyyy_MM_dd_HHmmss">yyyy-MM-dd-HHmmss</string>
+    <string name="simpledateformat_date_time_to_timestamp">%s %s:00.000000000</string>
+    <string name="simpledateformat_yyyy_MM_dd_HH_mm_ss_fffffffff">yyyy-MM-dd HH:mm:ss.%s</string>
+    <string name="btn_next">NEXT</string>
+
+    <string name="spinner_select_age">Age</string>
+    <string name="spinner_select_gender">Gender</string>
+    <string name="spinner_select_city">City</string>
+    <string name="spinner_select_mothertongue">Mothertongue</string>
+    <string name="spinner_select_fluent">Second language</string>
+    <string name="select_requiremnt">Please select what kind of person you are looking for</string>
+    <string name="privacy_requiremnt">Please read the privacy policy</string>
+    <string name="remindertofillInfor">Please complete the question</string>
+    <string name="reminderEditProfile">Please fill the compulsory information</string>
+    <string name="spinner_select_district">Select district</string>
+
+    <string-array name="city_array">
+        <item>Taipei</item>
+        <item>New Taipei</item>
+        <item>Taoyuan</item>
+        <item>Taichung</item>
+        <item>Kaohsiung</item>
+    </string-array>
+
+
+    <string-array name="language_array">
+        <item>English</item>
+        <item>French</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>German</item>
+        <item>Spanish</item>
+        <item>Chinese</item>
+    </string-array>
+
+    <string-array name="gender_array">
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+
+    <array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </array>
+
+    <string-array name="default_array">
+
+    </string-array>
+
+    <string-array name="taipei_array">
+        <item>Songshan</item>
+        <item>Xinyi</item>
+        <item>Da’an</item>
+        <item>Zhongshan</item>
+        <item>Zhongzheng</item>
+        <item>Datong</item>
+        <item>Wanhua</item>
+        <item>Wenshan</item>
+        <item>Nangang</item>
+        <item>Neihu</item>
+        <item>Shilin</item>
+        <item>Beitou</item>
+    </string-array>
+
+    <string-array name="new_taipei_array">
+        <item>Banqiao</item>
+        <item>Sanchong</item>
+        <item>Zhonghe</item>
+        <item>Yonghe</item>
+        <item>Xinzhuang</item>
+        <item>Xindian</item>
+        <item>Luzhou</item>
+    </string-array>
+
+    <string-array name="taoyuan_array">
+        <item>Zhongli</item>
+        <item>Daxi</item>
+        <item>Yangmei</item>
+        <item>Luzhu</item>
+        <item>Guishan</item>
+        <item>Bade</item>
+        <item>Longtan</item>
+    </string-array>
+
+    <string-array name="taichung_array">
+        <item>Central</item>
+        <item>East</item>
+        <item>South</item>
+        <item>West</item>
+        <item>North</item>
+        <item>Xitun</item>
+        <item>Nantun</item>
+        <item>Beitun</item>
+        <item>Fengyuan</item>
+        <item>Dajia</item>
+        <item>Houli</item>
+    </string-array>
+
+    <string-array name="kaohsiung_array">
+        <item>Zuoying</item>
+        <item>Nanzi</item>
+        <item>Sanmin</item>
+        <item>Qijin</item>
+        <item>Xiaogang</item>
+        <item>Fengshan</item>
+        <item>Gangshan</item>
+    </string-array>
+
+
+
+
 </resources>

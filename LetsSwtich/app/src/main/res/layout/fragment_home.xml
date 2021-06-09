@@ -11,6 +11,9 @@
         <variable
             name="User"
             type="com.peter.letsswtich.data.User" />
+        <variable
+            name="image"
+            type="String" />
 
     </data>
 
@@ -19,17 +22,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/roundframe">
-x
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp"
-            android:layout_margin="10dp"
-            android:elevation="3dp"
-            android:src="@drawable/ic_cute_avatar"
-            android:onClick="@{()->viewModel.navigateToProfile()}"/>
+
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:elevation="3dp"-->
+<!--            android:src="@drawable/ic_cute_avatar"-->
+<!--            android:onClick="@{()->viewModel.navigateToProfile()}"/>-->
 
         <View
             android:id="@+id/bg_red"
@@ -71,7 +75,6 @@ x
 
         <com.yuyakaido.android.cardstackview.CardStackView
             android:id="@+id/stack_view"
-            listCard="@{viewModel.cardProduct}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_centerHorizontal="true"
@@ -107,14 +110,16 @@ x
 
                 <ImageButton
                     android:id="@+id/button_yes"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/button_round_red"
                     android:contentDescription="@null"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.492"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_left" />
+                    app:srcCompat="@drawable/ic_dislike_button" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -131,14 +136,15 @@ x
 
                 <ImageButton
                     android:id="@+id/button_rewind"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:background="@drawable/button_round"
                     android:contentDescription="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_rewind" />
+                    app:tint="@color/yellow"
+                    app:srcCompat="@drawable/ic_baseline_replay_24"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -155,29 +161,36 @@ x
 
                 <ImageButton
                     android:id="@+id/button_no"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:background="@drawable/button_round_blue"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_round_white"
                     android:contentDescription="@null"
+                    android:tint="#63DD99"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.492"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_right" />
+                    app:layout_constraintVertical_bias="0.473"
+                    app:srcCompat="@drawable/ic_like_button" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/layout_loading"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@color/white">-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="2dp"
+            tools:visibility="visible"
+            android:background="@color/white">
 
 <!--            <com.airbnb.lottie.LottieAnimationView-->
 <!--                android:id="@+id/anim_searching"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="0dp"-->
+<!--                android:elevation="4dp"-->
 <!--                android:layout_marginHorizontal="24dp"-->
 <!--                app:layout_constraintBottom_toBottomOf="parent"-->
 <!--                app:layout_constraintDimensionRatio="1"-->
@@ -186,41 +199,57 @@ x
 <!--                app:layout_constraintTop_toTopOf="parent"-->
 <!--                app:lottie_autoPlay="true"-->
 <!--                app:lottie_loop="true"-->
-<!--                app:lottie_rawRes="@raw/searching_profile" />-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                app:lottie_rawRes="@raw/ripple_json" />-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_no_value"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="gone">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_pic"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                imageUrl="@{image}"
+                android:elevation="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:background="@drawable/ic_cute_avatar"/>
 
-            <TextView
-                android:id="@+id/no_value_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:text="@string/no_match_found"
-                android:textColor="@color/gray_cccccc"
-                android:textSize="24sp"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/anim_searching"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:elevation="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/no_value_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingHorizontal="8dp"
-                android:text="@string/try_with_other_traits"
-                android:textColor="@color/colorPrimaryDark"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/no_value_text" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/ripple_json" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/no_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="@string/no_match_found"
+            android:textColor="@color/gray_cccccc"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/no_value_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:text="@string/try_with_other_traits"
+            android:textColor="@color/colorPrimaryDark"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="339dp"
+            tools:ignore="MissingConstraints" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

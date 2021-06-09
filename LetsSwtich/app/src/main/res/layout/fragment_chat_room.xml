@@ -12,7 +12,7 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,6 +20,8 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -35,10 +37,10 @@
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="40dp"
+                    android:layout_marginEnd="60dp"
                     android:gravity="center"
                     android:text="@{viewModel.currentChattingName}"
-                    android:textColor="@color/black_3f3a3a"
+                    android:textColor="@color/gray_888888"
                     tools:text="Peterrrrrrr" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -77,18 +79,35 @@
                 app:layout_constraintVertical_bias="0.451"
                 app:srcCompat="@drawable/ic_send_message" />
 
+            <ImageView
+                android:id="@+id/sendwithblue"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:alpha="0.6"
+                android:visibility="gone"
+                app:tint="@color/blue_voyage"
+                app:layout_constraintBottom_toBottomOf="@id/edit_message"
+                app:layout_constraintEnd_toEndOf="@id/edit_message"
+                app:layout_constraintHorizontal_bias="0.976"
+                app:layout_constraintStart_toStartOf="@id/edit_message"
+                app:layout_constraintTop_toTopOf="@id/edit_message"
+                app:layout_constraintVertical_bias="0.451"
+                app:srcCompat="@drawable/ic_send_message" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_message"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginHorizontal="24dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="50dp"
                 app:layout_constraintBottom_toTopOf="@id/edit_message"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:listitem="@layout/item_my_message" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

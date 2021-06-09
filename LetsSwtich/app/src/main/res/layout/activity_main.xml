@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.peter.letsswtich.util.CurrentFragmentType"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.peter.letsswtich.MainViewModel" />
 
     </data>
 
@@ -12,7 +19,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/myNavHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
@@ -26,14 +33,15 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavView"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:background="@color/black"
+            android:layout_height="48dp"
+            android:background="@color/white"
             app:itemIconTint="@drawable/bottom_nav_item_selector"
             app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:itemIconSize="36dp"
+            app:itemIconSize="25dp"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.CHATROOM || viewModel.navigateToFriendsProfile == true || viewModel.currentFragmentType == CurrentFragmentType.EDITPROFILE || viewModel.currentFragmentType == CurrentFragmentType.FIRSTQUESTION || viewModel.currentFragmentType == CurrentFragmentType.SECONDQUESTION || viewModel.currentFragmentType == CurrentFragmentType.SETTING ? View.GONE : View.VISIBLE}"
             app:menu="@menu/bottom_nav_menu"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

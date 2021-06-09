@@ -6,7 +6,7 @@ import com.peter.letsswtich.data.source.DefaultLetsSwitchRepository
 import com.peter.letsswtich.data.source.LetsSwitchDataSource
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.data.source.local.LetsSwitchLocalDataSource
-import com.peter.letsswtich.data.source.remote.LetsSwtichRemoteDataSource
+import com.peter.letsswtich.data.source.remote.LetsSwitchRemoteDataSource
 
 /**
  * A Service Locator for the [LetsSwitchRepository].
@@ -22,12 +22,12 @@ object ServiceLocator {
         synchronized(this) {
             return letsSwitchRepository
                 ?: letsSwitchRepository
-                ?: createStylishRepository(context)
+                ?: createLetsSwitchRepository(context)
         }
     }
 
-    private fun createStylishRepository(context: Context): LetsSwitchRepository {
-        return DefaultLetsSwitchRepository(LetsSwtichRemoteDataSource,
+    private fun createLetsSwitchRepository(context: Context): LetsSwitchRepository {
+        return DefaultLetsSwitchRepository(LetsSwitchRemoteDataSource,
             createLocalDataSource(context)
         )
     }

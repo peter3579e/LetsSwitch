@@ -15,6 +15,10 @@
             name="image"
             type="String" />
 
+        <variable
+            name="viewModel"
+            type="com.peter.letsswtich.chat.ChatViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,9 +36,10 @@
             android:elevation="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_cute_avatar" />
+            tools:background="@drawable/ic_cute_avatar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/chatroom"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
@@ -52,7 +57,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Willy Chuang" />
+                tools:text="Peter Liu" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_latest_info"
@@ -86,20 +91,22 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/text_lasted_time"
-                ago="@{chatRoom.latestTime}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/gray_cccccc"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/layout_latest_info"
-                app:layout_constraintStart_toEndOf="@id/layout_latest_info"
-                app:layout_constraintTop_toTopOf="@id/layout_latest_info"
-                tools:text="3 minutes ago" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/text_lasted_time"
+            ago="@{chatRoom.latestMessageTime}"
+            android:visibility="@{chatRoom.latestMessageTime == 0 ? View.GONE : View.VISIBLE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/gray_cccccc"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/chatroom"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="3 minutes ago" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

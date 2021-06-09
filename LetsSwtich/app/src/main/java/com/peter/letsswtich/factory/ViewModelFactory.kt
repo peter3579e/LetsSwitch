@@ -2,11 +2,20 @@ package com.peter.letsswtich.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.chat.ChatViewModel
 import com.peter.letsswtich.chatroom.ChatRoomViewModel
 import com.peter.letsswtich.data.source.LetsSwitchRepository
+import com.peter.letsswtich.editprofile.EditViewModel
+import com.peter.letsswtich.editprofile.preview.PreviewViewModel
 import com.peter.letsswtich.home.HomeViewModel
+import com.peter.letsswtich.login.LoginActivityViewModel
+import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.map.MapViewModel
+import com.peter.letsswtich.question.FirstQuestionnaireViewModel
+import com.peter.letsswtich.question.SecondQuestionnaireViewModel
+import com.peter.letsswtich.setting.SettingViewModel
+import kotlin.math.E
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -21,8 +30,12 @@ class ViewModelFactory constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
-                isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(letsSwitchRepository)
+
+                isAssignableFrom(MainViewModel::class.java)->
+                    MainViewModel(letsSwitchRepository)
+
+                isAssignableFrom(FirstQuestionnaireViewModel::class.java) ->
+                    FirstQuestionnaireViewModel(letsSwitchRepository)
 
                 isAssignableFrom(ChatViewModel::class.java) ->
                     ChatViewModel(letsSwitchRepository)
@@ -30,24 +43,25 @@ class ViewModelFactory constructor(
                 isAssignableFrom(MapViewModel::class.java)->
                     MapViewModel(letsSwitchRepository)
 
-//
-//                isAssignableFrom(CartViewModel::class.java) ->
-//                    CartViewModel(letsSwitchReposityoryy)
-//
-//                isAssignableFrom(PaymentViewModel::class.java) ->
-//                    PaymentViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(LoginViewModel::class.java) ->
-//                    LoginViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(CheckoutSuccessViewModel::class.java) ->
-//                    CheckoutSuccessViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(HistoryViewModel::class.java) ->
-//                    HistoryViewModel(letsSwitchReposityory)
-//
-//                isAssignableFrom(WebViewModel::class.java) ->
-//                    WebViewModel(letsSwitchReposityory)
+                isAssignableFrom(EditViewModel::class.java)->
+                    EditViewModel(letsSwitchRepository)
+
+                isAssignableFrom(LoginViewModel::class.java) ->
+                    LoginViewModel(letsSwitchRepository)
+
+                isAssignableFrom(PreviewViewModel::class.java) ->
+                    PreviewViewModel(letsSwitchRepository)
+
+                isAssignableFrom(SecondQuestionnaireViewModel::class.java) ->
+                    SecondQuestionnaireViewModel(letsSwitchRepository)
+
+                isAssignableFrom(LoginActivityViewModel::class.java) ->
+                    LoginActivityViewModel(letsSwitchRepository)
+
+                isAssignableFrom(HomeViewModel::class.java) ->
+                    HomeViewModel(letsSwitchRepository)
+
+
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

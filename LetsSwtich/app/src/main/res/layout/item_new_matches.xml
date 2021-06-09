@@ -13,19 +13,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_chat_avatar"
-            imageUrl="@{image}"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:clipChildren="false"
-            android:elevation="4dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="93dp"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_cute_avatar" />
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="1dp"
+            android:layout_marginVertical="1dp"
+            android:background="@color/black">
+
+            <ImageView
+                imageUrl="@{image}"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:layout_constraintCircleRadius="4dp"
+                tools:background="@drawable/ic_cute_avatar" />
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,5 +5,18 @@
     <dimen name="size_length">500dp</dimen>
     <dimen name="size_width">300dp</dimen>
     <dimen name="text_title">20dp</dimen>
+    <dimen name="height_profile_gallery">500dp</dimen>
+    <dimen name="space_detail_circle">8dp</dimen>
+    <dimen name="edge_detail_circle">1px</dimen>
+    <dimen name="radius_detail_circle">3dp</dimen>
+
+
+    <!-- Profile Fragment -->
+    <dimen name="space_photo_grid">16dp</dimen>
+    <dimen name="space_outside_horizontal_photo_item">16dp</dimen>
+    <dimen name="space_inside_horizontal_photo_item">10dp</dimen>
+    <dimen name="space_outside_vertical_photo_item">10dp</dimen>
+    <dimen name="space_inside_vertical_photo_item">12dp</dimen>
+    <dimen name="full_size_button_height">48dp</dimen>
 
 </resources>

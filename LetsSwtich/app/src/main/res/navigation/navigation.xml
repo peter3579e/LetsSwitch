@@ -10,7 +10,18 @@
         android:name="com.peter.letsswtich.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
+<!--        <argument-->
+<!--            android:name="selectedAnswer"-->
+<!--            app:argType="com.peter.letsswtich.data.Requirement"-->
+<!--            app:nullable="false"/>-->
     </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@+id/firstQuestionnaireFragment"-->
+<!--        android:name="com.peter.letsswtich.question.FirstQuestionnaireFragment"-->
+<!--        android:label="FirstQuestionnaireFragment"-->
+<!--        tools:layout="@layout/fragment_first_questionnaire"/>-->
+
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.peter.letsswtich.chat.ChatFragment"
@@ -25,7 +36,44 @@
         android:id="@+id/profileFragment"
         android:name="com.peter.letsswtich.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userDetail"
+            app:argType="com.peter.letsswtich.data.User"
+            app:nullable="false" />
+        <argument
+            android:name="fromMap"
+            app:argType="boolean"
+            app:nullable="false"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.peter.letsswtich.editprofile.EditProfileFragment"
+        android:label="EditProfileFragment">
+        <argument
+            android:name="userDetail"
+            app:argType="com.peter.letsswtich.data.User"
+            app:nullable="false" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/matchedDialog"
+        android:name="com.peter.letsswtich.dialog.MatchedDialog"
+        android:label="MatchedDialog"
+        tools:layout="@layout/dialog_matched">
+        <argument
+            android:name="matchedUserInfo"
+            app:argType="com.peter.letsswtich.data.User"
+            app:nullable="false"/>
+    </dialog>
+
+<!--    <activity-->
+<!--        android:id="@+id/loginActivity"-->
+<!--        android:name="com.peter.letsswtich.login.LoginActivity"-->
+<!--        android:label="LoginActivity"-->
+<!--        tools:layout="@layout/activity_login"/>-->
+
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.peter.letsswtich.chatroom.ChatRoomFragment"
@@ -34,29 +82,74 @@
         <argument
             android:name="userEmail"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="false" />
         <argument
             android:name="userName"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="false" />
+        <argument
+            android:name="fromMap"
+            app:argType="boolean"
+            app:nullable="false"/>
     </fragment>
 
-    <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
-    <action android:id="@+id/navigate_to_chat_fragment" app:destination="@id/chatFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.peter.letsswtich.editprofile.EditFragment"
+        android:label="EditFragment"
+        tools:layout="@layout/fragment_edit"/>
+    <fragment
+        android:id="@+id/previewFragment"
+        android:name="com.peter.letsswtich.editprofile.preview.PreviewFragment"
+        android:label="PreviewFragment"
+        tools:layout="@layout/fragment_preview"/>
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.peter.letsswtich.setting.SettingFragment"
+        android:label="SettingFragment" >
+    <argument
+        android:name="selectedAnswer"
+        app:argType="com.peter.letsswtich.data.Requirement"
+        app:nullable="false"/>
+        </fragment>
+
+    <dialog
+        android:id="@+id/picDialog"
+        android:name="com.peter.letsswtich.profile.PicDialog"
+        android:label="PicDialog"
+        tools:layout="@layout/dialog_pic">
+        <argument
+            android:name="userImage"
+            app:argType="string"
+            app:nullable="false"/>
+    </dialog>
+
+    <!--    <fragment-->
+<!--        android:id="@+id/secondQutionnaireFragment"-->
+<!--        android:name="com.peter.letsswtich.question.SecondQutionnaireFragment"-->
+<!--        android:label="SecondQutionnaireFragment"-->
+<!--        tools:layout="@layout/fragment_second_questionnaire"/>-->
+
+
+
+
+    <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment" />
+    <action android:id="@+id/navigate_to_chat_fragment" app:destination="@id/chatFragment" />
     <action android:id="@+id/navigate_to_map_fragment" app:destination="@id/mapFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
-    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
-    <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@+id/chatRoomFragment" />
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment" />
+    <action android:id="@+id/navigate_to_chatroom_fragment" app:destination="@id/chatRoomFragment" />
+<!--    <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment"-->
+<!--        app:popUpTo="@id/navigation"-->
+<!--        app:popUpToInclusive="true"/>-->
+    <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
+    <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
+    <action android:id="@+id/navigate_to_setting_fragment" app:destination="@id/settingFragment"/>
+    <action android:id="@+id/navigate_to_pic_dialog" app:destination="@+id/picDialog"/>
 
+    <!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
 
 
 </navigation>

@@ -3,10 +3,7 @@ package com.peter.letsswtich
 import android.app.Application
 import android.content.Context
 import com.peter.letsswtich.data.source.LetsSwitchRepository
-import com.peter.letsswtich.data.source.remote.LetsSwtichRemoteDataSource
 import com.peter.letsswtich.util.ServiceLocator
-import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 class LetsSwtichApplication: Application() {
@@ -16,6 +13,10 @@ class LetsSwtichApplication: Application() {
   companion object{
       var instance: LetsSwtichApplication by Delegates.notNull()
       lateinit var appContext: Context
+
+      fun applicationContext() : Context {
+          return instance!!.applicationContext
+      }
   }
 
     override fun onCreate() {
