@@ -1,6 +1,7 @@
 package com.peter.letsswtich.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -87,6 +88,8 @@ class HomeFragment : Fragment(), CardStackListener {
 
         binding.viewModel = viewModel
 
+        binding.image = UserManager.user.personImages[0]
+
 
         // Setup card stack recyclerview
         val stackView = binding.stackView
@@ -105,6 +108,8 @@ class HomeFragment : Fragment(), CardStackListener {
                 supportsChangeAnimations = false
             }
         }
+
+
 
 
 
@@ -348,11 +353,14 @@ class HomeFragment : Fragment(), CardStackListener {
             LoadApiStatus.LOADING -> {
 //                Log.d("HomeFragment", "LoadApi has Run")
                 binding.layoutLoading.visibility = View.VISIBLE
+                binding.userPic.visibility = View.VISIBLE
                 binding.animSearching.playAnimation()
             }
             LoadApiStatus.DONE -> {
-                binding.layoutLoading.visibility = View.GONE
-                binding.animSearching.cancelAnimation()
+                Handler().postDelayed({binding.layoutLoading.visibility = View.GONE
+                    binding.userPic.visibility = View.GONE
+                    binding.animSearching.cancelAnimation()},2000)
+
 //                Log.d("HomeFragment", "LoadApi has Done")
             }
             else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT).show()

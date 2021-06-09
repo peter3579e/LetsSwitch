@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
@@ -40,7 +41,7 @@ class LoginFragment :Fragment(){
 
     override fun onStart() {
         super.onStart()
-//        moveMainPage(auth?.currentUser)
+        moveMainPage(auth?.currentUser)
         Log.d("LoginActivity","Run4")
     }
 
@@ -50,8 +51,6 @@ class LoginFragment :Fragment(){
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
         auth = FirebaseAuth.getInstance()
-
-
 
         binding.googleSignInButton.setOnClickListener {
 
