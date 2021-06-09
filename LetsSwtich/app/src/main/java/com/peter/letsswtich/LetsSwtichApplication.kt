@@ -15,7 +15,7 @@ class LetsSwtichApplication: Application() {
       lateinit var appContext: Context
 
       fun applicationContext() : Context {
-          return instance!!.applicationContext
+          return instance.applicationContext
       }
   }
 
