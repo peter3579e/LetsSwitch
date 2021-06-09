@@ -49,6 +49,7 @@ import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.databinding.FragmentProfileBinding
 import com.peter.letsswtich.dialog.MatchedDialogArgs
 import com.peter.letsswtich.dialog.MatchedDialogViewModel
+import com.peter.letsswtich.editprofile.EditFragment
 import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.ext.toDateFormat
@@ -373,48 +374,60 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                             }
                         }
                     }
-//                    IMAGE_FROM_CAMERA -> {
-//
-//                        fileFromCamera?.let {
-//
-//                            filePath = FileProvider.getUriForFile(
-//                                requireContext(),
-//                                LetsSwtichApplication.applicationContext().packageName + LetsSwtichApplication.applicationContext()
-//                                    .getString(R.string.edit_start_camera_provider), it
-//                            )
-//
-//                            uploadFile()
-//
-//                            filePath?.let { it ->
-//
-//                                bitmap =
+                   IMAGE_FROM_CAMERA -> {
+
+                        fileFromCamera?.let {
+                            Log.d("Max","Run1")
+
+                            Log.d("Max","the value of file path =  $fileFromCamera")
+
+                            Log.d("Max","Run2")
+
+
+
+                                Log.d("Max","Run1")
+
+                                bitmap = data?.extras?.get("data") as Bitmap
 //                                    MediaStore.Images.Media.getBitmap(
 //                                        (activity as MainActivity).contentResolver,
 //                                        it
 //                                    )
-//
-//                                val matrix = Matrix()
-//                                matrix.postRotate(
-//                                    getImageRotation(
-//                                        LetsSwtichApplication.applicationContext(),
-//                                        it
-//                                    ).toFloat()
-//                                )
-//
-//                                val outBitmap = Bitmap.createBitmap(
-//                                    bitmap!!, 0, 0,
-//                                    bitmap!!.width, bitmap!!.height, matrix, false
-//                                )
-//
-//                                outBitmap.compress(
-//                                    Bitmap.CompressFormat.JPEG,
-//                                    15,
-//                                    ByteArrayOutputStream()
-//                                )
-//                                scalePic(outBitmap, displayMetrics!!.widthPixels)
+                            Log.d("Max","$bitmap")
+                                Log.d("Max","Run2")
+
+                                val matrix = Matrix()
+
+                                Log.d("Max","Run3")
+
+                                Log.d("Max","Run4")
+
+                                val outBitmap = Bitmap.createBitmap(
+                                    bitmap!!, 0, 0,
+                                    bitmap!!.width, bitmap!!.height, matrix, false
+                                )
+
+                                Log.d("Max","Run5")
+
+                                Log.d("Max","Run6")
+                                val byte = ByteArrayOutputStream()
+
+                                Log.d("Max","Run7")
+                                outBitmap.compress(
+                                        Bitmap.CompressFormat.JPEG,
+                                        15,
+                                        byte
+                                )
+
+                                Log.d("Max","Run8")
+
+                                val byteArray = byte.toByteArray()
+
+                                Log.d("Max","Run9")
+
+                                uploadCamera(byteArray)
 //                            }
-//                        }
-//                    }
+                        }
+                    }
                 }
             }
         }
@@ -534,6 +547,63 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
             }
         }
 
+    }
+
+    private fun uploadCamera(bitmap: ByteArray) {
+
+
+
+        Log.d("Peter", "Hey1")
+
+
+        Log.d("Peter", "Hey2")
+
+        viewModel.uploadPhoto()
+
+        Log.d("Peter", "Hey3")
+
+        UserManager.uid?.let { uid ->
+
+            Log.d("Peter", "Hey4")
+
+            // Firebase storage
+            auth = FirebaseAuth.getInstance()
+
+            Log.d("Peter", "Hey5")
+
+            Log.d("Peter", "the value of date = ${viewModel.date.value}")
+
+            val imageReference = FirebaseStorage.getInstance().reference.child(
+                    LetsSwtichApplication.applicationContext().getString(
+                            R.string.firebase_storage_reference, uid, viewModel.date.value.toDateFormat(
+                            FORMAT_YYYY_MM_DDHHMMSS
+                    )
+                    )
+            ).child(fileFromCamera.toString())
+
+
+
+
+            Log.d("Peter", "Hey6")
+
+            Log.d("Peter", "Hey7")
+
+            imageReference.putBytes(bitmap)
+                    .addOnCompleteListener {
+
+
+                        imageReference.downloadUrl.addOnCompleteListener { task ->
+
+                            task.result?.let { taskResult ->
+
+                                Log.d("Peter", "the result of pic = $taskResult")
+
+                                viewModel.setPhoto(taskResult)
+                            }
+                        }
+                    }
+
+        }
     }
 
     private fun uploadFile(byteArray: ByteArray) {
@@ -714,26 +784,29 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 
     private fun startCamera() {
 
+        Log.d("Max","run 123")
+
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        Log.d("Max","$intent")
+        Log.d("Max","run 1234")
         if (intent.resolveActivity(LetsSwtichApplication.applicationContext().packageManager) != null) {
 
+            Log.d("Max","run 12")
+
             try {
+                Log.d("Max","run 13")
                 fileFromCamera = createImageFile()
 
-                Log.d("EditFragment", "the value of return photo = $fileFromCamera")
+                Log.d("EditFragment", "the value of return photo = ${fileFromCamera}")
 
             } catch (ex: IOException) {
+                Log.d("Max","run 14")
                 return
             }
             if (fileFromCamera != null) {
-                val photoURI = FileProvider.getUriForFile(
-                    requireContext(), LetsSwtichApplication.applicationContext().packageName +
-                            LetsSwtichApplication.applicationContext()
-                                .getString(R.string.edit_start_camera_provider),
-                    fileFromCamera!!
-                )
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                Log.d("Max","run 15")
                 startActivityForResult(intent, IMAGE_FROM_CAMERA)
+                Log.d("Max","run 18")
             }
         }
     }
