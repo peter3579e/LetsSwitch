@@ -28,7 +28,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
+            buildConfigField("Boolean", "LOGG ER_VISIABLE", "true")
         }
     }
     androidExtensions {
