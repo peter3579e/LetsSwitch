@@ -140,6 +140,33 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             }
         })
 
+        viewModel.cardViewHeight.observe(viewLifecycleOwner, Observer { height ->
+            Log.d("MapFragment","cardView Height = ${binding.cardView.height}")
+            binding.friendButton.animate().translationY(-height.toFloat())
+        })
+
+
+
+        viewModel.cardView.observe(viewLifecycleOwner, Observer {
+            if (it%2 == 0){
+                binding.cardView.visibility = View.VISIBLE
+                binding.cardView.x = 1500F
+                viewModel.cardViewHeight.value = 440
+                binding.detail.visibility = View.GONE
+                binding.eventButton.visibility =View.GONE
+                binding.cardView.animate().translationX(0F)
+                Log.d("MapFragment","the value of count in show = $it")
+
+            } else if ( it%2!=0){
+                binding.eventButton.visibility = View.VISIBLE
+                binding.cardView.animate().translationX(1500F)
+                binding.friendButton.animate().translationY(0F)
+                Log.d("MapFragment","the value of count in gone = $it")
+            }
+        })
+
+//        binding.cardView.animate().translationX(1500F)
+
         viewModel.navigateToChatRoom.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 findNavController().navigate(

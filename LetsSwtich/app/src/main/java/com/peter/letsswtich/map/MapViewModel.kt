@@ -62,6 +62,14 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val navigateToProfile: LiveData<Boolean>
         get() = _navigateToProfile
 
+    private val _cardView = MutableLiveData<Int>()
+
+    val cardView: LiveData<Int>
+        get() = _cardView
+
+    val cardViewHeight = MutableLiveData<Int>()
+
+
     private val _navigateToChatRoom = MutableLiveData<Boolean>()
 
     val navigateToChatRoom: LiveData<Boolean>
@@ -80,6 +88,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
+        _cardView.value = -1
 //        getMapItemLocation()
     }
 
@@ -92,6 +101,12 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 //            Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
 //        }
 //    }
+
+    fun pluscount(){
+        Log.d("MapFragment","plus has run!!")
+       _cardView.value = _cardView.value!!+1
+    }
+
 
 
     fun getUserDetail(userEmail:String) {
@@ -141,6 +156,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     fun profilenavigated(){
         _navigateToProfile.value = false
     }
+
+
 
 
 

@@ -54,6 +54,7 @@ import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.ext.toDateFormat
 import com.peter.letsswtich.login.UserManager
+import com.peter.letsswtich.map.createCustomMarker
 import kotlinx.coroutines.*
 import java.io.*
 import java.net.URL
@@ -912,24 +913,44 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                         url.toBitmap()
                     }
 
-
-                    GlobalScope.launch(Dispatchers.Main) {
-                        // show bitmap on image view when available
-                        val figureMarker = result.await()?.let { it1 ->
-                            Bitmap.createScaledBitmap(
-                                    it1, widthIcon, widthIcon, false)
-                        }
-
-                        val addMarker = googleMap.addMarker(
-                                MarkerOptions().position(position)
-                                        .flat(true)
-//                                    .alpha(0.5F)
-//                                .icon(iconDraw)
-                                        .icon(BitmapDescriptorFactory.fromBitmap(figureMarker))
+                GlobalScope.launch(Dispatchers.Main) {
+                    // show bitmap on image view when available
+                    val figureMarker = result.await()?.let { it1 ->
+                        Bitmap.createScaledBitmap(
+                            it1, widthIcon, widthIcon, false
                         )
-                        addMarker.tag = viewModel.userDetail
 
                     }
+
+                    val addMarker = googleMap.addMarker(
+                        MarkerOptions().position(position)
+                            .icon(
+                                BitmapDescriptorFactory.fromBitmap(
+                                    createCustomMarker(requireContext(), figureMarker!!, "Narender")
+                                )
+                            )
+                    )
+                    addMarker.tag = viewModel.userDetail
+                }
+
+
+//                    GlobalScope.launch(Dispatchers.Main) {
+//                        // show bitmap on image view when available
+//                        val figureMarker = result.await()?.let { it1 ->
+//                            Bitmap.createScaledBitmap(
+//                                    it1, widthIcon, widthIcon, false)
+//                        }
+
+//                        val addMarker = googleMap.addMarker(
+//                                MarkerOptions().position(position)
+//                                        .flat(true)
+////                                    .alpha(0.5F)
+////                                .icon(iconDraw)
+//                                        .icon(BitmapDescriptorFactory.fromBitmap(figureMarker))
+//                        )
+//                        addMarker.tag = viewModel.userDetail
+//
+//                    }
 
                     googleMap.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(

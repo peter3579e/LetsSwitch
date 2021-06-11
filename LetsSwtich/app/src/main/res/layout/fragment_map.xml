@@ -38,7 +38,34 @@
 <!--            map:layout_constraintStart_toStartOf="parent"-->
 <!--            map:layout_constraintTop_toTopOf="parent" />-->
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/friend_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/ic_friend"
+            android:tint="@color/white"
+            android:elevation="1dp"
+            android:onClick="@{() -> viewModel.pluscount()}"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="30dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/event_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/ic_events"
+            android:tint="@color/white"
+            android:elevation="1dp"
+            android:onClick="@{() -> viewModel.pluscount()}"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="30dp"/>
+
         <androidx.cardview.widget.CardView
+            android:visibility="gone"
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             map:cardCornerRadius="15dp"

@@ -45,6 +45,7 @@ class FriendsImageAdapter (val viewModel: MapViewModel): ListAdapter<User, Frien
             viewModel.friendslocation.value = LatLng(getItem(position).latitude,getItem(position).lngti)
             viewModel.clickedUserDetail.value = getItem(position)
             viewModel.showsMore.value = true
+            viewModel.cardViewHeight.value = 550
         }
     }
 
