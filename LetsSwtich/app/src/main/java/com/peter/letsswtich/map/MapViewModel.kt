@@ -67,6 +67,16 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val cardView: LiveData<Int>
         get() = _cardView
 
+    private val _event = MutableLiveData<Int>()
+
+    val event: LiveData<Int>
+        get() = _event
+
+    private val _createEvent = MutableLiveData<Int>()
+
+    val createEvent: LiveData<Int>
+        get() = _createEvent
+
     val cardViewHeight = MutableLiveData<Int>()
 
 
@@ -89,6 +99,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
         _cardView.value = -1
+        _event.value = -1
+        _createEvent.value = -1
 //        getMapItemLocation()
     }
 
@@ -101,10 +113,17 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 //            Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
 //        }
 //    }
+    fun plusEventCount(){
+        _event.value = _event.value!!+1
+    }
 
-    fun pluscount(){
+    fun plusCount(){
         Log.d("MapFragment","plus has run!!")
        _cardView.value = _cardView.value!!+1
+    }
+
+    fun navigateToCreateEvent(){
+        _createEvent.value = _createEvent.value!!+1
     }
 
 

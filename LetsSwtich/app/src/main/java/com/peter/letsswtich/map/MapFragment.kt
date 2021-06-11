@@ -114,11 +114,11 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     adpter.submitList(list)
                 }
 
-                Log.d("the value of count", "the value of count = $count")
+//                Log.d("the value of count", "the value of count = $count")
 
                 count++
 
-                Log.d("the value of count", "the value of count after = $count")
+//                Log.d("the value of count", "the value of count after = $count")
             })
 
 
@@ -155,17 +155,48 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                 binding.detail.visibility = View.GONE
                 binding.eventButton.visibility =View.GONE
                 binding.cardView.animate().translationX(0F)
-                Log.d("MapFragment","the value of count in show = $it")
+                Log.d("MapFragment","the value of count cardView in show = $it")
 
             } else if ( it%2!=0){
                 binding.eventButton.visibility = View.VISIBLE
                 binding.cardView.animate().translationX(1500F)
                 binding.friendButton.animate().translationY(0F)
-                Log.d("MapFragment","the value of count in gone = $it")
+                Log.d("MapFragment","the value of count cardView in gone = $it")
             }
         })
 
-//        binding.cardView.animate().translationX(1500F)
+        viewModel.event.observe(viewLifecycleOwner, Observer {
+            if (it%2 == 0){
+                binding.eventScroll.visibility = View.VISIBLE
+                binding.eventButton.visibility = View.GONE
+                binding.friendButton.visibility = View.GONE
+                binding.eventScroll.y = 1500F
+                binding.eventScroll.animate().translationY(0F)
+                Log.d("MapFragment","the value of count event in show = $it")
+
+            } else if ( it%2!=0){
+                binding.eventButton.visibility = View.VISIBLE
+                binding.friendButton.visibility = View.VISIBLE
+                binding.eventScroll.animate().translationY(1500F)
+                Log.d("MapFragment","the value of count event in gone = $it")
+            }
+        })
+
+        viewModel.createEvent.observe(viewLifecycleOwner, Observer {
+            if (it%2 == 0){
+                binding.createEventScroll.visibility = View.VISIBLE
+                binding.createEventScroll.y = 9000F
+//                binding.eventScroll.visibility = View.GONE
+                binding.createEventScroll.animate().translationY(0F)
+                Log.d("MapFragment","the value of count in show createEvent= $it")
+
+            } else if ( it%2!=0){
+//                binding.eventScroll.visibility = View.VISIBLE
+                binding.createEventScroll.animate().translationY(9000F)
+                Log.d("MapFragment","the value of count in createEvent gone = $it")
+            }
+        })
+
 
         viewModel.navigateToChatRoom.observe(viewLifecycleOwner, Observer {
             if (it == true) {

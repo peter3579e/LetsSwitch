@@ -17,6 +17,7 @@
         android:background="@color/white">
 
         <com.google.android.gms.maps.MapView
+            tools:visibility="gone"
             android:id="@+id/radar_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,6 +39,128 @@
 <!--            map:layout_constraintStart_toStartOf="parent"-->
 <!--            map:layout_constraintTop_toTopOf="parent" />-->
 
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/createEventScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:elevation="4dp"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            android:background = "@color/gray_light"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    map:layout_constraintEnd_toEndOf="parent"
+                    map:layout_constraintTop_toTopOf="parent"
+                    android:text="DONE"
+                    android:onClick="@{ () -> viewModel.navigateToCreateEvent()}"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            tools:visibility="gone"
+            android:id="@+id/event_scroll"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="400dp"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@color/gray_light"
+            android:background="@drawable/bg_dialog_corner" >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/arrow_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.plusEventCount()}"
+                map:layout_constraintTop_toTopOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/ic_baseline_arrow_drop_down_24"
+                android:backgroundTint="@color/black"/>
+            <View
+                android:id="@+id/separate_line"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginHorizontal="40dp"
+                map:layout_constraintTop_toBottomOf="@id/arrow_down"
+                android:background="@color/gray_888888" />
+                <TextView
+                    android:id="@+id/addEvent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    map:layout_constraintBottom_toTopOf="@id/addEvent_cardView"
+                    map:layout_constraintStart_toStartOf="@id/separate_line"
+                    android:text="Add an event"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/black"
+                    />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/addEvent_cardView"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:background="@color/white"
+                    map:layout_constraintStart_toStartOf="@id/separate_line"
+                    map:layout_constraintEnd_toEndOf="@id/separate_line"
+                    map:layout_constraintTop_toBottomOf="@id/separate_line"
+                    android:layout_marginTop="40dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            map:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="10dp"
+                            android:textSize="12dp"
+                            map:layout_constraintStart_toStartOf="parent"
+                            map:layout_constraintEnd_toEndOf="parent"
+                            android:text="Let your friends know what you are up to"/>
+                        <ImageView
+                            android:id="@+id/date_image"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            map:layout_constraintStart_toStartOf="parent"
+                            map:layout_constraintBottom_toBottomOf="parent"
+                            android:background="@drawable/ic_dating"
+                            android:elevation="2dp"/>
+                        <ImageView
+                            android:id="@+id/button_create"
+                            android:layout_width="150dp"
+                            android:layout_height="25dp"
+                            map:layout_constraintTop_toTopOf="@id/date_image"
+                            map:layout_constraintEnd_toEndOf="@id/text"
+                            android:onClick="@{() -> viewModel.navigateToCreateEvent()}"
+                            android:background="@drawable/bg_colored_round_corner"
+                            android:text="GET STARTED" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Create an event"
+                            android:textColor="@color/white"
+                            map:layout_constraintTop_toTopOf="@id/button_create"
+                            map:layout_constraintStart_toStartOf="@id/button_create"
+                            map:layout_constraintEnd_toEndOf="@id/button_create"
+                            map:layout_constraintBottom_toBottomOf="@id/button_create"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/friend_button"
             android:layout_width="60dp"
@@ -47,7 +170,8 @@
             android:background="@drawable/ic_friend"
             android:tint="@color/white"
             android:elevation="1dp"
-            android:onClick="@{() -> viewModel.pluscount()}"
+            tools:visibility="gone"
+            android:onClick="@{() -> viewModel.plusCount()}"
             android:layout_marginBottom="30dp"
             android:layout_marginEnd="30dp"/>
         <de.hdodenhof.circleimageview.CircleImageView
@@ -59,7 +183,8 @@
             android:background="@drawable/ic_events"
             android:tint="@color/white"
             android:elevation="1dp"
-            android:onClick="@{() -> viewModel.pluscount()}"
+            tools:visibility="gone"
+            android:onClick="@{() -> viewModel.plusEventCount()}"
             android:layout_marginBottom="30dp"
             android:layout_marginStart="30dp"/>
 
