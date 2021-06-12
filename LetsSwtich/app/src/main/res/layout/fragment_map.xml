@@ -102,6 +102,7 @@
                     map:layout_constraintBottom_toTopOf="@id/addEvent_cardView"
                     map:layout_constraintStart_toStartOf="@id/separate_line"
                     android:text="Add an event"
+                    android:textStyle="bold"
                     android:layout_marginBottom="10dp"
                     android:textColor="@color/black"
                     />
