@@ -18,6 +18,13 @@
         <item name="CustomChipChoice">@style/CustomChipChoiceStyle</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/color_start</item>
+        <item name="colorPrimaryDark">@color/color_end</item>
+        <item name="colorAccent">@color/color_end</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
     <style name="Main" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>

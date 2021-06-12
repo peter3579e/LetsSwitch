@@ -105,6 +105,12 @@
         tools:layout="@layout/fragment_preview"/>
 
     <fragment
+        android:id="@+id/editEventFragment"
+        android:name="com.peter.letsswtich.map.event.EditEventFragment"
+        android:label="EditEventFragment"
+        tools:layout="@layout/fragment_edit_event"/>
+
+    <fragment
         android:id="@+id/settingFragment"
         android:name="com.peter.letsswtich.setting.SettingFragment"
         android:label="SettingFragment" >
@@ -148,6 +154,7 @@
     <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
     <action android:id="@+id/navigate_to_setting_fragment" app:destination="@id/settingFragment"/>
     <action android:id="@+id/navigate_to_pic_dialog" app:destination="@+id/picDialog"/>
+    <action android:id="@+id/navigate_to_event_fragment" app:destination="@+id/editEventFragment"/>
 
     <!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
 

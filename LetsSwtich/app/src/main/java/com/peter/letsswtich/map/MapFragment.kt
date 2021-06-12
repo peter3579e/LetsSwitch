@@ -1,17 +1,36 @@
 package com.peter.letsswtich.map
 
 import android.Manifest
+import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Matrix
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Base64
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,20 +38,32 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.clustering.ClusterItem
-import com.google.maps.android.clustering.ClusterManager
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.peter.letsswtich.*
-import com.peter.letsswtich.MainActivity
-import com.peter.letsswtich.R
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentMapBinding
+import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
+import com.peter.letsswtich.ext.toDateFormat
+import com.peter.letsswtich.login.LoginActivity
 import com.peter.letsswtich.login.UserManager
 import kotlinx.coroutines.*
-import java.io.IOException
+import java.io.*
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.xml.datatype.DatatypeConstants.MONTHS
 
 
 class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
@@ -43,6 +74,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var markerOld: Marker? = null
     private val LOCATION_PERMISSION_REQUEST = 1
+
 
     private val viewModel: MapViewModel by viewModels<MapViewModel> { getVmFactory() }
 
@@ -79,6 +111,11 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             context,
             R.anim.recycler_animation
         )
+
+//        mSearchText = binding.inputSearch
+
+
+
 
 
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
@@ -141,61 +178,54 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         })
 
         viewModel.cardViewHeight.observe(viewLifecycleOwner, Observer { height ->
-            Log.d("MapFragment","cardView Height = ${binding.cardView.height}")
+            Log.d("MapFragment", "cardView Height = ${binding.cardView.height}")
             binding.friendButton.animate().translationY(-height.toFloat())
         })
 
 
 
         viewModel.cardView.observe(viewLifecycleOwner, Observer {
-            if (it%2 == 0){
+            if (it % 2 == 0) {
                 binding.cardView.visibility = View.VISIBLE
                 binding.cardView.x = 1500F
                 viewModel.cardViewHeight.value = 440
                 binding.detail.visibility = View.GONE
-                binding.eventButton.visibility =View.GONE
+                binding.eventButton.visibility = View.GONE
                 binding.cardView.animate().translationX(0F)
-                Log.d("MapFragment","the value of count cardView in show = $it")
+                Log.d("MapFragment", "the value of count cardView in show = $it")
 
-            } else if ( it%2!=0){
+            } else if (it % 2 != 0) {
                 binding.eventButton.visibility = View.VISIBLE
                 binding.cardView.animate().translationX(1500F)
                 binding.friendButton.animate().translationY(0F)
-                Log.d("MapFragment","the value of count cardView in gone = $it")
+                Log.d("MapFragment", "the value of count cardView in gone = $it")
             }
         })
 
         viewModel.event.observe(viewLifecycleOwner, Observer {
-            if (it%2 == 0){
+            if (it % 2 == 0) {
                 binding.eventScroll.visibility = View.VISIBLE
                 binding.eventButton.visibility = View.GONE
                 binding.friendButton.visibility = View.GONE
                 binding.eventScroll.y = 1500F
                 binding.eventScroll.animate().translationY(0F)
-                Log.d("MapFragment","the value of count event in show = $it")
+                Log.d("MapFragment", "the value of count event in show = $it")
 
-            } else if ( it%2!=0){
+            } else if (it % 2 != 0) {
                 binding.eventButton.visibility = View.VISIBLE
                 binding.friendButton.visibility = View.VISIBLE
                 binding.eventScroll.animate().translationY(1500F)
-                Log.d("MapFragment","the value of count event in gone = $it")
+                Log.d("MapFragment", "the value of count event in gone = $it")
             }
         })
 
         viewModel.createEvent.observe(viewLifecycleOwner, Observer {
-            if (it%2 == 0){
-                binding.createEventScroll.visibility = View.VISIBLE
-                binding.createEventScroll.y = 9000F
-//                binding.eventScroll.visibility = View.GONE
-                binding.createEventScroll.animate().translationY(0F)
-                Log.d("MapFragment","the value of count in show createEvent= $it")
-
-            } else if ( it%2!=0){
-//                binding.eventScroll.visibility = View.VISIBLE
-                binding.createEventScroll.animate().translationY(9000F)
-                Log.d("MapFragment","the value of count in createEvent gone = $it")
+            if(it ==  true){
+                findNavController().navigate(NavigationDirections.navigateToEventFragment())
+                viewModel.createEventNavigated()
             }
         })
+
 
 
         viewModel.navigateToChatRoom.observe(viewLifecycleOwner, Observer {
@@ -212,11 +242,53 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         })
 
 
+
+
+
         map = binding.radarMap
         initGoogleMap(savedInstanceState)
 
         return binding.root
     }
+
+
+
+//    private fun init() {
+//        Log.d("MapFragment", "init: initializing")
+//        mSearchText.setOnEditorActionListener { textView, actionId, keyEvent ->
+//            if (actionId == EditorInfo.IME_ACTION_SEARCH
+//                || actionId == EditorInfo.IME_ACTION_DONE
+//                || keyEvent.action == KeyEvent.ACTION_DOWN
+//                || keyEvent.action == KeyEvent.KEYCODE_ENTER
+//            ) {
+//
+//                val mgr: InputMethodManager =
+//                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                mgr.hideSoftInputFromWindow(mSearchText.getWindowToken(), 0)
+//
+//                //execute our method for searching
+//                geoLocate()
+//            }
+//            false
+//        }
+//    }
+
+//    private fun geoLocate() {
+//        Log.d("MapFragment", "geoLocate: geolocating")
+//        val searchString = mSearchText.text.toString()
+//        val geocoder = Geocoder(this.context)
+//        var list: List<Address> = ArrayList()
+//        try {
+//            list = geocoder.getFromLocationName(searchString, 1)
+//        } catch (e: IOException) {
+//            Log.e("MapFragment", "geoLocate: IOException: " + e.message)
+//        }
+//        if (list.size > 0) {
+//            val address: Address = list[0]
+//            Log.d("MapFragment", "geoLocate: found a location: " + address.toString())
+//            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private fun initGoogleMap(savedInstanceState: Bundle?) {
         // *** IMPORTANT ***
@@ -229,6 +301,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         map.onCreate(mapViewBundle)
         map.getMapAsync(this)
     }
+
 
 
     override fun onMapReady(gMap: GoogleMap) {
@@ -356,10 +429,14 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                         val addMarker = googleMap.addMarker(
                             MarkerOptions().position(queryResult)
                                 .icon(
-                                BitmapDescriptorFactory.fromBitmap(
-                                    createCustomMarker(requireContext(), figureMarker!! ,"Narender")
+                                    BitmapDescriptorFactory.fromBitmap(
+                                        createCustomMarker(
+                                            requireContext(),
+                                            figureMarker!!,
+                                            "Narender"
+                                        )
+                                    )
                                 )
-                            )
                                 .snippet(userInfo.name)
                                 .title(userInfo.description)
                         )
@@ -380,7 +457,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     }
 
 
-
 //                        }
 
 //                        googleMap.animateCamera(
@@ -394,6 +470,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             }
         })
     }
+
 
 //    private fun googleMapNav(geoPoint: LatLng) {
 //        fusedLocationProviderClient =

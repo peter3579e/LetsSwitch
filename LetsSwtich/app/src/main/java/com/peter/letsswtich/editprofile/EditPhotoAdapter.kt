@@ -50,7 +50,9 @@ class EditPhotoAdapter(val viewModel: EditViewModel) : ListAdapter<String, EditP
         holder.itemView.setOnClickListener {
             Log.d("EditPhotoAdapter","click value = $position")
             if(getItem(position) != "") {
+                Log.d("EditPhotoAdapter","value of position = ${getItem(position)}")
                 viewModel.photoList.value!!.remove(getItem((position)))
+                Log.d("EditPhotoAdapter","value of list = ${viewModel.photoList.value}")
             }else {
                 viewModel.startCamera()
             }

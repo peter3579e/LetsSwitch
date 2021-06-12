@@ -1,5 +1,6 @@
 package com.peter.letsswtich.map
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.sql.Time
+import java.util.*
 import javax.xml.transform.dom.DOMLocator
 
 class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
@@ -30,6 +33,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val _snapPosition = MutableLiveData<Int>()
     val snapPosition: MutableLiveData<Int>
         get() = _snapPosition
+
 
     val matchList = MutableLiveData<List<User>>()
 
@@ -72,18 +76,23 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val event: LiveData<Int>
         get() = _event
 
-    private val _createEvent = MutableLiveData<Int>()
+    private val _createEvent = MutableLiveData<Boolean>()
 
-    val createEvent: LiveData<Int>
+    val createEvent: LiveData<Boolean>
         get() = _createEvent
 
+    val createTime = MutableLiveData<String>()
+
     val cardViewHeight = MutableLiveData<Int>()
+
 
 
     private val _navigateToChatRoom = MutableLiveData<Boolean>()
 
     val navigateToChatRoom: LiveData<Boolean>
         get() = _navigateToChatRoom
+
+
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -100,11 +109,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         Logger.i("------------------------------------")
         _cardView.value = -1
         _event.value = -1
-        _createEvent.value = -1
 //        getMapItemLocation()
     }
-
-
 
 
 //    fun getMapItemLocation() {
@@ -123,7 +129,11 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     }
 
     fun navigateToCreateEvent(){
-        _createEvent.value = _createEvent.value!!+1
+        _createEvent.value = true
+    }
+
+    fun createEventNavigated(){
+        _createEvent.value = false
     }
 
 
@@ -175,13 +185,6 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     fun profilenavigated(){
         _navigateToProfile.value = false
     }
-
-
-
-
-
-
-
 
 
     fun postlocaion(longitude:Double,latitude:Double,myEmail:String) {

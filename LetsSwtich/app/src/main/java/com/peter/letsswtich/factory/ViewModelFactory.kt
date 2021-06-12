@@ -12,6 +12,7 @@ import com.peter.letsswtich.home.HomeViewModel
 import com.peter.letsswtich.login.LoginActivityViewModel
 import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.map.MapViewModel
+import com.peter.letsswtich.map.event.EditEventViewModel
 import com.peter.letsswtich.question.FirstQuestionnaireViewModel
 import com.peter.letsswtich.question.SecondQuestionnaireViewModel
 import com.peter.letsswtich.setting.SettingViewModel
@@ -60,6 +61,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(HomeViewModel::class.java) ->
                     HomeViewModel(letsSwitchRepository)
+
+                isAssignableFrom(EditEventViewModel::class.java)->
+                    EditEventViewModel(letsSwitchRepository)
 
 
 

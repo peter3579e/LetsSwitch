@@ -10,6 +10,7 @@ enum class CurrentFragmentType(val value: String) {
     FIRSTQUESTION(""),
     SECONDQUESTION(""),
     SETTING(""),
-    LOGINPROCESS("")
+    LOGINPROCESS(""),
+    EDITEVENT("")
 
 }

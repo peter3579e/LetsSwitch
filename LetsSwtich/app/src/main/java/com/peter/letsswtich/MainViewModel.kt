@@ -93,6 +93,7 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         matchList = letsSwitchRepository.getNewMatchListener(myEmail)
     }
 
+
 //    fun getChatRoom(): List<ChatRoom>{
 //
 //        Log.d("ChatViewModel","getChatRoom has run!!")
@@ -261,6 +262,4 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     fun friendsProfileNavigated(){
         _navigateToFriendsProfile.value = false
     }
-
-
 }

@@ -40,33 +40,7 @@
 <!--            map:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/createEventScroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
             tools:visibility="visible"
-            android:elevation="4dp"
-            map:layout_constraintStart_toStartOf="parent"
-            map:layout_constraintTop_toTopOf="parent"
-            android:background = "@color/gray_light"
-            >
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    map:layout_constraintEnd_toEndOf="parent"
-                    map:layout_constraintTop_toTopOf="parent"
-                    android:text="DONE"
-                    android:onClick="@{ () -> viewModel.navigateToCreateEvent()}"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <androidx.core.widget.NestedScrollView
-            tools:visibility="gone"
             android:id="@+id/event_scroll"
             android:layout_width="match_parent"
             android:visibility="gone"

@@ -112,6 +112,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 
     kapt "com.github.bumptech.glide:compiler:$version_glide"
 
@@ -140,9 +141,11 @@ dependencies {
     implementation "com.github.marlonlom:timeago:4.0.1"
 
     //Google Maps
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:9.4.0'
+    implementation 'com.google.android.gms:play-services-identity:9.4.0'
+    implementation 'com.google.android.gms:play-services-gcm:10.2.1'
 
 
 
