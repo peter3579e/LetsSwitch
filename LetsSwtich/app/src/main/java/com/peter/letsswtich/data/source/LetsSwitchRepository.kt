@@ -9,8 +9,8 @@ interface LetsSwitchRepository {
     suspend fun getAllUser(): Result<List<User>>
     fun getLiveChatList(myEmail: String):  MutableLiveData<List<ChatRoom>>
     fun getAllLiveMessage(emails: List<String>): MutableLiveData<MessageWithId>
+    fun getLiveEvent(): MutableLiveData<List<Events>>
     suspend fun getMessageItem(): List<Message>
-    suspend fun getMapItem(): List<StoreLocation>
     fun getNewMatchListener(myEmail: String): MutableLiveData<List<User>>
     suspend fun getLikeList(myEmail: String, user: User): Result<List<String>>
     suspend fun getMyOldMatchList(myEmail: String): Result<List<User>>
@@ -21,6 +21,7 @@ interface LetsSwitchRepository {
     suspend fun removeFromChatList(myEmail: String,friendEmail: String): Result<Boolean>
     suspend fun postMessage(emails: List<String>, message: Message): Result<Boolean>
     suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean>
+    suspend fun postEvent(events: Events): Result<Boolean>
     suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean>
     suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>
     suspend fun updateMatch(myEmail: String, user: User): Result<Boolean>

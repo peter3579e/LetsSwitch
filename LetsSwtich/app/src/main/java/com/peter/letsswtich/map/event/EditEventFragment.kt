@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -27,6 +28,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -36,13 +38,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.MainActivity
+import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.R
+import com.peter.letsswtich.data.Events
+import com.peter.letsswtich.data.Location
 import com.peter.letsswtich.databinding.FragmentEditEventBinding
 import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.ext.toDateFormat
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.map.EventPhotoAdapter
+import com.peter.letsswtich.question.AgeSpinner
+import com.peter.letsswtich.util.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -71,6 +78,7 @@ class EditEventFragment:Fragment() {
         binding.photosRecycleView.adapter = adapter
 
         val photos = mutableListOf<String>("","","","","","","","")
+        viewModel.photoList.value = photos
 
         adapter.submitList(photos)
 
@@ -93,8 +101,9 @@ class EditEventFragment:Fragment() {
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
-        viewModel.locationName.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            binding.locationName = it
+        viewModel.locationDetail.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            binding.locationName = it.placeName
+            Log.d(TAG,"the location detail = $it")
         })
 
         val cal = Calendar.getInstance()
@@ -185,8 +194,70 @@ class EditEventFragment:Fragment() {
 
         })
 
+        viewModel.navigateBackToMap.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it == true && isFinished()){
+                Log.d(TAG,"the value of event deatils = ${viewModel.getEvents()}")
+                viewModel.postEvent(viewModel.getEvents())
+                findNavController().navigate(NavigationDirections.navigateToMapFragment())
+                viewModel.mapNavigated()
+            }
+        })
+
+        val ageIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_age)
+
+        val ageArray:MutableList<Int> = mutableListOf<Int>()
+        Logger.d("Run3")
+        var count = 0
+        Logger.d("Run4")
+        for (i in 0..99){
+            count ++
+            ageArray.add(count)
+        }
+        Logger.d("Run5")
+//        Log.d("FirstQuestion","the value of array = ${ageArray[2]}")
+
+        Logger.d("Run6")
+
+        binding.peopleSpinner.adapter = AgeSpinner(ageArray,ageIndicator)
+
+        binding.peopleSpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
+                    }
+
+                    override fun onItemSelected(
+                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                    ) {
+
+                        if (parent != null && pos != 0) {
+                            viewModel.setupPeople(parent.selectedItem as Int)
+                            Log.d(TAG,"value of selected people = ${viewModel.selectedPeople.value}")
+                        }
+
+                    }
+                }
+
 
         return binding.root
+    }
+
+
+    private fun isFinished(): Boolean {
+
+        return when {
+            viewModel.enterTitle.value != null && viewModel.enterDetail.value != null &&
+                    viewModel.locationDetail.value != null && viewModel.selectedDate.value != null && viewModel.selectedTime.value != null
+                    && viewModel.selectedPeople.value != null ->{
+                true
+            }
+
+
+            else -> {
+                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.remindertofillInfor), Toast.LENGTH_SHORT).show()
+                false
+            }
+        }
+
     }
 
     private fun activateCamera() {
@@ -260,7 +331,7 @@ class EditEventFragment:Fragment() {
                         Log.i("MapFragment", "Place: ${place.name}, ${place.id}")
                         Log.i("MapFragment", "Place: ${place.latLng.toString()}, ${place.address}")
                         Log.i("MapFragment", "Place: $place")
-                        viewModel.locationName.value = place.name
+                        viewModel.locationDetail.value = Location(place.name!!,place.latLng!!.latitude,place.latLng!!.longitude,place.address!!)
 
 
                     }

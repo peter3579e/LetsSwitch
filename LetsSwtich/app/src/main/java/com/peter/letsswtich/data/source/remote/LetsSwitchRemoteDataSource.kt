@@ -28,6 +28,8 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     private const val PATH_CHATLIST = "chatList"
     private const val PATH_MATCHTIME= "matchedTime"
     private const val PATH_REQUIREMENT = "requirement"
+    private const val PATH_EVENT = "events"
+    private const val TAG = "letsSwitchRemoteDataSource"
 
 
     override fun getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>> {
@@ -56,6 +58,64 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 }
         return liveData
     }
+
+
+    override suspend fun postEvent(events: Events): Result<Boolean> = suspendCoroutine { continuation ->
+
+        Log.d(TAG,"the value of post events = $events")
+        Log.d(TAG,"Run post event 1")
+
+        val event = FirebaseFirestore.getInstance().collection(PATH_EVENT)
+
+        Log.d(TAG,"Run post event 2")
+        val document = event.document()
+
+        Log.d(TAG,"Run post event 3")
+
+        events.eventId = document.id
+        Log.d(TAG,"Run post event 4")
+        events.postTime = Calendar.getInstance().timeInMillis
+
+        Log.d(TAG,"Run post event 5")
+        document.set(events)
+                .addOnSuccessListener {
+                    Log.d(TAG,"Run post event 6")
+                    Logger.d("DocumentSnapshot added with ID: ${event}")
+                }
+                .addOnFailureListener { e ->
+                    Log.d(TAG,"Run post event 7")
+                    Logger.w("Error adding document $e")
+                }
+
+
+    }
+
+    override fun getLiveEvent(): MutableLiveData<List<Events>> {
+        val liveData = MutableLiveData<List<Events>>()
+        FirebaseFirestore.getInstance()
+                .collection(PATH_EVENT)
+                .orderBy("postTime", Query.Direction.DESCENDING)
+                .addSnapshotListener { snapshot, exception ->
+                    Logger.i("add SnapshotListener detected")
+
+                    exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                    }
+
+                    val list = mutableListOf<Events>()
+                    snapshot?.forEach { document ->
+                        Logger.d(document.id + " => " + document.data)
+
+                        val eventList = document.toObject(Events::class.java)
+                        list.add(eventList)
+                    }
+                    liveData.value = list
+                    Log.d("RemotedateSource","value of getLiveEvent =${liveData.value!!.size}")
+
+                }
+        return liveData
+    }
+
 
     override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> = suspendCoroutine { continuation ->
         val chat = FirebaseFirestore.getInstance().collection(PATH_CHATLIST)
@@ -604,6 +664,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .addOnFailureListener { e -> Log.w("Update", "Error writing document", e) }
     }
 
+
     override suspend fun postUser(user: User): Result<Boolean> = suspendCoroutine { continuation ->
 
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
@@ -705,22 +766,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
             )
             add(
                     Message("123", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg", "peter7788@gmail.com", "你為什麼要攻擊我的coin master村莊？", 1620355603699)
-            )
-        }
-        return mock
-    }
-
-    override suspend fun getMapItem(): List<StoreLocation> {
-        var mock = mutableListOf<StoreLocation>()
-        mock.run {
-            add(
-                    StoreLocation(Store("123", "Wayne", "https://api.appworks-school.tw/assets/201807242228/main.jpg"), "想找人約跑步", 25.034070787981246, 121.53106153460475, "0938941285")
-            )
-            add(
-                    StoreLocation(Store("123", "Chloe", "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "想吃飯", 22.99095476570537, 120.19685561482974, "0938941285")
-            )
-            add(
-                    StoreLocation(Store("123", "Scolly", "https://api.appworks-school.tw/assets/201807202150/main.jpg"), "想看電影", 25.034658371107255, 121.53197895144412, "0938941285")
             )
         }
         return mock

@@ -45,7 +45,6 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.peter.letsswtich.*
-import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.databinding.FragmentProfileBinding
 import com.peter.letsswtich.dialog.MatchedDialogArgs
 import com.peter.letsswtich.dialog.MatchedDialogViewModel
@@ -972,8 +971,6 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         marker?.let {
             markerOld = it
             it.alpha = 1F
-            val storeLocation = (it.tag as StoreLocation)
-            val store = storeLocation.store
         }
         return false
     }

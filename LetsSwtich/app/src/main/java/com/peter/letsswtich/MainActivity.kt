@@ -1,12 +1,8 @@
 package com.peter.letsswtich
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -56,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
                         Log.d("MainActivity", "UserManager value = ${UserManager.user}")
 
-                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment(UserManager.user,false))
+                        findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment(UserManager.user, false))
 
                         return@OnNavigationItemSelectedListener true
 
@@ -119,12 +115,13 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+
         binding.bottomNavView.visibility = View.GONE
 
         setupBottomNav()
         setupNavController()
 
-        Log.d("initail","the initial value of UserManage =${UserManager.user}")
+        Log.d("initail", "the initial value of UserManage =${UserManager.user}")
 
 
         viewModel.currentFragmentType.observe(this, Observer {
@@ -171,8 +168,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.userInfo.observe(this, Observer {
             UserManager.user = it
             viewModel.userdetail.value = it
-            Log.d("Mainactivity","the vaue of User Manager = ${UserManager.user}")
-            Log.d("Mainactivity","the vaue of userdetail = ${viewModel.userdetail.value}")
+            Log.d("Mainactivity", "the vaue of User Manager = ${UserManager.user}")
+            Log.d("Mainactivity", "the vaue of userdetail = ${viewModel.userdetail.value}")
 
         })
 

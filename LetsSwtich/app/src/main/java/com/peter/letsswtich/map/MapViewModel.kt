@@ -8,10 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
-import com.peter.letsswtich.data.Comment
+import com.peter.letsswtich.data.Events
 import com.peter.letsswtich.data.Result
-import com.peter.letsswtich.data.Store
-import com.peter.letsswtich.data.StoreLocation
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.network.LoadApiStatus
@@ -81,9 +79,13 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val createEvent: LiveData<Boolean>
         get() = _createEvent
 
-    val createTime = MutableLiveData<String>()
+
 
     val cardViewHeight = MutableLiveData<Int>()
+
+    var allEvent = MutableLiveData<List<Events>>()
+
+
 
 
 
@@ -109,6 +111,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         Logger.i("------------------------------------")
         _cardView.value = -1
         _event.value = -1
+        getLiveEvent()
 //        getMapItemLocation()
     }
 
@@ -119,6 +122,12 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 //            Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
 //        }
 //    }
+
+    private fun getLiveEvent() {
+        allEvent = letsSwitchRepository.getLiveEvent()
+        _status.value = LoadApiStatus.DONE
+    }
+
     fun plusEventCount(){
         _event.value = _event.value!!+1
     }

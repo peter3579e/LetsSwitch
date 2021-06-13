@@ -28,13 +28,13 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.getAllLiveMessage(emails)
     }
 
+    override fun getLiveEvent(): MutableLiveData<List<Events>> {
+        return remoteDataSource.getLiveEvent()
+    }
+
 
     override suspend fun getMessageItem(): List<Message> {
         return remoteDataSource.getMessageItem()
-    }
-
-    override suspend fun getMapItem() : List<StoreLocation> {
-        return remoteDataSource.getMapItem()
     }
 
     override suspend fun getLikeList(myEmail: String, user: User): Result<List<String>> {
@@ -76,6 +76,10 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
         return remoteDataSource.postChatRoom(chatRoom)
+    }
+
+    override suspend fun postEvent(events: Events): Result<Boolean> {
+        return remoteDataSource.postEvent(events)
     }
 
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean>{

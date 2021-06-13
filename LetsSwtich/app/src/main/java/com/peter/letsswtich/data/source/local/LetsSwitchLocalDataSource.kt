@@ -20,11 +20,11 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMessageItem(): List<Message> {
+    override fun getLiveEvent(): MutableLiveData<List<Events>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMapItem(): List<StoreLocation> {
+    override suspend fun getMessageItem(): List<Message> {
         TODO("Not yet implemented")
     }
 
@@ -53,6 +53,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postEvent(events: Events): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

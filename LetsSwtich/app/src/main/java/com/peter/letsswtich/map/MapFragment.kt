@@ -74,6 +74,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var markerOld: Marker? = null
     private val LOCATION_PERMISSION_REQUEST = 1
+    private var TAG = "MapFragment"
 
 
     private val viewModel: MapViewModel by viewModels<MapViewModel> { getVmFactory() }
@@ -111,6 +112,8 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             context,
             R.anim.recycler_animation
         )
+        val eventAdapter = EventListAdapter(viewModel)
+        binding.recyclerEventList.adapter = eventAdapter
 
 //        mSearchText = binding.inputSearch
 
@@ -241,6 +244,11 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             }
         })
 
+        viewModel.allEvent.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG,"the vale of all event = ${it.size}")
+            eventAdapter.submitEvent(it)
+        })
+
 
 
 
@@ -251,44 +259,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         return binding.root
     }
 
-
-
-//    private fun init() {
-//        Log.d("MapFragment", "init: initializing")
-//        mSearchText.setOnEditorActionListener { textView, actionId, keyEvent ->
-//            if (actionId == EditorInfo.IME_ACTION_SEARCH
-//                || actionId == EditorInfo.IME_ACTION_DONE
-//                || keyEvent.action == KeyEvent.ACTION_DOWN
-//                || keyEvent.action == KeyEvent.KEYCODE_ENTER
-//            ) {
-//
-//                val mgr: InputMethodManager =
-//                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                mgr.hideSoftInputFromWindow(mSearchText.getWindowToken(), 0)
-//
-//                //execute our method for searching
-//                geoLocate()
-//            }
-//            false
-//        }
-//    }
-
-//    private fun geoLocate() {
-//        Log.d("MapFragment", "geoLocate: geolocating")
-//        val searchString = mSearchText.text.toString()
-//        val geocoder = Geocoder(this.context)
-//        var list: List<Address> = ArrayList()
-//        try {
-//            list = geocoder.getFromLocationName(searchString, 1)
-//        } catch (e: IOException) {
-//            Log.e("MapFragment", "geoLocate: IOException: " + e.message)
-//        }
-//        if (list.size > 0) {
-//            val address: Address = list[0]
-//            Log.d("MapFragment", "geoLocate: found a location: " + address.toString())
-//            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private fun initGoogleMap(savedInstanceState: Bundle?) {
         // *** IMPORTANT ***

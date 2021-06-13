@@ -194,12 +194,43 @@
                     app:layout_constraintTop_toTopOf="@id/time" />
 
                 <TextView
+                    android:id="@+id/people"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount of people"
+                    app:layout_constraintTop_toBottomOf="@id/time"
+                    app:layout_constraintStart_toStartOf="@id/time"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black" />
+                <Spinner
+                    android:id="@+id/people_spinner"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/bg_spinner"
+                    app:layout_constraintStart_toEndOf="@id/people"
+                    app:layout_constraintBottom_toBottomOf="@id/people"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintTop_toTopOf="@id/people" />
+
+                <ImageView
+                    android:id="@+id/people_image"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_baseline_people_24"
+                    android:backgroundTint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@id/people"
+                    app:layout_constraintEnd_toEndOf="@id/active_map"
+                    app:layout_constraintTop_toTopOf="@id/people" />
+
+                <TextView
                     android:id="@+id/photos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add Photos"
-                    app:layout_constraintTop_toBottomOf="@id/time"
-                    app:layout_constraintStart_toStartOf="@id/time"
+                    app:layout_constraintTop_toBottomOf="@id/people"
+                    app:layout_constraintStart_toStartOf="@id/people"
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"
                     android:textColor="@color/black" />
@@ -214,6 +245,31 @@
                     tools:itemCount="8"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:listitem="@layout/item_profile_photos" />
+
+                <ImageView
+                    android:id="@+id/button_create"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/full_size_button_height"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/bg_colored_round_corner"
+                    android:onClick="@{() -> viewModel.navigateBackToMap()}"
+                    app:layout_constraintTop_toBottomOf="@id/photos_recycleView"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CREATE"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/button_create"
+                    app:layout_constraintTop_toTopOf="@id/button_create"
+                    app:layout_constraintEnd_toEndOf="@id/button_create"
+                    app:layout_constraintBottom_toBottomOf="@id/button_create"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
