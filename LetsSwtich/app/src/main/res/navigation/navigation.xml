@@ -111,6 +111,16 @@
         tools:layout="@layout/fragment_edit_event"/>
 
     <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.peter.letsswtich.map.eventDetail.EventDetailFragment"
+        android:label="EventDetailFragment"
+        tools:layout="@layout/fragment_event_detail">
+        <argument android:name="eventDetail"
+            app:argType="com.peter.letsswtich.data.Events"
+            app:nullable="false"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/settingFragment"
         android:name="com.peter.letsswtich.setting.SettingFragment"
         android:label="SettingFragment" >
@@ -153,8 +163,9 @@
     <action android:id="@+id/navigate_to_matched_dialog" app:destination="@id/matchedDialog"/>
     <action android:id="@+id/navigate_to_edit_profile_page" app:destination="@id/editProfileFragment"/>
     <action android:id="@+id/navigate_to_setting_fragment" app:destination="@id/settingFragment"/>
-    <action android:id="@+id/navigate_to_pic_dialog" app:destination="@+id/picDialog"/>
-    <action android:id="@+id/navigate_to_event_fragment" app:destination="@+id/editEventFragment"/>
+    <action android:id="@+id/navigate_to_pic_dialog" app:destination="@id/picDialog"/>
+    <action android:id="@+id/navigate_to_event_fragment" app:destination="@id/editEventFragment"/>
+    <action android:id="@+id/navigate_to_event_detail_fragment" app:destination="@id/eventDetailFragment"/>
 
     <!--    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>-->
 

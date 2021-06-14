@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.secondQutionnaireFragment -> CurrentFragmentType.SECONDQUESTION
                 R.id.settingFragment -> CurrentFragmentType.SETTING
                 R.id.editEventFragment -> CurrentFragmentType.EDITEVENT
+                R.id.eventDetailFragment -> CurrentFragmentType.EVENTDETAIL
                 else -> viewModel.currentFragmentType.value
             }
         }

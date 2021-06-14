@@ -43,10 +43,14 @@ class EventListAdapter (val viewModel: MapViewModel) :  RecyclerView.Adapter<Rec
     }
 
     class EventListViewHolder(private var binding: ItemEventListBinding): RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+
+        val seeMore = binding.navigateToEventDetail
+
         fun bind(events: Events?, viewModel: MapViewModel){
 
             events?.let{
                 binding.eventDetail = it
+                binding.viewModel = viewModel
 
                 binding.executePendingBindings()
             }
@@ -109,8 +113,15 @@ class EventListAdapter (val viewModel: MapViewModel) :  RecyclerView.Adapter<Rec
         when (holder){
             is EventListViewHolder -> {
                 holder.bind(events?.get(position-1), viewModel)
+                holder.seeMore.setOnClickListener {
+                    viewModel.navigateToEventDetail.value = events?.get(position-1)
+                    Log.d("EventListAdapter","navigate click has run")
+                    Log.d("EventListAdapter","navigate click value = ${events?.get(position-1)}")
+                    notifyDataSetChanged()
+                }
                 holder.itemView.setOnClickListener {
                     Log.d("EventListAdapter","the value of position = ${events?.get(position-1)}")
+                    viewModel.clickedEventLocation.value = events?.get(position-1)
                 }
             }
             is CreateEventViewHolder -> {

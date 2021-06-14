@@ -3,6 +3,7 @@ package com.peter.letsswtich.ext
 
 import androidx.fragment.app.Fragment
 import com.peter.letsswtich.LetsSwtichApplication
+import com.peter.letsswtich.data.Events
 import com.peter.letsswtich.data.Requirement
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.factory.*
@@ -35,5 +36,10 @@ fun Fragment.getVmFactory(matchedUser: User, fromMap: Boolean) : ProFileViewMode
 fun Fragment.getVmFactory(userImage:String) : PicViewModelFactory {
     val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
     return PicViewModelFactory(repository, userImage)
+}
+
+fun Fragment.getVmFactory(eventDetail: Events) : EventViewModelFactory {
+    val repository = (requireContext().applicationContext as LetsSwtichApplication).letsSwitchRepository
+    return EventViewModelFactory(repository, eventDetail)
 }
 

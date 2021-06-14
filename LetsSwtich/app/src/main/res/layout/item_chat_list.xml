@@ -40,9 +40,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/chatroom"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toStartOf="@id/text_lasted_time"
+            android:layout_marginEnd="60dp"
             app:layout_constraintBottom_toBottomOf="@id/image_chat_avatar"
             app:layout_constraintStart_toEndOf="@id/image_chat_avatar"
             app:layout_constraintTop_toTopOf="@id/image_chat_avatar">
@@ -74,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{chatRoom.latestMessage.toString()}"
                     android:maxLines="1"
+                    android:ellipsize="end"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Hello! Nice to meet you" />

@@ -32,6 +32,10 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val snapPosition: MutableLiveData<Int>
         get() = _snapPosition
 
+    val clickedEventLocation = MutableLiveData<Events>()
+
+    val eventsInMapReady = MutableLiveData<List<Events>>()
+
 
     val matchList = MutableLiveData<List<User>>()
 
@@ -84,6 +88,9 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val cardViewHeight = MutableLiveData<Int>()
 
     var allEvent = MutableLiveData<List<Events>>()
+
+    val navigateToEventDetail = MutableLiveData<Events>()
+
 
 
 
@@ -194,6 +201,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     fun profilenavigated(){
         _navigateToProfile.value = false
     }
+
 
 
     fun postlocaion(longitude:Double,latitude:Double,myEmail:String) {

@@ -247,10 +247,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         viewModel.allEvent.observe(viewLifecycleOwner, Observer {
             Log.d(TAG,"the vale of all event = ${it.size}")
             eventAdapter.submitEvent(it)
+
+            viewModel.eventsInMapReady.value = it
+
         })
-
-
-
 
 
         map = binding.radarMap
@@ -277,6 +277,18 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+        viewModel.eventsInMapReady.observe(this, Observer {
+            Log.d(TAG,"event LatLng has run!!")
+            for (events in it){
+                val location = LatLng(events.Location.latitude,events.Location.lngti)
+                googleMap.addMarker(
+                        MarkerOptions().position(location)
+                                .flat(true)
+                )
+            }
+
+        })
 
         if (ActivityCompat.checkSelfPermission(
                 LetsSwtichApplication.appContext,
@@ -344,6 +356,24 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     15.toFloat()
                 )
             )
+        })
+
+        viewModel.clickedEventLocation.observe(this, Observer { Event ->
+            val location = LatLng(Event.Location.latitude, Event.Location.lngti)
+
+            googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                            location,
+                            15.toFloat()
+                    )
+            )
+        })
+
+        viewModel.navigateToEventDetail.observe(viewLifecycleOwner, Observer {
+            if (it != null){
+                findNavController().navigate(NavigationDirections.navigateToEventDetailFragment(it))
+                viewModel.navigateToEventDetail.value = null
+        }
         })
 
 
