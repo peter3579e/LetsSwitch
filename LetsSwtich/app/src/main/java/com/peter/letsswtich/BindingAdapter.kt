@@ -20,6 +20,7 @@ import com.peter.letsswtich.home.HomeAdapter
 import com.peter.letsswtich.home.ImageAdapter
 import com.peter.letsswtich.home.ImageCircleAdapter
 import com.peter.letsswtich.map.FriendsImageAdapter
+import com.peter.letsswtich.map.eventDetail.EventDetailImageAdapter
 import com.peter.letsswtich.profile.PhotosAdapter
 import com.peter.letsswtich.util.TimeUtil
 import com.peter.letsswtich.util.Util.getColor
@@ -146,6 +147,10 @@ fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<String>?
                     submitImages(it)
                 }
                 is PreviewImageAdapter -> {
+                    submitImages(it)
+                }
+
+                is EventDetailImageAdapter -> {
                     submitImages(it)
                 }
 

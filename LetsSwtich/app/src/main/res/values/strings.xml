@@ -50,6 +50,7 @@
     <string name="select_requiremnt">Please select what kind of person you are looking for</string>
     <string name="privacy_requiremnt">Please read the privacy policy</string>
     <string name="remindertofillInfor">Please complete the question</string>
+    <string name="joined">You have successfully join the event</string>
     <string name="remindertofillEvent">Please complete the event detail</string>
     <string name="reminderEditProfile">Please fill the compulsory information</string>
     <string name="spinner_select_district">Select district</string>

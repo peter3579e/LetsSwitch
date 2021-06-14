@@ -32,6 +32,10 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.getLiveEvent()
     }
 
+    override fun getLiveJoinList(events: Events): MutableLiveData<List<User>>{
+        return remoteDataSource.getLiveJoinList(events)
+    }
+
 
     override suspend fun getMessageItem(): List<Message> {
         return remoteDataSource.getMessageItem()
@@ -55,6 +59,10 @@ class DefaultLetsSwitchRepository(
 
     override suspend fun postUser(user: User): Result<Boolean>{
         return remoteDataSource.postUser(user)
+    }
+
+    override suspend fun postJoin(myEmail: String, events: Events): Result<Boolean>{
+        return remoteDataSource.postJoin(myEmail,events)
     }
 
     override suspend fun updateUser(user: User): Result<Boolean> {

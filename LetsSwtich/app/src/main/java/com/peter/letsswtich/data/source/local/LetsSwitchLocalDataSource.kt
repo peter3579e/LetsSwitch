@@ -24,6 +24,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getLiveJoinList(events: Events): MutableLiveData<List<User>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getMessageItem(): List<Message> {
         TODO("Not yet implemented")
     }
@@ -65,6 +69,10 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postJoin(myEmail: String, events: Events): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

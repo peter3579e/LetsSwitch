@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.peter.letsswtich.map.eventDetail.EventDetailViewModel" />
@@ -13,17 +15,235 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/button_back"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
-            android:elevation="2dp"
-            android:onClick="@{()->viewModel.navigateBackToMap()}"
-            android:background="@drawable/ic_detail_close"
+        <ScrollView
+            android:id="@+id/scroll_detail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/button_back"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/ic_detail_close"
+                    android:elevation="2dp"
+                    android:onClick="@{()->viewModel.navigateBackToMap()}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_detail_gallery"
+                    android:layout_width="0dp"
+                    android:layout_height="500dp"
+                    android:orientation="horizontal"
+                    app:images="@{viewModel.photoList}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/join_list_recycler"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="@id/amountOfPeople"
+                    app:layout_constraintStart_toEndOf="@id/amountOfPeople"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/amountOfPeople"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_detail_circles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:addDecoration="@{viewModel.decoration}"
+                    app:count="@{viewModel.photoList.size()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/recycler_detail_gallery"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_detail_gallery"
+                    tools:text="Clubbing with Taiwanese hotties"
+                    android:textSize="30dp"
+                    android:text="@{viewModel.event.eventTitle}"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp"/>
+                <View
+                    android:id="@+id/separate_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gray_light"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
+
+                <ImageView
+                    android:id="@+id/clock"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/separate_line"
+                    android:background="@drawable/clock_1"
+                    android:backgroundTint="@color/gray_646464"
+                    app:layout_constraintStart_toStartOf="@id/separate_line"
+                    android:layout_marginTop="16dp"/>
+                <TextView
+                    android:id="@+id/dateAndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/clock"
+                    app:layout_constraintBottom_toBottomOf="@id/clock"
+                    android:layout_marginStart="10dp"
+                    android:text='@{viewModel.event.date+" , "+viewModel.event.time}'
+                    tools:text="16.06.2021 , 22:00"
+                    app:layout_constraintTop_toTopOf="@id/clock"/>
+
+                <ImageView
+                    android:id="@+id/geoMark"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/clock"
+                    android:background="@drawable/ic_baseline_location_on_24"
+                    android:backgroundTint="@color/gray_646464"
+                    app:layout_constraintStart_toStartOf="@id/separate_line"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/geoMark"
+                    app:layout_constraintTop_toBottomOf="@id/dateAndTime"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="10dp"
+                    android:text="@{viewModel.event.location.placeName}"
+                    tools:text="Code" />
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/geoMark"
+                    app:layout_constraintTop_toBottomOf="@id/location"
+                    android:layout_marginStart="10dp"
+                    android:text="@{viewModel.event.location.address}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    tools:text="28 Eyre St, Sheffield City Centre, Sheffield S1 4QY英國" />
+
+                <ImageView
+                    android:id="@+id/peopleMark"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/geoMark"
+                    android:background="@drawable/ic_baseline_person_24"
+                    android:backgroundTint="@color/gray_646464"
+                    app:layout_constraintStart_toStartOf="@id/separate_line"
+                    android:layout_marginTop="30dp"/>
+
+                <TextView
+                    android:id="@+id/hostName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/geoMark"
+                    app:layout_constraintTop_toTopOf="@id/peopleMark"
+                    app:layout_constraintBottom_toBottomOf="@id/peopleMark"
+                    android:layout_marginStart="10dp"
+                    android:text='@{"Hosted by "+viewModel.event.postBy}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    tools:text="Hosted by Peter Liu" />
+
+                <ImageView
+                    android:id="@+id/amountOfPeople"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/peopleMark"
+                    android:background="@drawable/ic_baseline_people_24"
+                    android:backgroundTint="@color/gray_646464"
+                    app:layout_constraintStart_toStartOf="@id/separate_line"
+                    android:layout_marginTop="20dp"/>
+
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/amountOfPeople"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/amountOfPeople"
+                    android:textSize="14dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    android:text="Description" />
+
+                <TextView
+                    android:id="@+id/detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/amountOfPeople"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/description"
+                    android:textSize="16dp"
+                    android:text="@{viewModel.event.eventDetail}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    tools:text="Lets have some fun with Taiwanese well fit chick"
+                    android:layout_marginBottom="20dp"/>
+
+                <ImageView
+                    android:id="@+id/button_create"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/full_size_button_height"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/bg_colored_round_corner"
+                    android:onClick="@{() -> viewModel.sendJoin()}"
+                    app:layout_constraintTop_toBottomOf="@id/detail"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Attend"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/button_create"
+                    app:layout_constraintTop_toTopOf="@id/button_create"
+                    app:layout_constraintEnd_toEndOf="@id/button_create"
+                    app:layout_constraintBottom_toBottomOf="@id/button_create"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
