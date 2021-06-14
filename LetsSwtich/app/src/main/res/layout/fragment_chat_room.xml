@@ -105,8 +105,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
-                app:reverseLayout="true"
-                app:stackFromEnd="true"
                 tools:listitem="@layout/item_my_message" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

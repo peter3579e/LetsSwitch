@@ -89,21 +89,24 @@ class EventDetailFragment : Fragment() {
 
         var count = 0
 
-        val joinListPic = mutableListOf<String>()
+        var joinListPic: MutableList<String>? = mutableListOf()
 
         viewModel.jointList.observe(viewLifecycleOwner, Observer {
             Log.d(TAG,"the value of joinList = $it")
             for (pic in it){
-                joinListPic.add(pic.personImages[0])
+                joinListPic!!.add(pic.personImages[0])
                 Log.d(TAG,"the value of joinList Pic = $joinListPic")
                 count ++
                 Log.d(TAG,"the value of count = ${count}")
             }
 
             if (count == it.size){
-                Log.d(TAG,"the value of joinList Pic = $joinListPic")
+                Log.d(TAG,"the value of joinList Before= $joinListPic")
                 joinAdapter.submitList(joinListPic)
                 joinAdapter.notifyDataSetChanged()
+                joinListPic = mutableListOf()
+                Log.d(TAG,"the value of joinList After = $joinListPic")
+                count = 0
                 Log.d(TAG,"if has run")
             }
         })

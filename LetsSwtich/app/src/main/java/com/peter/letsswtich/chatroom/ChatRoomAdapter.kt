@@ -75,6 +75,7 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
                 if (viewModel.filterMessage[size-1].read && viewModel.count == size) {
                     Log.d("ChatRoomAdapter","the visible has run")
                     read.visibility = View.VISIBLE
+                    viewModel.count = 0
                 } else {
                     Log.d("ChatRoomAdapter","the invisible has run")
                     read.visibility = View.GONE

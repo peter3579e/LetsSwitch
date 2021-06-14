@@ -92,14 +92,14 @@ class ChatRoomFragment : Fragment() {
 
             Log.d("ChatRoomFragmenr","the value of count = $count")
 
-            if(count != 0){
-                Log.d("ChatRoomFragmenr","Run Here!!!!")
-//                adapter.submitList(message.message)
-                val size = message.message.size-1
-                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].text}")
-                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].read}")
-//                adapter.notifyDataSetChanged()
-            }
+//            if(count != 0){
+//                Log.d("ChatRoomFragmenr","Run Here!!!!")
+////                adapter.submitList(message.message)
+//                val size = message.message.size-1
+//                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].text}")
+//                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].read}")
+////                adapter.notifyDataSetChanged()
+//            }
 
             count++
 
