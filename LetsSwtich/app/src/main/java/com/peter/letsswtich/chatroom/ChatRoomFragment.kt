@@ -80,7 +80,7 @@ class ChatRoomFragment : Fragment() {
             }
         }
 
-        var count = 0
+//        var count = 0
 
 
         // Observers
@@ -89,27 +89,12 @@ class ChatRoomFragment : Fragment() {
         viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer {message ->
             viewModel.updateIsRead(viewModel.currentChattingUser,message.documentId)
             viewModel.filterMessage =  message.message.excludeFriend(friendUserEmail)
-
-            Log.d("ChatRoomFragmenr","the value of count = $count")
-
-//            if(count != 0){
-//                Log.d("ChatRoomFragmenr","Run Here!!!!")
-////                adapter.submitList(message.message)
-//                val size = message.message.size-1
-//                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].text}")
-//                Log.d("ChatRoomFragmenr","value of text = ${message.message[size].read}")
-////                adapter.notifyDataSetChanged()
-//            }
-
-            count++
-
+            Log.d("ChatroomFragment","the value of message ${message.message}")
+            viewModel.count = 0
             adapter.submitList(message.message)
             adapter.notifyDataSetChanged()
 
-
             Log.d("ChatRoomFragmen","the value of filteredMessage = ${viewModel.filterMessage}")
-
-//            Log.d("ChatRoomFragment","value of documentID = ${it.documentId}")
         })
 
         viewModel.enterMessage.observe(viewLifecycleOwner, Observer {

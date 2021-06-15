@@ -23,12 +23,9 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
 
     class FriendMessageViewHolder(private var binding: ItemFriendsMessageBinding) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
-
-
-
         fun bind(message: Message, viewModel: ChatRoomViewModel) {
 
-            Log.d("ChatAdpater","FriendMessageViewHolder has run!!")
+            Log.d("ChatRoomAdpater","FriendMessageViewHolder has run!!")
 
             binding.message = message
             binding.executePendingBindings()
@@ -76,6 +73,7 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
                     Log.d("ChatRoomAdapter","the visible has run")
                     read.visibility = View.VISIBLE
                     viewModel.count = 0
+                    Log.d("ChatRoomAdapter","value of count ${viewModel.count}")
                 } else {
                     Log.d("ChatRoomAdapter","the invisible has run")
                     read.visibility = View.GONE
@@ -127,17 +125,13 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         when (holder) {
             is FriendMessageViewHolder -> {
                 holder.bind((getItem(position) as Message), viewModel)
             }
             is MyMessageViewHolder -> {
-
                 holder.bind((getItem(position) as Message), viewModel)
                 Log.d("ChatRoomAdapter", "value of Item = ${getItem(position).text}")
-
-
             }
         }
     }

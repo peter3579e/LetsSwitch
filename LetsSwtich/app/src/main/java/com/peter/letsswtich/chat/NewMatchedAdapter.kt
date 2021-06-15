@@ -10,7 +10,7 @@ import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.data.UserInfo
 import com.peter.letsswtich.databinding.ItemNewMatchesBinding
 
-class NewMatchedAdapter(viewModel: ChatViewModel): ListAdapter<ChatRoom, NewMatchedAdapter.ViewHolder>(DiffCallback) {
+class NewMatchedAdapter(val viewModel: ChatViewModel): ListAdapter<ChatRoom, NewMatchedAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private var binding: ItemNewMatchesBinding):
             RecyclerView.ViewHolder(binding.root) {
