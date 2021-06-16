@@ -1,8 +1,17 @@
-.gradle
-.idea/
+#built application files
+*.apk
+*.aab
+*.ap_
 *.iml
-build/
+.gradle
 /local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
 .DS_Store
+/build
 /captures
-google-services.json
+.externalNativeBuild
