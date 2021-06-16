@@ -26,7 +26,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     private const val PATH_MATCHLIST = "matchedList"
     private const val PATH_FOLLOWLIST = "followList"
     private const val PATH_CHATLIST = "chatList"
-    private const val PATH_MATCHTIME = "matchedTime"
     private const val PATH_REQUIREMENT = "requirement"
     private const val PATH_EVENT = "events"
     private const val PATH_JOIN = "joinList"
