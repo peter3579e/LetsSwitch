@@ -29,7 +29,7 @@ fun List<Message>?.excludeFriend(friendEmail:String) : List<Message>{
 fun List<User>?.filterByTraits(requirement: Requirement) : List<User> {
     return this?.filter {
         it?.let {
-            if(requirement.gender == ""){
+            if(requirement.gender == "" || requirement.gender == "Both"){
                 it.city == requirement.city  && it.fluentLanguage.contains(requirement.language) && it.city ==
                         requirement.city && it.email != UserManager.user.email && it.age < requirement.age[1] && requirement.age[0] < it.age
             } else{
