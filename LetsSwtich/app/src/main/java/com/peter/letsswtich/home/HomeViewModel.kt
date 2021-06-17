@@ -64,7 +64,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         get() = _requirement
 
 
-
     var count: Boolean = false
 
     var matchList = MutableLiveData<List<User>>()
@@ -87,8 +86,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         get() = _oldMatchList
 
     val userPersonImage = MutableLiveData<List<String>>()
-
-
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -115,14 +112,20 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         get() = _status
 
     val decoration = object : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
             super.getItemOffsets(outRect, view, parent, state)
 
             // Add top margin only for the first item to avoid double space between items
             if (parent.getChildLayoutPosition(view) == 0) {
                 outRect.left = 0
             } else {
-                outRect.left = LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_detail_circle)
+                outRect.left =
+                    LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_detail_circle)
             }
         }
     }
@@ -131,22 +134,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
-
-
-
         getRequirement(UserManager.user.email)
-
-
-//        myDetail("peter324234@yahoo.com.tw", user = User(listOf("https://api.appworks-school.tw/assets/201807242228/main.jpg",
-//                "https://img.onl/6zU8bQ",
-//                "https://api.appworks-school.tw/assets/201807201824/main.jpg",
-//                "https://api.appworks-school.tw/assets/201807201824/main.jpg"), "Hello", "boring", "123", "https://api.appworks-school.tw/assets/201807201824/main.jpg", "12345", 25, 25.034070787981246, 121.53106153460475, "Male", listOf("jsidfjisdjfiasf", "sfdasdfasdf"), listOf("Sdfasdf", "sdfasf"), listOf("sdfasdfasdf", "sdfasdfdfs"), listOf("sadfadfadfadsf", "asdfadsfasdf"), "Peter", "peter3579e@gmail.com", "Taipei", "Hawai", "teacher", listOf("English", "Chinese"), listOf("Japanese", "French")))
-//        getMyOldMatchList(UserManager.user.email)
-
-            getNewMatchListener(UserManager.user.email)
-
-
-
+        getNewMatchListener(UserManager.user.email)
     }
 
     fun updateMyLike(myEmail: String, user: User) {
@@ -164,7 +153,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     _error.value = result.exception.toString()
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                 }
 
             }
@@ -172,7 +162,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
     }
 
     fun updateMatch(myEmail: String, user: User) {
-        Log.d("HomeViewModel","UpdateMatch has run!!!!!!!")
+        Log.d("HomeViewModel", "UpdateMatch has run!!!!!!!")
         coroutineScope.launch {
 
             when (val result = letsSwitchRepository.updateMatch(myEmail, user)) {
@@ -187,15 +177,16 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     _error.value = result.exception.toString()
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                 }
 
             }
         }
     }
 
-    fun removeUserFromChatList(myEmail: String,friendEmail: String){
-        Log.d("HomeViewModel","RemoveList ChatList has run!!!!!!!")
+    fun removeUserFromChatList(myEmail: String, friendEmail: String) {
+        Log.d("HomeViewModel", "RemoveList ChatList has run!!!!!!!")
         coroutineScope.launch {
 
             when (val result = letsSwitchRepository.removeFromChatList(myEmail, friendEmail)) {
@@ -210,14 +201,15 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     _error.value = result.exception.toString()
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                 }
 
             }
         }
     }
 
-    fun removeFromLikeList(myEmail: String,user: User){
+    fun removeFromLikeList(myEmail: String, user: User) {
 //        Log.d("HomeViewModel","RemoveList has run!!!!!!!")
         coroutineScope.launch {
 
@@ -233,7 +225,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     _error.value = result.exception.toString()
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                 }
 
             }
@@ -246,13 +239,13 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         Log.d("letsSwitchRemoteDataSource", "UpdateAndCheckLike has run")
 
         users.document(myEmail).collection("followList").document("peter3579e@gmail.com")
-                .set(user)
-                .addOnSuccessListener {
-                    Logger.d("DocumentSnapshot added with ID: ${users}")
-                }
-                .addOnFailureListener { e ->
-                    Logger.w("Error adding document $e")
-                }
+            .set(user)
+            .addOnSuccessListener {
+                Logger.d("DocumentSnapshot added with ID: ${users}")
+            }
+            .addOnFailureListener { e ->
+                Logger.w("Error adding document $e")
+            }
     }
 
     fun getRequirement(myEmail: String) {
@@ -275,7 +268,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                     null
                 }
             }
@@ -305,7 +299,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                     null
                 }
             }
@@ -314,15 +309,15 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         }
     }
 
-    fun getNewMatchListener(myEmail: String){
-        Log.d("HomeViewModel","getNewMatchListener has run!!!")
+    fun getNewMatchListener(myEmail: String) {
+        Log.d("HomeViewModel", "getNewMatchListener has run!!!")
         matchList = letsSwitchRepository.getNewMatchListener(myEmail)
     }
 
-    fun getMyOldMatchList(myEmail: String){
+    fun getMyOldMatchList(myEmail: String) {
         coroutineScope.launch {
 
-            Log.d("HomeViewModel","getMyOldMatchList has run!!!")
+            Log.d("HomeViewModel", "getMyOldMatchList has run!!!")
 
             val result = letsSwitchRepository.getMyOldMatchList(myEmail)
 
@@ -340,7 +335,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                     null
                 }
             }
@@ -373,7 +369,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }
@@ -406,20 +403,23 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
     fun filteredUserList(users: List<User>) {
         _usersWithMatch.value = users.filterByTraits(requirement.value!!)
 
-        for (i in _usersWithMatch.value!!){
+        for (i in _usersWithMatch.value!!) {
             Log.d("HomeViewModel", "value of users = ${i.name}")
         }
 
         Log.d("HomeViewModel", "here here here!!!")
     }
 
-    fun onCampaignScrollChange(layoutManager: RecyclerView.LayoutManager?, linearSnapHelper: LinearSnapHelper) {
+    fun onCampaignScrollChange(
+        layoutManager: RecyclerView.LayoutManager?,
+        linearSnapHelper: LinearSnapHelper
+    ) {
         val snapView = linearSnapHelper.findSnapView(layoutManager)
         snapView?.let {
             layoutManager?.getPosition(snapView)?.let {
                 if (it != snapPosition.value) {
                     _snapPosition.value = it
-                    Log.i("snapPosition on scrollChange","$it")
+                    Log.i("snapPosition on scrollChange", "$it")
                 }
             }
         }

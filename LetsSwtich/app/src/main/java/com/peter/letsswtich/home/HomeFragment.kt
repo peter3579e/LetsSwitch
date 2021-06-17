@@ -44,7 +44,6 @@ class HomeFragment : Fragment(), CardStackListener {
     private val myEmail = UserManager.user.email
     private var maxCount: Int = -1
     var likedUser = requireNotNull(com.peter.letsswtich.data.User())
-    private var oldMatchList: List<User> = listOf()
 
     override fun onStart() {
         super.onStart()
