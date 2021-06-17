@@ -17,9 +17,9 @@ import com.peter.letsswtich.ext.getVmFactory
 class PicDialog : AppCompatDialogFragment() {
 
     private val viewModel by viewModels<PicViewModel> {
-       getVmFactory(
-               PicDialogArgs.fromBundle(requireArguments()).userImage
-       )
+        getVmFactory(
+            PicDialogArgs.fromBundle(requireArguments()).userImage
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +29,9 @@ class PicDialog : AppCompatDialogFragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val binding = DialogPicBinding.inflate(inflater, container, false)
         binding.dialog = this

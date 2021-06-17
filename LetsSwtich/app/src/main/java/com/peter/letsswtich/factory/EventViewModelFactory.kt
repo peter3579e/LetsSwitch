@@ -8,20 +8,20 @@ import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.map.eventDetail.EventDetailViewModel
 
 class EventViewModelFactory constructor(
-        private val repository: LetsSwitchRepository,
-        private val eventDetail: Events
+    private val repository: LetsSwitchRepository,
+    private val eventDetail: Events
 
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-            with(modelClass) {
-                when {
-                    isAssignableFrom(EventDetailViewModel::class.java) ->
-                        EventDetailViewModel(repository, eventDetail)
+        with(modelClass) {
+            when {
+                isAssignableFrom(EventDetailViewModel::class.java) ->
+                    EventDetailViewModel(repository, eventDetail)
 
 
-                    else ->
-                        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-                }
-            } as T
+                else ->
+                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
+        } as T
 }

@@ -19,7 +19,11 @@ import kotlinx.coroutines.launch
 import java.sql.Time
 import java.util.*
 
-class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, user: com.peter.letsswtich.data.User,fromMap:Boolean):ViewModel() {
+class ProfileViewModel(
+    private val letsSwitchRepository: LetsSwitchRepository,
+    user: com.peter.letsswtich.data.User,
+    fromMap: Boolean
+) : ViewModel() {
 
     val userDetail = user
 
@@ -68,7 +72,7 @@ class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, u
         get() = _date
 
     private val _time = MutableLiveData<Time>()
-    val time : LiveData<Time>
+    val time: LiveData<Time>
         get() = _time
 
     private val _isUploadPhoto = MutableLiveData<Boolean>()
@@ -95,35 +99,35 @@ class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, u
         setCurrentDate(Date())
     }
 
-    fun uploadPhoto(){
+    fun uploadPhoto() {
         _isUploadPhoto.value = true
     }
 
-    fun setPhoto(photo: Uri){
+    fun setPhoto(photo: Uri) {
         _photoUri.value = photo
     }
 
-    fun setCurrentDate(date: Date){
+    fun setCurrentDate(date: Date) {
         _date.value = date
         _time.value = Time(date.time)
     }
 
 
-
-    fun navigateToEditProfile(){
+    fun navigateToEditProfile() {
         _navigateToEditProfile.value = true
     }
 
-    fun editProfileNavigated(){
+    fun editProfileNavigated() {
         _navigateToEditProfile.value = false
     }
 
     val decoration = GridSpacingItemDecoration(
-            4,
-            LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_photo_grid), true
+        4,
+        LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_photo_grid),
+        true
     )
 
-    fun startCamera () {
+    fun startCamera() {
         _camera.value = true
     }
 
@@ -131,19 +135,19 @@ class ProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, u
         _camera.value = false
     }
 
-    fun navigateToSetting(){
-       _setting.value = true
+    fun navigateToSetting() {
+        _setting.value = true
     }
 
-    fun settingNavigated(){
+    fun settingNavigated() {
         _setting.value = false
     }
 
-    fun navigateToPicDialog(){
+    fun navigateToPicDialog() {
         _picDialog.value = true
     }
 
-    fun picDialogNavigated(){
+    fun picDialogNavigated() {
         _picDialog.value = false
     }
 

@@ -38,7 +38,8 @@ class SecondQutionnaireFragment : Fragment() {
 
         val genderIndicator =
             LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_gender)
-        val cityIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_city)
+        val cityIndicator =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_city)
         val mothertongue =
             LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_mothertongue)
         val fluentLanguage =
@@ -48,7 +49,8 @@ class SecondQutionnaireFragment : Fragment() {
         val languageContent =
             LetsSwtichApplication.instance.resources.getStringArray(R.array.language_array)
 
-        val cityContent = LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
+        val cityContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
 
 
         binding.gender.adapter = SpinnerAdapter(genderContent, genderIndicator)
@@ -86,8 +88,8 @@ class SecondQutionnaireFragment : Fragment() {
                     parent: AdapterView<*>?, view: View?, pos: Int, id: Long
                 ) {
 
-                    Log.d("test","position value = $pos")
-                    if (parent !=null && pos == 0){
+                    Log.d("test", "position value = $pos")
+                    if (parent != null && pos == 0) {
                         viewModel.selectedGender.value = ""
                     }
 
@@ -149,15 +151,15 @@ class SecondQutionnaireFragment : Fragment() {
 //                Log.d("SecondQuestion", "the value of UserManager = ${UserManager.user}")
 
 
-
                 val requirement = Requirement(
                     gender = viewModel.selectedGender.value.toString(),
-                    age = listOf(viewModel.minAge.value!!,viewModel.maxAge.value!!),
+                    age = listOf(viewModel.minAge.value!!, viewModel.maxAge.value!!),
                     city = viewModel.city.value!!,
-                    language = viewModel.selectedFirstLanguage.value!!
+                    language = viewModel.selectedFirstLanguage?.value!!
                 )
 
-                viewModel.postRequirement(UserManager.user.email,requirement)
+
+                viewModel.postRequirement(UserManager.user.email, requirement)
 
                 startActivity(Intent(context, MainActivity::class.java))
                 requireActivity().finish()

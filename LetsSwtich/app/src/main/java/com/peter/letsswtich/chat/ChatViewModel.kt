@@ -20,8 +20,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
-
-
     var allLiveChatRooms = MutableLiveData<List<ChatRoom>>()
 
     private val _filteredChatRooms = MutableLiveData<List<ChatRoom>>()
@@ -30,15 +28,12 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         get() = _filteredChatRooms
 
     private val _leave = MutableLiveData<Boolean>()
-
     val leave: LiveData<Boolean>
         get() = _leave
 
     var newestFriendDetail : List<User>? = null
 
     private val _roomByMessageTime = MutableLiveData<List<ChatRoom>>()
-
-
     val roomByMessageTime: MutableLiveData<List<ChatRoom>>
         get() = _roomByMessageTime
 
@@ -70,13 +65,6 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         _filteredChatRooms.value = filteredChatRoom
     }
 
-//    fun getChatItem() {
-//        coroutineScope.launch {
-//            allLiveChatRooms.value = letsSwitchRepository.getLiveChatList()
-//            Log.d("Peter","Value of getUser ${allLiveChatRooms.value}")
-//        }
-//    }
-
     init {
 
         Logger.i("------------------------------------")
@@ -88,17 +76,12 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     }
 
     private fun getLiveChatList(myEmail: String){
-        Log.d("ChatViewModel","getLiveChatList has run!!")
         allLiveChatRooms = letsSwitchRepository.getLiveChatList(myEmail)
         _status.value = LoadApiStatus.DONE
     }
 
     fun getChatRoom(): List<ChatRoom>{
-
-        Log.d("ChatViewModel","getChatRoom has run!!")
-
         var chatList: MutableList<UserInfo> = mutableListOf()
-//        var attendeesList : MutableList<String> = mutableListOf()
         var chatRoom :MutableList<ChatRoom> = mutableListOf()
         _matchList.value!!.forEach { it ->
             val myInfo = UserInfo().apply {
@@ -127,9 +110,7 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
             postChatList(chat)
             chatRoom.add(chat)
         }
-
         Log.d("ChatViewModel","value of ChatRoom $chatRoom")
-
         return chatRoom
     }
 
@@ -138,7 +119,6 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     }
 
     fun postChatList(chatRoom: ChatRoom){
-        Log.d("ChatViewModel","postChatList has run!!")
         coroutineScope.launch {
             when (val result = letsSwitchRepository.postChatRoom(chatRoom)) {
                 is com.peter.letsswtich.data.Result.Success -> {
@@ -160,15 +140,4 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
             }
         }
     }
-
-//    fun getMatchList(myEmail:String){
-//        Log.d("ChatViewModel","getNewMatchListener has run!!!")
-//        matchList = letsSwitchRepository.getNewMatchListener(myEmail)
-//    }
-
-
-
-
-
-
 }

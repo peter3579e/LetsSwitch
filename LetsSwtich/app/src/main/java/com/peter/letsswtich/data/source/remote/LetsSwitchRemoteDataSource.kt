@@ -29,7 +29,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     private const val PATH_REQUIREMENT = "requirement"
     private const val PATH_EVENT = "events"
     private const val PATH_JOIN = "joinList"
-    private const val TAG = "letsSwitchRemoteDataSource"
+    private const val TAG = "LetsSwitchRemoteDataSource"
 
 
     override fun getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>> {
@@ -60,56 +60,38 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     }
 
     override suspend fun postJoin(myEmail: String, events: Events): Result<Boolean> = suspendCoroutine {
-//        user.matchTime = Calendar.getInstance().timeInMillis
-
 
         val event = FirebaseFirestore.getInstance().collection(PATH_EVENT)
-
-        Log.d(TAG, "Run post event 2")
         val document = event.document(events.eventId)
 
         document.collection(PATH_JOIN).document(myEmail)
                 .set(UserManager.user)
                 .addOnSuccessListener {
-                    Log.d(TAG, "Run post event 6")
                     Logger.d("DocumentSnapshot added with ID: ${event}")
                 }
                 .addOnFailureListener { e ->
-                    Log.d(TAG, "Run post event 7")
                     Logger.w("Error adding document $e")
                 }
-
     }
 
 
     override suspend fun postEvent(events: Events): Result<Boolean> = suspendCoroutine { continuation ->
-
         Log.d(TAG, "the value of post events = $events")
-        Log.d(TAG, "Run post event 1")
-
         val event = FirebaseFirestore.getInstance().collection(PATH_EVENT)
 
-        Log.d(TAG, "Run post event 2")
         val document = event.document()
 
-        Log.d(TAG, "Run post event 3")
-
         events.eventId = document.id
-        Log.d(TAG, "Run post event 4")
+
         events.postTime = Calendar.getInstance().timeInMillis
 
-        Log.d(TAG, "Run post event 5")
         document.set(events)
                 .addOnSuccessListener {
-                    Log.d(TAG, "Run post event 6")
                     Logger.d("DocumentSnapshot added with ID: ${event}")
                 }
                 .addOnFailureListener { e ->
-                    Log.d(TAG, "Run post event 7")
                     Logger.w("Error adding document $e")
                 }
-
-
     }
 
     override fun getLiveJoinList(events: Events): MutableLiveData<List<User>> {
@@ -120,7 +102,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .collection(PATH_JOIN)
                 .addSnapshotListener { snapshot, exception ->
                     Logger.i("add SnapshotListener detected")
-
                     exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                     }
@@ -206,27 +187,21 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     override suspend fun updateIsRead(friendEmail: String, documentId: String): Result<Boolean> = suspendCoroutine { continuation ->
         val chat = FirebaseFirestore.getInstance().collection(PATH_CHATLIST).document(documentId)
-//        Log.d("RemoteDataSource","updateIsRead has run")
         chat.collection("message")
                 .whereEqualTo("senderEmail", friendEmail)
                 .get()
                 .addOnCompleteListener { task ->
-//                Log.d("RemoteDataSource","updateIsRead has run1")
                     if (!task.isSuccessful) {
-//                    Log.d("RemoteDataSource","updateIsRead has run2")
                         if (task.exception != null) {
-//                        Log.d("RemoteDataSource","updateIsRead has run3")
                             task.exception?.let {
                                 Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                                 continuation.resume(Result.Error(it))
                             }
                         } else {
-//                        Log.d("RemoteDataSource","updateIsRead has run4")
                             continuation.resume(Result.Fail(LetsSwtichApplication.appContext.getString(R.string.you_shall_not_pass)))
                         }
                     }
                     task.result?.let {
-                        Log.d("RemoteDataSource", "updateIsRead has run5")
                         Log.d("RemoteDataSource", "task result value = ${task.result}")
                         for (document in it) {
                             chat.collection("message").document(document.id).update("read", true)
@@ -238,20 +213,16 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     override suspend fun removeFromChatList(myEmail: String, friendEmail: String): Result<Boolean> = suspendCoroutine { continuation ->
         Log.d("removeFromChatList", "my email value = $myEmail")
         Log.d("removeFromChatList", "friend email value = $friendEmail")
-        Log.d("removeUserFromChatList", "Run1")
-        var listUser = listOf<String>(myEmail, friendEmail)
+        val listUser = listOf<String>(myEmail, friendEmail)
         val chat = FirebaseFirestore.getInstance().collection(PATH_CHATLIST)
-        Log.d("removeUserFromChatList", "Run2")
         chat.whereIn("attendees", listOf(listUser, listUser.reversed()))
                 .get()
 
                 .addOnSuccessListener { result ->
-                    Log.d("removeUserFromChatList", "Run3")
                     for (document in result) {
                         val documentId = chat.document(document.id)
                         documentId.delete()
                     }
-                    Log.d("removeUserFromChatList", "Run5")
                 }
                 .addOnFailureListener { e ->
                     Logger.w("Error adding document $e")
@@ -292,8 +263,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                         chat.document(it.documents[0].id).collection("message").add(message)
 
                     }
-
-
                 }
                 .addOnCompleteListener { taskTwo ->
                     if (taskTwo.isSuccessful) {
@@ -323,7 +292,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .get()
                 .addOnCompleteListener { task ->
                     var documentId = ""
-                    Log.d("RemotedataSource", "getAllLiveMessage Run1")
                     if (!task.isSuccessful) {
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -331,15 +299,9 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                         }
                     }
                     task.result?.forEach { document ->
-
-                        Log.d("RemotedataSource", "getAllLiveMessage Run2")
-
                         Logger.d(document.id + " => " + document.data)
-
                         val id = document.id
-
                         documentId = id
-
                         Log.d("RemoteDataSource", "value of documentId = $documentId ")
 
                     }
@@ -347,8 +309,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                         chat.document(it.documents[0].id).collection("message")
                                 .orderBy("createdTime", Query.Direction.ASCENDING)
                                 .addSnapshotListener { snapshot, exception ->
-                                    Logger.i("add SnapshotListener detected")
-
                                     exception?.let {
                                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                                     }
@@ -362,19 +322,11 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                                         list.add(message)
                                     }
                                     liveData.value = MessageWithId(list, documentId)
-
                                 }
-
                     }
-
                 }
-
-
         return liveData
-
-
     }
-
 
     override suspend fun getRequirement(myEmail: String): Result<Requirement> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
@@ -394,8 +346,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                                 list = needs
                             }
                         }
-
-                        Log.d("letsSwitchRemoteDataSource", "value of OldMatchList = $list")
+                        Log.d(TAG, "value of OldMatchList = $list")
 
                         continuation.resume(Result.Success(list))
                     } else {
@@ -420,7 +371,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .addOnCompleteListener { task ->
                     var userDetail = User()
                     if (task.isSuccessful) {
-
                         task.result?.forEach { document ->
                             Logger.d(document.id + " => " + document.data)
 
@@ -443,11 +393,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
 
     override suspend fun getLikeList(myEmail: String, user: User): com.peter.letsswtich.data.Result<List<String>> = suspendCoroutine { continuation ->
-        Log.d("letsSwitchRemoteDataSource", "getLikeList has run")
-
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
-
-
         users.document(user.email)
                 .collection(PATH_FOLLOWLIST)
                 .get()
@@ -455,13 +401,11 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     if (task.isSuccessful) {
                         val list = mutableListOf<String>()
                         task.result?.forEach { document ->
-                            Log.d("letsSwitchRemoteDataSource", "${document.id} => ${document.data}")
+                            Log.d(TAG, "${document.id} => ${document.data}")
                             list.add(document.id)
 
                         }
-
-                        Log.d("letsSwitchRemoteDataSource", "value of list User = $list")
-
+                        Log.d(TAG, "value of list User = $list")
                         continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
@@ -519,14 +463,12 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     if (task.isSuccessful) {
                         val list = mutableListOf<User>()
                         task.result?.forEach { document ->
-                            Log.d("letsSwitchRemoteDataSource", "${document.id} => ${document.data}")
+                            Log.d(TAG, "${document.id} => ${document.data}")
 
                             val user = document.toObject(User::class.java)
                             list.add(user)
                         }
-
-                        Log.d("letsSwitchRemoteDataSource", "value of OldMatchList = $list")
-
+                        Log.d(TAG, "value of OldMatchList = $list")
                         continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
@@ -550,15 +492,12 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .collection(PATH_MATCHLIST)
                 .orderBy("matchTime", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, exception ->
-                    Logger.i("add SnapshotListener detected")
-
                     exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                     }
                     val list = mutableListOf<User>()
                     if (snapshot != null) {
                         for (document in snapshot) {
-                            Log.d("remoteDataSource", "getNewMatchListener has run !!!")
 //                            Logger.d(document.id + " => " + document.data)
 
                             val event = document.toObject(User::class.java)
@@ -576,7 +515,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> = suspendCoroutine {
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
 
-        Log.d("letsSwitchRemoteDataSource", "UpdateAndCheckLike has run")
+        Log.d(TAG, "UpdateAndCheckLike has run")
 
         users.document(myEmail).collection(PATH_FOLLOWLIST).document(user.email)
                 .set(user)
@@ -587,15 +526,10 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     Logger.w("Error adding document $e")
                 }
         users.document(myEmail).update("likeList", FieldValue.arrayUnion(user.email))
-
-
     }
 
 
     override suspend fun updateMatch(myEmail: String, user: User): Result<Boolean> = suspendCoroutine {
-//        user.matchTime = Calendar.getInstance().timeInMillis
-
-
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
 
         //update matchList for friends
@@ -623,14 +557,19 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 .addOnFailureListener { e ->
                     Logger.w("Error adding document $e")
                 }
-
     }
 
     override suspend fun postRequirement(myEmail: String, require: Requirement): Result<Boolean> = suspendCoroutine {
-//        user.matchTime = Calendar.getInstance().timeInMillis
-
 
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
+
+        users.document(myEmail).update("preferLanguage", listOf(require.language))
+                .addOnCanceledListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
 
         //update matchList for friends
         val requirement = users.document(myEmail).collection(PATH_REQUIREMENT).document(myEmail)
@@ -674,46 +613,11 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 }
     }
 
-
-    override suspend fun postfake() {
-        val user = FirebaseFirestore.getInstance().collection(PATH_USER)
-        val document = user.document("shireny@gmail.com")
-        val data = hashMapOf(
-                "personImages" to listOf("https://img.onl/CHR1wx",
-                        "https://api.appworks-school.tw/assets/201807201824/main.jpg",
-                        "https://api.appworks-school.tw/assets/201807201824/main.jpg",
-                        "https://api.appworks-school.tw/assets/201807201824/main.jpg"),
-                "description" to "想看電影",
-                "status" to "Busy",
-                "id" to "123",
-                "googleId" to "12345",
-                "age" to 22,
-                "latitude" to 25.034070787981246,
-                "lngti" to 121.53106153460475,
-                "gender" to "Female",
-                "likeList" to listOf("jsidfjisdjfiasf", "sfdasdfasdf"),
-                "name" to "shireny",
-                "email" to "shireny@gmail.com",
-                "city" to "Taipei",
-                "district" to "Hawai",
-                "backGroundPic" to "https://img.onl/ah0ION",
-                "role" to "teacher",
-                "fluentLanguage" to listOf("English", "Chinese"),
-                "preferLanguage" to listOf("Japanese", "French")
-        )
-        Log.d("Peter", "The post has run")
-        document.set(data)
-                .addOnSuccessListener { Log.d("Update", "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w("Update", "Error writing document", e) }
-    }
-
-
     override suspend fun postUser(user: User): Result<Boolean> = suspendCoroutine { continuation ->
 
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
         val document = users.document(user.email)
         user.id = document.id
-//        user.joinedTime = Calendar.getInstance().timeInMillis
 
         users.whereEqualTo("email", user.email)
                 .get()
@@ -799,19 +703,4 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     }
                 }
     }
-
-
-    override suspend fun getMessageItem(): List<Message> {
-        var mock = mutableListOf<Message>()
-        mock.run {
-            add(
-                    Message("123", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg", "peter7788@gmail.com", "雪莉？", 1620355603699)
-            )
-            add(
-                    Message("123", "Wency", "https://api.appworks-school.tw/assets/201807242228/main.jpg", "peter7788@gmail.com", "你為什麼要攻擊我的coin master村莊？", 1620355603699)
-            )
-        }
-        return mock
-    }
-
 }

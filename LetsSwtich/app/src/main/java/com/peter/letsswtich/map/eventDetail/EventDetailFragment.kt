@@ -26,10 +26,9 @@ class EventDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentEventDetailBinding
     private val TAG = "EventDetailFragment"
-
     private val viewModel by viewModels<EventDetailViewModel> {
         getVmFactory(
-                EventDetailFragmentArgs.fromBundle(requireArguments()).eventDetail
+            EventDetailFragmentArgs.fromBundle(requireArguments()).eventDetail
         )
     }
 
@@ -41,12 +40,14 @@ class EventDetailFragment : Fragment() {
                 viewModel.photoList.add(pic)
             }
         }
-
-        Log.d(TAG,"the value of photos = ${viewModel.photoList}")
-
+        Log.d(TAG, "the value of photos = ${viewModel.photoList}")
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentEventDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -58,7 +59,6 @@ class EventDetailFragment : Fragment() {
         binding.joinListRecycler.adapter = joinAdapter
 
         val linearSnapHelper = LinearSnapHelper().apply {
-//                attachToRecyclerView(binding.imageCardUser)
             val snapHelper: SnapHelper = PagerSnapHelper()
             binding.recyclerDetailGallery.onFlingListener = null
             snapHelper.attachToRecyclerView(binding.recyclerDetailGallery)
@@ -66,23 +66,26 @@ class EventDetailFragment : Fragment() {
 
         binding.recyclerDetailGallery.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             viewModel.onCampaignScrollChange(
-                    binding.recyclerDetailGallery.layoutManager,
-                    linearSnapHelper
+                binding.recyclerDetailGallery.layoutManager,
+                linearSnapHelper
             )
         }
-
 
         viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             (binding.recyclerDetailCircles.adapter as ImageCircleAdapter).selectedPosition.value =
-                    (it % (viewModel.photoList.size))
+                (it % (viewModel.photoList.size))
 
         })
 
         viewModel.join.observe(viewLifecycleOwner, Observer {
-            if (it == true){
+            if (it == true) {
                 viewModel.postJoin(UserManager.user.email, viewModel.event)
-                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.joined), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    LetsSwtichApplication.appContext,
+                    getString(R.string.joined),
+                    Toast.LENGTH_SHORT
+                ).show()
                 viewModel.joinSent()
             }
         })
@@ -92,26 +95,23 @@ class EventDetailFragment : Fragment() {
         var joinListPic: MutableList<String>? = mutableListOf()
 
         viewModel.jointList.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG,"the value of joinList = $it")
-            for (pic in it){
+            Log.d(TAG, "the value of joinList = $it")
+            for (pic in it) {
                 joinListPic!!.add(pic.personImages[0])
-                Log.d(TAG,"the value of joinList Pic = $joinListPic")
-                count ++
-                Log.d(TAG,"the value of count = ${count}")
+                Log.d(TAG, "the value of joinList Pic = $joinListPic")
+                count++
+                Log.d(TAG, "the value of count = ${count}")
             }
 
-            if (count == it.size){
-                Log.d(TAG,"the value of joinList Before= $joinListPic")
+            if (count == it.size) {
+                Log.d(TAG, "the value of joinList Before= $joinListPic")
                 joinAdapter.submitList(joinListPic)
                 joinAdapter.notifyDataSetChanged()
                 joinListPic = mutableListOf()
-                Log.d(TAG,"the value of joinList After = $joinListPic")
+                Log.d(TAG, "the value of joinList After = $joinListPic")
                 count = 0
-                Log.d(TAG,"if has run")
             }
         })
-
-
 
         viewModel.navigateBackToMap.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -121,8 +121,6 @@ class EventDetailFragment : Fragment() {
         })
 
         Log.d(TAG, "the value of received detail = ${viewModel.event}")
-
-
         return binding.root
     }
 }

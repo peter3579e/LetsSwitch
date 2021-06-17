@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     private val _user = MutableLiveData<User>()
 
@@ -34,8 +34,6 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
 
     val privacy: LiveData<Boolean>
         get() = _privacy
-
-
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -64,40 +62,6 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
         viewModelJob.cancel()
     }
 
-    fun postUser(user: User) {
-
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            when (val result = letsSwitchRepository.postUser(user)) {
-                is com.peter.letsswtich.data.Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                }
-                is com.peter.letsswtich.data.Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                }
-                is com.peter.letsswtich.data.Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                }
-                else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
-                    _status.value = LoadApiStatus.ERROR
-                }
-            }
-        }
-
-    }
-
-    fun privacychecked() {
-        Log.d("LoginActivity","Run2")
-        _privacy.value = true
-    }
-
-
     fun loginAuth(account: GoogleSignInAccount?) {
 
         coroutineScope.launch {
@@ -123,7 +87,8 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }
@@ -131,6 +96,4 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
         }
 
     }
-
-
 }

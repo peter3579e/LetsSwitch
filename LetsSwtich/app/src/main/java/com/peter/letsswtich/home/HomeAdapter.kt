@@ -13,16 +13,14 @@ import com.peter.letsswtich.databinding.ItemProfilecardBinding
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.ViewHolder> (DiffCallback){
+class HomeAdapter(val viewModel: HomeViewModel) :
+    ListAdapter<User, RecyclerView.ViewHolder>(DiffCallback) {
 
 
-
-    class UserViewHolder(private var binding: ItemProfilecardBinding): RecyclerView.ViewHolder(binding.root),LifecycleOwner {
-        fun bind(user: User,viewModel: HomeViewModel){
-
-
+    class UserViewHolder(private var binding: ItemProfilecardBinding) :
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+        fun bind(user: User, viewModel: HomeViewModel) {
             val linearSnapHelper = LinearSnapHelper().apply {
-//                attachToRecyclerView(binding.imageCardUser)
                 val snapHelper: SnapHelper = PagerSnapHelper()
                 binding.imageCardUser.onFlingListener = null
                 snapHelper.attachToRecyclerView(binding.imageCardUser)
@@ -38,15 +36,15 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
             binding.imageCardUser.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 viewModel.onCampaignScrollChange(
-                        binding.imageCardUser.layoutManager,
-                        linearSnapHelper
+                    binding.imageCardUser.layoutManager,
+                    linearSnapHelper
                 )
             }
 
             viewModel.snapPosition.observe(this, androidx.lifecycle.Observer {
-                    Log.d("ima","images value = $user")
-                    (binding.recyclerImageCircles.adapter as ImageCircleAdapter).selectedPosition.value =
-                            (it % (user.personImages.size))
+                Log.d("ima", "images value = $user")
+                (binding.recyclerImageCircles.adapter as ImageCircleAdapter).selectedPosition.value =
+                    (it % (user.personImages.size))
 
             })
 
@@ -54,47 +52,42 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
             circleAdapter.submitCount(user.personImages.size)
 
-
-
-
             binding.cardImagePlus.setOnClickListener {
 
-                    viewModel.snapPosition.value?.let {
-                        Log.d("testing","image size = ")
-                        if(viewModel.snapPosition.value!!< user.personImages.size-1){
-                            layoutManager?.smoothScrollToPosition(
-                                    binding.imageCardUser, RecyclerView.State(),
-                                    it.plus(1)
+                viewModel.snapPosition.value?.let {
+                    Log.d("testing", "image size = ")
+                    if (viewModel.snapPosition.value!! < user.personImages.size - 1) {
+                        layoutManager?.smoothScrollToPosition(
+                            binding.imageCardUser, RecyclerView.State(),
+                            it.plus(1)
 
-                            )
-                        }
-                        Log.d("timer", "position ${it}")
+                        )
                     }
+                    Log.d("timer", "position ${it}")
+                }
             }
 
             binding.cardImageMinus.setOnClickListener {
-                    viewModel.snapPosition.value?.let {
-                        if (viewModel.snapPosition.value!! > 0) {
-                            layoutManager?.smoothScrollToPosition(
-                                    binding.imageCardUser, RecyclerView.State(),
-                                    it.minus(1)
-                            )
-                        }
-                        Log.d("timer", "position ${it}")
+                viewModel.snapPosition.value?.let {
+                    if (viewModel.snapPosition.value!! > 0) {
+                        layoutManager?.smoothScrollToPosition(
+                            binding.imageCardUser, RecyclerView.State(),
+                            it.minus(1)
+                        )
                     }
+                    Log.d("timer", "position ${it}")
+                }
             }
 
             val chipGroup = binding.chipGroup
 
             var language = user.fluentLanguage
 
-            if (viewModel.count){
+            if (viewModel.count) {
                 language = emptyList()
             }
 
-            Log.d("HomeAdapter","Adapter has run")
-
-            for (language in language){
+            for (language in language) {
                 val chip = Chip(chipGroup.context)
                 chip.text = language
                 chipGroup.addView(chip)
@@ -124,25 +117,21 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_USER -> UserViewHolder(ItemProfilecardBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+            ITEM_VIEW_TYPE_USER -> UserViewHolder(
+                ItemProfilecardBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
+        when (holder) {
             is UserViewHolder -> {
-                holder.bind(getItem(position) as User,viewModel)
-
-                val user = getItem(position) as User
-//                viewModel.userPersonImage.value = user.personImages
-
-//                Log.d("HomeAdapter","User personImages value ${viewModel.userPersonImage.value}")
-
+                holder.bind(getItem(position) as User, viewModel)
             }
         }
     }
@@ -169,18 +158,17 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
     }
 
 
-
     companion object DiffCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem === newItem
         }
+
         override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
         }
 
         private const val ITEM_VIEW_TYPE_USER = 0x00
     }
-
 
 
 }

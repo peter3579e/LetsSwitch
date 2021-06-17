@@ -5,7 +5,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.peter.letsswtich.editprofile.preview.PreviewFragment
 
-class ViewpagerAdapeter(fragmentManager: FragmentManager, viewModel: EditProfileViewModel) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class ViewpagerAdapeter(fragmentManager: FragmentManager, viewModel: EditProfileViewModel) :
+    FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private var viewModel = viewModel
 
@@ -16,7 +17,7 @@ class ViewpagerAdapeter(fragmentManager: FragmentManager, viewModel: EditProfile
     }
 
     override fun getItem(position: Int): Fragment {
-        return when(position){
+        return when (position) {
             0 -> EditFragment(viewModel.user)
             else -> PreviewFragment(viewModel.user)
         }

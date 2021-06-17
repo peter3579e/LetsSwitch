@@ -23,5 +23,4 @@ data class User (
         var preferLanguage: List<String> = listOf(),
         var backGroundPic: String = "",
         var matchTime: Long = 0L
-
         ): Parcelable

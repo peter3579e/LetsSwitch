@@ -57,13 +57,13 @@ import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EditEventFragment:Fragment() {
+class EditEventFragment : Fragment() {
 
     val viewModel by viewModels<EditEventViewModel> { getVmFactory() }
 
-    private lateinit var binding:FragmentEditEventBinding
+    private lateinit var binding: FragmentEditEventBinding
     private val AUTOCOMPLETE_REQUEST_CODE = 2
-    private val TAG ="EditEventFrgment"
+    private val TAG = "EditEventFrgment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,13 +71,13 @@ class EditEventFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentEditEventBinding.inflate(inflater,container,false)
+        binding = FragmentEditEventBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         val adapter = EventPhotoAdapter(viewModel)
         binding.photosRecycleView.adapter = adapter
 
-        val photos = mutableListOf<String>("","","","","","","","")
+        val photos = mutableListOf<String>("", "", "", "", "", "", "", "")
         viewModel.photoList.value = photos
 
         adapter.submitList(photos)
@@ -103,7 +103,7 @@ class EditEventFragment:Fragment() {
 
         viewModel.locationDetail.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             binding.locationName = it.placeName
-            Log.d(TAG,"the location detail = $it")
+            Log.d(TAG, "the location detail = $it")
         })
 
         val cal = Calendar.getInstance()
@@ -111,30 +111,29 @@ class EditEventFragment:Fragment() {
         binding.createEventTextSelectTime.setOnClickListener {
             val hour = cal.get(Calendar.HOUR_OF_DAY)
             val minute = cal.get(Calendar.MINUTE)
-            TimePickerDialog(requireContext(), 3,{
-                    _, selectHour, selectMinute->
+            TimePickerDialog(requireContext(), 3, { _, selectHour, selectMinute ->
                 viewModel.selectedTime.value = String.format("%02d:%02d", selectHour, selectMinute)
-                Log.d("MapFragment","date ${viewModel.selectedTime.value}")
+                Log.d("MapFragment", "date ${viewModel.selectedTime.value}")
                 binding.createTime = String.format("%02d:%02d", selectHour, selectMinute)
             }, hour, minute, true).show()
-
         }
         val textView = binding.createEventTextSelectDate
 
         textView.text = SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
 
-        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, monthOfYear)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            Log.d("MapFragment","Here has run!!!")
-            val myFormat = "dd.MM.yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            textView.text = sdf.format(cal.time).format(System.currentTimeMillis())
-            viewModel.selectedDate.value = sdf.format(cal.time).format(System.currentTimeMillis())
-            Log.d("MapFragment","date ${viewModel.selectedDate.value}")
+        val dateSetListener =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                val myFormat = "dd.MM.yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                textView.text = sdf.format(cal.time).format(System.currentTimeMillis())
+                viewModel.selectedDate.value =
+                    sdf.format(cal.time).format(System.currentTimeMillis())
+                Log.d("MapFragment", "date ${viewModel.selectedDate.value}")
 
-        }
+            }
 
         binding.editTitle.doOnTextChanged { text, start, before, count ->
             viewModel.enterTitle.value = text.toString()
@@ -148,125 +147,107 @@ class EditEventFragment:Fragment() {
 
         binding.createEventTextSelectDate.setOnClickListener {
 
-            DatePickerDialog(requireContext(),R.style.DialogTheme, dateSetListener,
+            DatePickerDialog(
+                requireContext(), R.style.DialogTheme, dateSetListener,
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)).show()
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
 
         }
+        viewModel.camera.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it == true) {
+                activateCamera()
+                viewModel.closeCamera()
+            }
+        })
 
+        viewModel.photoUri.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Log.d("MapFragment", "value of receive = $it")
+            var stop = false
 
-            viewModel.camera.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                if (it == true) {
-                    activateCamera()
-                    viewModel.closeCamera()
+            for (i in 1..photos.size) {
+                if (photos[i - 1] == "" && !stop) {
+                    photos[i - 1] = it.toString()
+                    stop = true
                 }
-            })
+            }
+            viewModel.photoList.value = photos
+            Log.d(TAG, "value of photo list = ${viewModel.photoList.value}")
 
-
-
-            viewModel.photoUri.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                Log.d("MapFragment", "Photo has run")
-                Log.d("MapFragment","value of receive = $it")
-
-                var stop = false
-
-                for (i in 1..photos.size){
-                    if (photos[i-1] == "" && !stop){
-                        photos[i-1] = it.toString()
-                        stop = true
-                    }
-                }
-
-                viewModel.photoList.value = photos
-
-                Log.d(TAG,"value of photo list = ${viewModel.photoList.value}")
-
-            })
+        })
 
         viewModel.photoList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
-                adapter.submitList(viewModel.photoList.value)
-                adapter.notifyDataSetChanged()
-                Log.d(TAG,"submit list has run !!!!!")
-                Log.d("MapFragment","value of newList = ${viewModel.photoList.value}")
+            adapter.submitList(viewModel.photoList.value)
+            adapter.notifyDataSetChanged()
+            Log.d("MapFragment", "value of newList = ${viewModel.photoList.value}")
 
 
         })
 
         viewModel.navigateBackToMap.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true && isFinished()){
-                Log.d(TAG,"the value of event deatils = ${viewModel.getEvents()}")
+            if (it == true && isFinished()) {
+                Log.d(TAG, "the value of event deatils = ${viewModel.getEvents()}")
                 viewModel.postEvent(viewModel.getEvents())
                 findNavController().navigate(NavigationDirections.navigateToMapFragment())
                 viewModel.mapNavigated()
             }
         })
 
-        val ageIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_age)
+        val ageIndicator =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_age)
 
-        val ageArray:MutableList<Int> = mutableListOf<Int>()
-        Logger.d("Run3")
+        val ageArray: MutableList<Int> = mutableListOf<Int>()
         var count = 0
-        Logger.d("Run4")
-        for (i in 0..99){
-            count ++
+        for (i in 0..99) {
+            count++
             ageArray.add(count)
         }
-        Logger.d("Run5")
-//        Log.d("FirstQuestion","the value of array = ${ageArray[2]}")
-
-        Logger.d("Run6")
-
-        binding.peopleSpinner.adapter = AgeSpinner(ageArray,ageIndicator)
-
+        binding.peopleSpinner.adapter = AgeSpinner(ageArray, ageIndicator)
         binding.peopleSpinner.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                    }
-
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
-                    ) {
-
-                        if (parent != null && pos != 0) {
-                            viewModel.setupPeople(parent.selectedItem as Int)
-                            Log.d(TAG,"value of selected people = ${viewModel.selectedPeople.value}")
-                        }
-
-                    }
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
 
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
 
+                    if (parent != null && pos != 0) {
+                        viewModel.setupPeople(parent.selectedItem as Int)
+                        Log.d(TAG, "value of selected people = ${viewModel.selectedPeople.value}")
+                    }
+
+                }
+            }
         return binding.root
     }
 
 
     private fun isFinished(): Boolean {
-
         return when {
             viewModel.enterTitle.value != null && viewModel.enterDetail.value != null &&
                     viewModel.locationDetail.value != null && viewModel.selectedDate.value != null && viewModel.selectedTime.value != null
-                    && viewModel.selectedPeople.value != null ->{
+                    && viewModel.selectedPeople.value != null -> {
                 true
             }
-
-
             else -> {
-                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.remindertofillInfor), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    LetsSwtichApplication.appContext,
+                    getString(R.string.remindertofillInfor),
+                    Toast.LENGTH_SHORT
+                ).show()
                 false
             }
         }
-
     }
 
     private fun activateCamera() {
         getPermissions()
         if (isUploadPermissionsGranted) {
-
             selectImage()
         } else if (!isUploadPermissionsGranted) {
-
             Toast.makeText(
                 LetsSwtichApplication.applicationContext(),
                 LetsSwtichApplication.applicationContext()
@@ -293,11 +274,6 @@ class EditEventFragment:Fragment() {
 
     // Create an image file name
     private fun createImageFile(): File {
-
-        Log.d("Max","run 66")
-
-
-
         //This is the directory in which the file will be created. This is the default location of Camera photos
         val storageDir = File(
             Environment.getExternalStoragePublicDirectory(
@@ -305,25 +281,20 @@ class EditEventFragment:Fragment() {
             ),
             LetsSwtichApplication.applicationContext().getString(R.string.edit_start_camera_camera)
         )
-        Log.d("Max","run 77")
-
         return File.createTempFile(
             viewModel.date.value.toDateFormat(FORMAT_YYYY_MM_DDHHMMSS),  /* prefix */
             LetsSwtichApplication.applicationContext()
                 .getString(R.string.edit_start_camera_jpg), /* suffix */
             storageDir      /* directory */
         )
-        Log.d("Max","run 88")
     }
 
     //handling the image chooser activity result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        Log.d("MapFragment","request code value = $requestCode")
-
+        Log.d("MapFragment", "request code value = $requestCode")
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            Log.d("MapFragment","Here has run")
+            Log.d("MapFragment", "Here has run")
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     data?.let {
@@ -331,9 +302,12 @@ class EditEventFragment:Fragment() {
                         Log.i("MapFragment", "Place: ${place.name}, ${place.id}")
                         Log.i("MapFragment", "Place: ${place.latLng.toString()}, ${place.address}")
                         Log.i("MapFragment", "Place: $place")
-                        viewModel.locationDetail.value = Location(place.name!!,place.latLng!!.latitude,place.latLng!!.longitude,place.address!!)
-
-
+                        viewModel.locationDetail.value = Location(
+                            place.name!!,
+                            place.latLng!!.latitude,
+                            place.latLng!!.longitude,
+                            place.address!!
+                        )
                     }
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
@@ -351,35 +325,20 @@ class EditEventFragment:Fragment() {
         }
         super.onActivityResult(requestCode, resultCode, data)
 
+
         if (resultCode !== Activity.RESULT_CANCELED) {
-
             if (resultCode == Activity.RESULT_OK) {
-
                 when (requestCode) {
                     IMAGE_FROM_GALLERY -> {
-
-                        Log.d("Peter", "Run1")
-
                         data?.let {
-
-                            Log.d("Peter", "Run2")
-
                             it.data?.let { data ->
-
-                                Log.d("Peter", "Run3")
-
                                 filePath = data
-
-                                Log.d("Peter", "Run4")
-
                                 try {
                                     bitmap = MediaStore.Images.Media.getBitmap(
                                         (activity as MainActivity).contentResolver, filePath
                                     )
-                                    Log.d("Peter", "Run5")
 
                                     val matrix = Matrix()
-                                    Log.d("Peter", "Run6")
                                     matrix.postRotate(
                                         getImageRotation(
                                             LetsSwtichApplication.applicationContext(),
@@ -391,23 +350,15 @@ class EditEventFragment:Fragment() {
                                         bitmap!!, 0, 0,
                                         bitmap!!.width, bitmap!!.height, matrix, false
                                     )
-
                                     val byte = ByteArrayOutputStream()
-
                                     outBitmap.compress(
                                         Bitmap.CompressFormat.JPEG,
                                         15,
                                         byte
                                     )
-
                                     val byteArray = byte.toByteArray()
-
-
-
                                     uploadFile(byteArray)
-
                                     Log.d("Peter", "value of OutBitmap = $outBitmap")
-
                                 } catch (e: IOException) {
                                     e.printStackTrace()
                                 }
@@ -415,33 +366,22 @@ class EditEventFragment:Fragment() {
                         }
                     }
                     IMAGE_FROM_CAMERA -> {
-
                         fileFromCamera?.let {
-
-                            Log.d("Max","the value of file path =  $fileFromCamera")
-
+                            Log.d("Max", "the value of file path =  $fileFromCamera")
                             bitmap = data?.extras?.get("data") as Bitmap
-
                             val matrix = Matrix()
-
                             val outBitmap = Bitmap.createBitmap(
                                 bitmap!!, 0, 0,
                                 bitmap!!.width, bitmap!!.height, matrix, false
                             )
-
                             val byte = ByteArrayOutputStream()
-
                             outBitmap.compress(
                                 Bitmap.CompressFormat.JPEG,
                                 15,
                                 byte
                             )
-
-
                             val byteArray = byte.toByteArray()
-
                             uploadCamera(byteArray)
-//                            }
                         }
                     }
                 }
@@ -449,21 +389,16 @@ class EditEventFragment:Fragment() {
         }
     }
 
-
     private fun getImageRotation(context: Context, uri: Uri): Int {
         var stream: InputStream? = null
         return try {
-            Log.d("Peter", "Ya1")
             stream = context.contentResolver.openInputStream(uri)
-            Log.d("Peter", "Ya2")
             val exifInterface = ExifInterface(stream!!)
-            Log.d("Peter", "Ya3")
             val exifOrientation =
                 exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL
                 )
-            Log.d("Peter", "Ya4")
             when (exifOrientation) {
                 ExifInterface.ORIENTATION_ROTATE_90 -> 90
                 ExifInterface.ORIENTATION_ROTATE_180 -> 180
@@ -471,10 +406,8 @@ class EditEventFragment:Fragment() {
                 else -> 0
             }
         } catch (e: Exception) {
-            Log.d("Peter", "Ya6")
             0
         } finally {
-            Log.d("Peter", "Ya7")
             stream?.close()
         }
     }
@@ -528,11 +461,8 @@ class EditEventFragment:Fragment() {
 
 
         UserManager.uid?.let { uid ->
-
-
             // Firebase storage
             auth = FirebaseAuth.getInstance()
-
 
             Log.d("Peter", "the value of date = ${viewModel.date.value}")
 
@@ -546,8 +476,6 @@ class EditEventFragment:Fragment() {
 
             imageReference.putBytes(bitmap)
                 .addOnCompleteListener {
-
-
                     imageReference.downloadUrl.addOnCompleteListener { task ->
 
                         task.result?.let { taskResult ->
@@ -563,26 +491,10 @@ class EditEventFragment:Fragment() {
     }
 
     private fun uploadFile(bitmap: ByteArray) {
-
-
-
-        Log.d("Peter", "Hey1")
-
         filePath?.let { filePath ->
-
-            Log.d("Peter", "Hey2")
-
-            Log.d("Peter", "Hey3")
-
             UserManager.uid?.let { uid ->
-
-                Log.d("Peter", "Hey4")
-
                 // Firebase storage
                 auth = FirebaseAuth.getInstance()
-
-                Log.d("Peter", "Hey5")
-
                 Log.d("Peter", "the value of date = ${viewModel.date.value}")
 
                 val imageReference = FirebaseStorage.getInstance().reference.child(
@@ -593,17 +505,8 @@ class EditEventFragment:Fragment() {
                     )
                 ).child(filePath.toString())
 
-
-
-
-                Log.d("Peter", "Hey6")
-
-                Log.d("Peter", "Hey7")
-
                 imageReference.putBytes(bitmap)
                     .addOnCompleteListener {
-
-
                         imageReference.downloadUrl.addOnCompleteListener { task ->
 
                             task.result?.let { taskResult ->
@@ -620,13 +523,11 @@ class EditEventFragment:Fragment() {
     }
 
     fun getPermissions() {
-
         val permissions = arrayOf(
             PERMISSION_CAMERA,
             PERMISSION_READ_EXTERNAL_STORAGE,
             PERMISSION_WRITE_EXTERNAL_STORAGE
         )
-
         when (ContextCompat.checkSelfPermission(
             LetsSwtichApplication.applicationContext(),
             PERMISSION_CAMERA
@@ -707,30 +608,18 @@ class EditEventFragment:Fragment() {
 
 
     private fun startCamera() {
-
-        Log.d("Max","run 123")
-
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        Log.d("Max","$intent")
-        Log.d("Max","run 1234")
         if (intent.resolveActivity(LetsSwtichApplication.applicationContext().packageManager) != null) {
 
-            Log.d("Max","run 12")
-
             try {
-                Log.d("Max","run 13")
                 fileFromCamera = createImageFile()
-
                 Log.d("EditFragment", "the value of return photo = $fileFromCamera")
 
             } catch (ex: IOException) {
-                Log.d("Max","run 14")
                 return
             }
             if (fileFromCamera != null) {
-                Log.d("Max","run 15")
                 startActivityForResult(intent, IMAGE_FROM_CAMERA)
-                Log.d("Max","run 18")
             }
         }
     }

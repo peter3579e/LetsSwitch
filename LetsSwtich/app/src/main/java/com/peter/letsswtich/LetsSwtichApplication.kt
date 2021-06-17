@@ -6,18 +6,19 @@ import com.peter.letsswtich.data.source.LetsSwitchRepository
 import com.peter.letsswtich.util.ServiceLocator
 import kotlin.properties.Delegates
 
-class LetsSwtichApplication: Application() {
+class LetsSwtichApplication : Application() {
 
     val letsSwitchRepository: LetsSwitchRepository
-    get() = ServiceLocator.provideTasksRepository(this)
-  companion object{
-      var instance: LetsSwtichApplication by Delegates.notNull()
-      lateinit var appContext: Context
+        get() = ServiceLocator.provideTasksRepository(this)
 
-      fun applicationContext() : Context {
-          return instance.applicationContext
-      }
-  }
+    companion object {
+        var instance: LetsSwtichApplication by Delegates.notNull()
+        lateinit var appContext: Context
+
+        fun applicationContext(): Context {
+            return instance.applicationContext
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()

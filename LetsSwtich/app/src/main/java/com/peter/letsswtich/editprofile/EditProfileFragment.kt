@@ -20,30 +20,25 @@ import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.profile.ProfileFragmentArgs
 import com.peter.letsswtich.profile.ProfileViewModel
 
-class EditProfileFragment : Fragment(){
-
+class EditProfileFragment : Fragment() {
     private lateinit var binding: FragmentEditProfileBinding
-
-
     private val viewModel by viewModels<EditProfileViewModel> {
         getVmFactory(
             EditProfileFragmentArgs.fromBundle(requireArguments()).userDetail
         )
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEditProfileBinding.inflate(inflater,container,false)
+        binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.viewPager.let {
             binding.tabLayout.setupWithViewPager(it)
-            it.adapter = ViewpagerAdapeter(childFragmentManager,viewModel)
+            it.adapter = ViewpagerAdapeter(childFragmentManager, viewModel)
         }
 
 
@@ -57,13 +52,17 @@ class EditProfileFragment : Fragment(){
 
             return when {
                 mainViewModel.userdetail.value!!.fluentLanguage.isNotEmpty() &&
-                        mainViewModel.userdetail.value!!.gender != ""  ->{
+                        mainViewModel.userdetail.value!!.gender != "" -> {
                     true
                 }
 
 
                 else -> {
-                    Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.remindertofillInfor), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        LetsSwtichApplication.appContext,
+                        getString(R.string.remindertofillInfor),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     false
                 }
             }
@@ -71,25 +70,26 @@ class EditProfileFragment : Fragment(){
         }
 
         viewModel.navigateToProfile.observe(viewLifecycleOwner, Observer {
-            if(it == true && isFinished()){
-                Log.d("EditProfileFragment","the value of User = ${mainViewModel.userdetail.value}")
+            if (it == true && isFinished()) {
+                Log.d(
+                    "EditProfileFragment",
+                    "the value of User = ${mainViewModel.userdetail.value}"
+                )
                 UserManager.user = mainViewModel.userdetail.value!!
                 viewModel.user = mainViewModel.userdetail.value!!
-                Log.d("EditProfileFragment","the value of UserManager = ${UserManager.user}")
-                findNavController().navigate(NavigationDirections.navigateToProfileFragment(viewModel.user,false))
+                Log.d("EditProfileFragment", "the value of UserManager = ${UserManager.user}")
+                findNavController().navigate(
+                    NavigationDirections.navigateToProfileFragment(
+                        viewModel.user,
+                        false
+                    )
+                )
                 viewModel.updateUser(mainViewModel.userdetail.value!!)
                 viewModel.profileNavigated()
             }
-
         })
-
-
-
-
         return binding.root
     }
-
-
 
 
 }

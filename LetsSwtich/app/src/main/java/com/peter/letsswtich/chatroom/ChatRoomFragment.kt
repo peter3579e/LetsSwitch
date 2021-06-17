@@ -27,14 +27,10 @@ class ChatRoomFragment : Fragment() {
         getVmFactory(
             ChatRoomFragmentArgs.fromBundle(requireArguments()).userEmail,
             ChatRoomFragmentArgs.fromBundle(requireArguments()).userName,
-                ChatRoomFragmentArgs.fromBundle(requireArguments()).fromMap
+            ChatRoomFragmentArgs.fromBundle(requireArguments()).fromMap
         )
     }
-
     private lateinit var binding: FragmentChatRoomBinding
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -46,7 +42,7 @@ class ChatRoomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentChatRoomBinding.inflate(inflater,container,false)
+        binding = FragmentChatRoomBinding.inflate(inflater, container, false)
         val adapter = ChatRoomAdapter(viewModel)
         binding.viewModel = viewModel
         binding.recyclerMessage.adapter = adapter
@@ -56,65 +52,50 @@ class ChatRoomFragment : Fragment() {
 
         mainViewModel.friendsProfileNavigated()
 
-
-
         val friendUserEmail = viewModel.currentChattingUser
         val myEmail = UserManager.user.email
-
-//        Log.d("ChatRoomFragment"," value of useremail = $myEmail")
-//        Log.d("ChatRoomFragment", "value of friendsEmail = $friendUserEmail")
 
         // Setup custom toolbar
         if (activity is MainActivity) {
             (activity as MainActivity).setSupportActionBar(binding.toolbar)
         }
 
-//        Log.d("ChatRoomFragment","value of enterMessage = ${viewModel.enterMessage.value}")
-
         binding.send.setOnClickListener {
             if (isEmpty()) {
-                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.reminder_chatroom_message), Toast.LENGTH_SHORT).show()
-            }
-            else {
-                sendMessage(myEmail,friendUserEmail)
+                Toast.makeText(
+                    LetsSwtichApplication.appContext,
+                    getString(R.string.reminder_chatroom_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                sendMessage(myEmail, friendUserEmail)
             }
         }
 
-//        var count = 0
-
-
-        // Observers
-
-
-        viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer {message ->
-            viewModel.updateIsRead(viewModel.currentChattingUser,message.documentId)
-            viewModel.filterMessage =  message.message.excludeFriend(friendUserEmail)
-            Log.d("ChatroomFragment","the value of message ${message.message}")
+        viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer { message ->
+            viewModel.updateIsRead(viewModel.currentChattingUser, message.documentId)
+            viewModel.filterMessage = message.message.excludeFriend(friendUserEmail)
+            Log.d("ChatroomFragment", "the value of message ${message.message}")
             viewModel.count = 0
             adapter.submitList(message.message)
             adapter.notifyDataSetChanged()
 
-            Log.d("ChatRoomFragmen","the value of filteredMessage = ${viewModel.filterMessage}")
+            Log.d("ChatRoomFragmen", "the value of filteredMessage = ${viewModel.filterMessage}")
         })
 
         viewModel.enterMessage.observe(viewLifecycleOwner, Observer {
             Logger.d(it)
             binding.sendwithblue.visibility = View.VISIBLE
 
-            if( it == ""){
+            if (it == "") {
                 binding.sendwithblue.visibility = View.GONE
             }
         })
 
         binding.editMessage.doOnTextChanged { text, start, before, count ->
-            viewModel.enterMessage.value =text.toString()
-            Log.d("Peter","${viewModel.enterMessage.value}")
+            viewModel.enterMessage.value = text.toString()
+            Log.d("Peter", "${viewModel.enterMessage.value}")
         }
-
-
-
-
-
         return binding.root
     }
 
@@ -127,15 +108,13 @@ class ChatRoomFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-//            Log.d("ChatRoomFragment","Pressed!!! true")
-              if (viewModel.ifMap){
-                  findNavController().navigate(NavigationDirections.navigateToMapFragment())
-              }else{
-                  findNavController().navigate(NavigationDirections.navigateToChatFragment())
-              }
+            if (viewModel.ifMap) {
+                findNavController().navigate(NavigationDirections.navigateToMapFragment())
+            } else {
+                findNavController().navigate(NavigationDirections.navigateToChatFragment())
+            }
             return true
         }
-//        Log.d("ChatRoomFragment","Pressed!!! false")
         return false
     }
 

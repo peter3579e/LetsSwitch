@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import java.sql.Time
 import java.util.*
 
-class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     val locationDetail = MutableLiveData<Location>()
 
@@ -50,11 +50,11 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
         get() = _error
 
     private val _time = MutableLiveData<Time>()
-    val time : LiveData<Time>
+    val time: LiveData<Time>
         get() = _time
 
     private val _selectedPeople = MutableLiveData<Int>()
-    val selectedPeople : LiveData<Int>
+    val selectedPeople: LiveData<Int>
         get() = _selectedPeople
 
     val _photoUri = MutableLiveData<Uri>()
@@ -97,34 +97,32 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
         }
-
     }
 
-    fun navigateBackToMap(){
+    fun navigateBackToMap() {
         _navigateBackToMap.value = true
     }
 
-    fun mapNavigated(){
+    fun mapNavigated() {
         _navigateBackToMap.value = false
     }
 
-
-    fun setPhoto(photo: Uri){
+    fun setPhoto(photo: Uri) {
         _photoUri.value = photo
     }
 
-    fun setCurrentDate(date: Date){
+    fun setCurrentDate(date: Date) {
         _date.value = date
         _time.value = Time(date.time)
     }
 
-
-    fun startCamera () {
+    fun startCamera() {
         camera.value = true
     }
 
@@ -132,23 +130,22 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
         _selectedPeople.value = age
     }
 
-    fun closeCamera () {
+    fun closeCamera() {
         camera.value = false
     }
 
-
     fun getEvents(): Events {
         return Events(
-                eventId = "",
-                eventTitle = enterTitle.value!!,
-                eventDetail = enterDetail.value!!,
-                Location = locationDetail.value!!,
-                date = selectedDate.value!!,
-                time = selectedTime.value!!,
-                peopleNumber = selectedPeople.value!!,
-                eventPhotos = photoList.value!!,
-                postBy = UserManager.user.name,
-                postTime = 0L
+            eventId = "",
+            eventTitle = enterTitle.value!!,
+            eventDetail = enterDetail.value!!,
+            Location = locationDetail.value!!,
+            date = selectedDate.value!!,
+            time = selectedTime.value!!,
+            peopleNumber = selectedPeople.value!!,
+            eventPhotos = photoList.value!!,
+            postBy = UserManager.user.name,
+            postTime = 0L
         )
     }
 

@@ -10,31 +10,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.peter.letsswtich.MainActivity
 import com.peter.letsswtich.databinding.ItemImageCircleBinding
 
-class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHolder>(){
+class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHolder>() {
 
     private lateinit var context: Context
     private var count = 0
     var selectedPosition = MutableLiveData<Int>()
 
-    class ImageViewHolder(val binding: ItemImageCircleBinding): RecyclerView.ViewHolder(binding.root) {
-
-        var isSelected = MutableLiveData<Boolean>()
+    class ImageViewHolder(val binding: ItemImageCircleBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(context: Context, selectedPosition: MutableLiveData<Int>) {
 
             selectedPosition.observe(context as MainActivity, Observer {
                 binding.isSelected = it == adapterPosition
                 binding.executePendingBindings()
-                Log.i("selected position changed in adapter", "$it")
+                Log.i("Selected position changed in adapter", "$it")
             })
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageCircleAdapter.ImageViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ImageCircleAdapter.ImageViewHolder {
         context = parent.context
         return ImageViewHolder(
-                ItemImageCircleBinding.inflate(
-                        LayoutInflater.from(parent.context), parent, false))
+            ItemImageCircleBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     /**

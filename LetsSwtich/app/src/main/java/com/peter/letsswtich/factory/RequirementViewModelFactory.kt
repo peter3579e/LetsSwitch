@@ -8,19 +8,19 @@ import com.peter.letsswtich.home.HomeViewModel
 import com.peter.letsswtich.setting.SettingViewModel
 
 class RequirementViewModelFactory constructor(
-        private val repository: LetsSwitchRepository,
-        private val userRequirement: Requirement
-): ViewModelProvider.Factory {
+    private val repository: LetsSwitchRepository,
+    private val userRequirement: Requirement
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-            with(modelClass) {
-                when {
-                    isAssignableFrom(SettingViewModel::class.java) ->
-                        SettingViewModel(repository,userRequirement)
+        with(modelClass) {
+            when {
+                isAssignableFrom(SettingViewModel::class.java) ->
+                    SettingViewModel(repository, userRequirement)
 
 
-                    else ->
-                        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-                }
-            } as T
+                else ->
+                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
+        } as T
 }

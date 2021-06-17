@@ -3,7 +3,6 @@ package com.peter.letsswtich.data
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-
 @Parcelize
 data class Location(
         var placeName: String = "",

@@ -30,29 +30,7 @@ class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, Chat
             val friendInfo = chatRoom.attendeesInfo.first()
 
             Log.d("friendInfo","friend info = $friendInfo")
-
-//            if (viewModel.newestFriendDetail!=null){
-//                Log.d("value of Friend","viewmodel vale = ${viewModel.newestFriendDetail}")
-//                for (userInfo in viewModel.newestFriendDetail!!){
-//                    Log.d("friendInfo","here here1!!")
-//                    if (userInfo.email == chatRoom.attendees.first()){
-//                        Log.d("friendInfo","here here!!")
-//                        binding.image = userInfo.personImages[0]
-//                    }
-//                }
-//            }else{
-//                binding.image = friendInfo.userImage
-//            }
-
             binding.image = friendInfo.userImage
-
-
-
-
-            // Chat room has been filtered, the attendee info only holds the other user's info
-            Log.d("ChatListAdapter","Adapter has run")
-
-
 
             binding.textChatName.text = friendInfo.userName
 
@@ -63,9 +41,6 @@ class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, Chat
                 Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userEmail}")
                 Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userName}")
             }
-
-//            Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userEmail}")
-//            Log.d("ChatListAdapter","value of userinfo = ${friendInfo.userName}")
 
             binding.executePendingBindings()
 
@@ -98,17 +73,9 @@ class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, Chat
 
     override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
         holder.bind(getItem(position) as ChatRoom,viewModel)
-
-
         viewModel.latestTimeMessage.value = getItem(position).latestMessageTime
 
         Log.d("ChatListAdapter","value of getItem = ${viewModel.latestTimeMessage.value}")
-
-
-//        holder.itemView.setOnClickListener{
-//            Navigation.createNavigateOnClickListener(NavigationDirections.navigateToChatroomFragment())
-//            Log.d("ChatListAdapter","value of getItem = ${getItem(position)}")
-//        }
     }
 
 

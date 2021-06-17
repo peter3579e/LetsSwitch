@@ -9,7 +9,7 @@ import com.peter.letsswtich.MainActivity
 import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.ActivityLoginProcessBinding
 
-class LoginProcessActivity : AppCompatActivity(){
+class LoginProcessActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginProcessBinding
     private val duration = 2500L
@@ -18,7 +18,6 @@ class LoginProcessActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login_process)
-
 
         Handler().postDelayed({
 

@@ -32,7 +32,6 @@ class PreviewFragment(user: User): Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-
         binding = FragmentPreviewBinding.inflate(inflater,container,false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -40,10 +39,6 @@ class PreviewFragment(user: User): Fragment() {
         viewModel.userDetail = userdetail
         val chipGroup = binding.chipGroup
         val language = viewModel.userDetail.fluentLanguage
-
-//
-//        Log.d("PreviewFragment","value of image = ${viewModel.userImages}")
-
 
         val imageAdapter = PreviewImageAdapter(viewModel)
 
@@ -53,39 +48,23 @@ class PreviewFragment(user: User): Fragment() {
 
         binding.recyclerImageCircles.adapter = circleAdapeter
 
-        val count = 0
-
-
-
         mainViewModel.userdetail.observe(viewLifecycleOwner, Observer {
-            Log.d("Alex","Run1")
-
             Log.d("PreviewFragment","the value of userdetail from main viewModel = ${it}")
             viewModel.userDetail.personImages = it.personImages
-            Log.d("Alex","Run2")
             imageAdapter.submitImages(viewModel.userDetail.personImages)
-            Log.d("Alex","Run3")
             imageAdapter.notifyDataSetChanged()
-            Log.d("Alex","Run4")
             circleAdapeter.submitCount(userdetail.personImages.size)
-            Log.d("Alex","Run5")
             binding.name = it.name
-            Log.d("Alex","Run6")
             binding.city = it.city
-            Log.d("Alex","Run7")
             binding.district = it.district
-            Log.d("Alex","Run8")
             val newlanguage = mainViewModel.userdetail.value!!.fluentLanguage
-            Log.d("Alex","for loop has run")
             if (mainViewModel.userdetail.value!!.fluentLanguage != viewModel.userDetail.fluentLanguage){
                 for (language in newlanguage){
-                    Log.d("Alex","for loop has run")
                     val chip = Chip(chipGroup.context)
                     chip.text = language
                     chipGroup.addView(chip)
                 }
             }
-            Log.d("Alex","Run9")
         })
 
 

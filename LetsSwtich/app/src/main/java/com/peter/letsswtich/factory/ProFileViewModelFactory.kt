@@ -9,21 +9,21 @@ import com.peter.letsswtich.editprofile.EditProfileViewModel
 import com.peter.letsswtich.profile.ProfileViewModel
 
 class ProFileViewModelFactory constructor(
-        private val repository: LetsSwitchRepository,
-        private val matchedUser: User,
-        private val fromMap:Boolean
-): ViewModelProvider.Factory {
+    private val repository: LetsSwitchRepository,
+    private val matchedUser: User,
+    private val fromMap: Boolean
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-            with(modelClass) {
-                when {
+        with(modelClass) {
+            when {
 
-                    isAssignableFrom(ProfileViewModel::class.java) ->
-                        ProfileViewModel(repository,matchedUser,fromMap)
+                isAssignableFrom(ProfileViewModel::class.java) ->
+                    ProfileViewModel(repository, matchedUser, fromMap)
 
 
-                    else ->
-                        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-                }
-            } as T
+                else ->
+                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
+        } as T
 }

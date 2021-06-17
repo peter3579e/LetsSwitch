@@ -14,25 +14,21 @@ import com.peter.letsswtich.profile.ProfileViewModel
 import com.peter.letsswtich.setting.SettingViewModel
 
 class UserViewModelFactory constructor(
-        private val repository: LetsSwitchRepository,
-        private val matchedUser: User
-): ViewModelProvider.Factory {
+    private val repository: LetsSwitchRepository,
+    private val matchedUser: User
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-            with(modelClass) {
-                when {
-                    isAssignableFrom(MatchedDialogViewModel::class.java) ->
-                        MatchedDialogViewModel(repository, matchedUser)
+        with(modelClass) {
+            when {
+                isAssignableFrom(MatchedDialogViewModel::class.java) ->
+                    MatchedDialogViewModel(repository, matchedUser)
 
+                isAssignableFrom(EditProfileViewModel::class.java) ->
+                    EditProfileViewModel(repository, matchedUser)
 
-                    isAssignableFrom(EditProfileViewModel::class.java) ->
-                        EditProfileViewModel(repository,matchedUser)
-
-
-
-
-                    else ->
-                        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-                }
-            } as T
+                else ->
+                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
+        } as T
 }

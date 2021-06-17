@@ -14,14 +14,19 @@ class AgeSpinner(private val strings: MutableList<Int>, val indicator: String) :
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val binding = ItemAgeSpinnerBinding.inflate(LayoutInflater.from(parent?.context),parent,false)
+        val binding =
+            ItemAgeSpinnerBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
 
-        if(position == 0){
-            Log.d("Adapter","$position")
+        if (position == 0) {
+            Log.d("Adapter", "$position")
             binding.age = null
-            binding.textSpinnerTitle.setTextColor(LetsSwtichApplication.appContext.resources.getColor(R.color.black_12_alpha))
+            binding.textSpinnerTitle.setTextColor(
+                LetsSwtichApplication.appContext.resources.getColor(
+                    R.color.black_12_alpha
+                )
+            )
         } else {
-            binding.age = strings[position-1]
+            binding.age = strings[position - 1]
         }
 
         return binding.root
@@ -31,12 +36,12 @@ class AgeSpinner(private val strings: MutableList<Int>, val indicator: String) :
         return if (position == 0)
             0
         else
-            strings[position-1]
+            strings[position - 1]
     }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
-        Log.d("posistion","${getItemId(position)}")
+        Log.d("posistion", "${getItemId(position)}")
     }
 
     override fun getCount(): Int {

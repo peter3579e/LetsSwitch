@@ -15,8 +15,5 @@ data class Events(
         var peopleNumber: Int = 0,
         var eventPhotos: List<String> = listOf(),
         var postBy : String = "",
-//        var inviteFriends: List<User> = listOf(User(listOf(),"","","","",
-//                0,0.0,0.0,"","","","","",
-//                listOf(), listOf(), listOf(),"",0L)),
         var postTime: Long = 0L
 ) : Parcelable

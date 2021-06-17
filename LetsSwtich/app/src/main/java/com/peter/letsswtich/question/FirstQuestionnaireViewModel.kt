@@ -15,7 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRepository) :
+    ViewModel() {
 
     val usrInfo = UserManager.user
 
@@ -83,15 +84,14 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
         }
 
     }
-
-
 
 
 //    fun postUser(){
@@ -112,11 +112,11 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
         _selectedGender.value = gender
     }
 
-    fun setupMothertongue(language:String){
+    fun setupMothertongue(language: String) {
         _selectedMothertongue.value = language
     }
 
-    fun setupFluent(language:String){
+    fun setupFluent(language: String) {
         _selectedFluent.value = language
     }
 }

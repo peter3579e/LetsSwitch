@@ -76,7 +76,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     private val LOCATION_PERMISSION_REQUEST = 1
     private var TAG = "MapFragment"
 
-
     private val viewModel: MapViewModel by viewModels<MapViewModel> { getVmFactory() }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
@@ -115,12 +114,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         val eventAdapter = EventListAdapter(viewModel)
         binding.recyclerEventList.adapter = eventAdapter
 
-//        mSearchText = binding.inputSearch
-
-
-
-
-
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         mainViewModel.matchList.observe(viewLifecycleOwner, Observer {
@@ -154,14 +147,9 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     adpter.submitList(list)
                 }
 
-//                Log.d("the value of count", "the value of count = $count")
-
                 count++
 
-//                Log.d("the value of count", "the value of count after = $count")
             })
-
-
         })
 
         viewModel.showsMore.observe(viewLifecycleOwner, Observer {
@@ -223,7 +211,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         })
 
         viewModel.createEvent.observe(viewLifecycleOwner, Observer {
-            if(it ==  true){
+            if (it == true) {
                 findNavController().navigate(NavigationDirections.navigateToEventFragment())
                 viewModel.createEventNavigated()
             }
@@ -245,9 +233,8 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         })
 
         viewModel.allEvent.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG,"the vale of all event = ${it.size}")
+            Log.d(TAG, "the vale of all event = ${it.size}")
             eventAdapter.submitEvent(it)
-
             viewModel.eventsInMapReady.value = it
 
         })
@@ -273,21 +260,18 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     }
 
 
-
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         viewModel.eventsInMapReady.observe(this, Observer {
-            Log.d(TAG,"event LatLng has run!!")
-            for (events in it){
-                val location = LatLng(events.Location.latitude,events.Location.lngti)
+            for (events in it) {
+                val location = LatLng(events.Location.latitude, events.Location.lngti)
                 googleMap.addMarker(
-                        MarkerOptions().position(location)
-                                .flat(true)
+                    MarkerOptions().position(location)
+                        .flat(true)
                 )
             }
-
         })
 
         if (ActivityCompat.checkSelfPermission(
@@ -302,7 +286,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         ) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
-            Log.d("Run", "456")
         } else {
             ActivityCompat.requestPermissions(
                 activity as MainActivity,
@@ -312,12 +295,13 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         }
 
         fusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
+            LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
 
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
             val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
-            Log.d("MapFragment", "Has run here!")
+
             Log.d("MapFragment", "newlocation value = $newLocation")
+
             viewModel.mylocation.value = newLocation
 
             Log.d("location", "my email = ${UserManager.user.email}")
@@ -328,7 +312,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
                 Log.d("location", "the value of lat = ${location}")
             })
-
 
             googleMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
@@ -341,10 +324,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
             val circleOptions = CircleOptions()
             circleOptions.center(newLocation)
-                    .radius(queryRadius.toDouble() * 500)
-                    .fillColor(Color.argb(70, 150, 50, 50))
-                    .strokeWidth(3F)
-                    .strokeColor(Color.RED)
+                .radius(queryRadius.toDouble() * 500)
+                .fillColor(Color.argb(70, 150, 50, 50))
+                .strokeWidth(3F)
+                .strokeColor(Color.RED)
             googleMap.addCircle(circleOptions)
 
         }
@@ -362,30 +345,25 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             val location = LatLng(Event.Location.latitude, Event.Location.lngti)
 
             googleMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                            location,
-                            15.toFloat()
-                    )
+                CameraUpdateFactory.newLatLngZoom(
+                    location,
+                    15.toFloat()
+                )
             )
         })
 
         viewModel.navigateToEventDetail.observe(viewLifecycleOwner, Observer {
-            if (it != null){
+            if (it != null) {
                 findNavController().navigate(NavigationDirections.navigateToEventDetailFragment(it))
                 viewModel.navigateToEventDetail.value = null
-        }
+            }
         })
 
 
         viewModel.listofMatchUserInfo.observe(this, Observer { usersList ->
             usersList.let {
 
-
-                Log.d("Map Fragment", "Map has run!!")
-
-
                 for (userInfo in usersList) {
-
 
                     val queryResult = LatLng(
                         userInfo.latitude, userInfo.lngti
@@ -401,21 +379,15 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                         Bitmap.createScaledBitmap(b!!, widthIcon, widthIcon, false)
                     val iconDraw = BitmapDescriptorFactory.fromBitmap(smallMarker)
 
-//                        if (queryResult.latitude in lowerLat..greaterLat
-//                            && queryResult.longitude in lowerLon..greaterLon
-//                        ) {
-
                     val image = userInfo.personImages[0]
 
                     Log.d("Peter", "value of = $image")
 
                     val url = URL(image)
 
-
                     val result: Deferred<Bitmap?> = GlobalScope.async {
                         url.toBitmap()
                     }
-
 
                     GlobalScope.launch(Dispatchers.Main) {
                         // show bitmap on image view when available
@@ -441,70 +413,20 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                                 .title(userInfo.description)
                         )
                         addMarker.tag = userInfo
-
-
-//                        val addMarker = googleMap.addMarker(
-//                            MarkerOptions().position(queryResult)
-//                                .flat(true)
-////                                    .alpha(0.5F)
-////                                .icon(iconDraw)
-//                                .icon(BitmapDescriptorFactory.fromBitmap(figureMarker))
-//                                .snippet(userInfo.name)
-//                                .title(userInfo.description)
-//                        )
-//                        addMarker.tag = userInfo
-
                     }
-
-
-//                        }
-
-//                        googleMap.animateCamera(
-//                            CameraUpdateFactory.newLatLngZoom(
-//                                queryResult,
-//                                15.toFloat()
-//                            )
-//                        )
                 }
-
             }
         })
     }
 
-
-//    private fun googleMapNav(geoPoint: LatLng) {
-//        fusedLocationProviderClient =
-//            LocationServices.getFusedLocationProviderClient((activity as MainActivity))
-//        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-//            val storeLnt = geoPoint.latitude
-//            val storeLon = geoPoint.longitude
-//            val intent = Intent(
-//                Intent.ACTION_VIEW,
-//                Uri.parse(
-//                    "http://maps.google.com/maps?"
-//                            + "saddr=" + it.latitude + "," + it.longitude
-//                            + "&daddr=" + storeLnt + "," + storeLon
-//                            + "&avoid=highway"
-//                            + "&language=zh-CN"
-//                )
-//            )
-//            intent.setClassName(
-//                "com.google.android.apps.maps",
-//                "com.google.android.maps.MapsActivity"
-//            )
-//            startActivity(intent)
-//        }
-//    }
-
     // extension function to get bitmap from url
-    fun URL.toBitmap(): Bitmap?{
+    fun URL.toBitmap(): Bitmap? {
         return try {
             BitmapFactory.decodeStream(openStream())
-        }catch (e: IOException){
+        } catch (e: IOException) {
             null
         }
     }
-
 
     override fun onResume() {
         super.onResume()

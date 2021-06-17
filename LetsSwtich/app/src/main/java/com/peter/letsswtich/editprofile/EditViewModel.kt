@@ -18,7 +18,7 @@ import java.io.File
 import java.sql.Time
 import java.util.*
 
-class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): ViewModel() {
+class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     val photoList = MutableLiveData<MutableList<String>>()
     val newPhotoList = MutableLiveData<MutableList<String>>()
@@ -52,7 +52,7 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
     var enterMessage = MutableLiveData<String>()
 
     private val _time = MutableLiveData<Time>()
-    val time : LiveData<Time>
+    val time: LiveData<Time>
         get() = _time
 
     private val _isUploadPhoto = MutableLiveData<Boolean>()
@@ -67,11 +67,11 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
     val photoUri: LiveData<Uri>
         get() = _photoUri
 
-    fun setPhoto(photo: Uri){
+    fun setPhoto(photo: Uri) {
         _photoUri.value = photo
     }
 
-    fun setCurrentDate(date: Date){
+    fun setCurrentDate(date: Date) {
         _date.value = date
         _time.value = Time(date.time)
     }
@@ -82,7 +82,7 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
 
     val camera = MutableLiveData<Boolean>()
 
-    fun startCamera () {
+    fun startCamera() {
         camera.value = true
     }
 
@@ -94,11 +94,11 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
         _selectedDistrict.value = district
     }
 
-    fun closeCamera () {
+    fun closeCamera() {
         camera.value = false
     }
 
-    fun uploadPhoto(){
+    fun uploadPhoto() {
         _isUploadPhoto.value = true
     }
 
@@ -106,11 +106,11 @@ class EditViewModel(private val letsSwitchRepository: LetsSwitchRepository): Vie
         _selectedGender.value = gender
     }
 
-    fun setupMothertongue(language:String){
+    fun setupMothertongue(language: String) {
         _selectedMothertongue.value = language
     }
 
-    fun setupFluent(language:String){
+    fun setupFluent(language: String) {
         _selectedFluent.value = language
     }
 

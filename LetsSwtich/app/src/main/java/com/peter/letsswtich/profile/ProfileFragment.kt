@@ -59,14 +59,14 @@ import java.io.*
 import java.net.URL
 
 
-class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
+class ProfileFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel by viewModels<ProfileViewModel> {
         getVmFactory(
-                ProfileFragmentArgs.fromBundle(requireArguments()).userDetail,
-                ProfileFragmentArgs.fromBundle(requireArguments()).fromMap
+            ProfileFragmentArgs.fromBundle(requireArguments()).userDetail,
+            ProfileFragmentArgs.fromBundle(requireArguments()).fromMap
         )
     }
 
@@ -79,9 +79,9 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -98,7 +98,7 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
             binding.changeBackground.visibility = View.GONE
             binding.setting.visibility = View.GONE
             mainViewModel.navigateToFriendProfile()
-            if(viewModel.userDetail.fluentLanguage.isNotEmpty()){
+            if (viewModel.userDetail.fluentLanguage.isNotEmpty()) {
                 val nativeChip = binding.chipGroup
                 val chip = Chip(nativeChip.context)
                 chip.text = viewModel.userDetail.fluentLanguage[0]
@@ -110,7 +110,7 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                 viewModel.locatMe.value = false
             }
 
-            if (viewModel.userDetail.preferLanguage.isNotEmpty()){
+            if (viewModel.userDetail.preferLanguage.isNotEmpty()) {
                 for (language in viewModel.userDetail.preferLanguage) {
                     val learningChip = binding.chipLearning
                     val chip3 = Chip(learningChip.context)
@@ -119,17 +119,26 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                 }
             }
 
-            Log.d("ProfileFragment", "valeu of navigation = ${mainViewModel.navigateToFriendsProfile.value}")
+            Log.d(
+                "ProfileFragment",
+                "valeu of navigation = ${mainViewModel.navigateToFriendsProfile.value}"
+            )
             binding.buttonBack.setOnClickListener {
-                if (viewModel.ifMap == true){
+                if (viewModel.ifMap == true) {
                     findNavController().navigate(NavigationDirections.navigateToMapFragment())
-                }else{
-                    findNavController().navigate(NavigationDirections.navigateToChatroomFragment(viewModel.userDetail.email, viewModel.userDetail.name,false))
+                } else {
+                    findNavController().navigate(
+                        NavigationDirections.navigateToChatroomFragment(
+                            viewModel.userDetail.email,
+                            viewModel.userDetail.name,
+                            false
+                        )
+                    )
                 }
             }
 
-        }else{
-            if(UserManager.user.fluentLanguage.isNotEmpty()){
+        } else {
+            if (UserManager.user.fluentLanguage.isNotEmpty()) {
                 val nativeChip = binding.chipGroup
                 val chip = Chip(nativeChip.context)
                 chip.text = viewModel.userDetail.fluentLanguage[0]
@@ -141,7 +150,7 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                 viewModel.locatMe.value = true
             }
 
-            if (UserManager.user.preferLanguage.isNotEmpty()){
+            if (UserManager.user.preferLanguage.isNotEmpty()) {
                 for (language in viewModel.userDetail.preferLanguage) {
                     val learningChip = binding.chipLearning
                     val chip3 = Chip(learningChip.context)
@@ -152,9 +161,9 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         }
 
         viewModel.picDialog.observe(viewLifecycleOwner, Observer {
-            if(it == true){
+            if (it == true) {
                 findNavController().navigate(NavigationDirections.navigateToPicDialog(viewModel.userDetail.personImages[0]))
-            }else if (it == false){
+            } else if (it == false) {
                 findNavController().navigate(NavigationDirections.navigateToPicDialog(viewModel.userDetail.backGroundPic))
             }
         })
@@ -163,15 +172,23 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 
         viewModel.navigateToEditProfile.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                findNavController().navigate(NavigationDirections.navigateToEditProfilePage(viewModel.userDetail))
-                Log.d("ProfileFragment","the value of = ${viewModel.userDetail}")
+                findNavController().navigate(
+                    NavigationDirections.navigateToEditProfilePage(
+                        viewModel.userDetail
+                    )
+                )
+                Log.d("ProfileFragment", "the value of = ${viewModel.userDetail}")
                 viewModel.editProfileNavigated()
             }
         })
 
         viewModel.setting.observe(viewLifecycleOwner, Observer {
-            if (it == true){
-                findNavController().navigate(NavigationDirections.navigateToSettingFragment(mainViewModel.requirment.value!!))
+            if (it == true) {
+                findNavController().navigate(
+                    NavigationDirections.navigateToSettingFragment(
+                        mainViewModel.requirment.value!!
+                    )
+                )
                 viewModel.settingNavigated()
             }
         })
@@ -184,8 +201,6 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         viewModel.clickedPic.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(NavigationDirections.navigateToPicDialog(it))
         })
-
-
 
 
         val imageList: MutableList<String> = mutableListOf()
@@ -208,14 +223,20 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         })
 
         viewModel.photoUri.observe(viewLifecycleOwner, Observer {
-            Log.d("profileFragment","Uri has received")
+            Log.d("profileFragment", "Uri has received")
             viewModel.userDetail.backGroundPic = it.toString()
             binding.backgroundImage = viewModel.userDetail.backGroundPic
-            Log.d("profileFragment","Uri has received $it")
+            Log.d("profileFragment", "Uri has received $it")
             mainViewModel.userdetail.value!!.backGroundPic = it.toString()
             UserManager.user.backGroundPic = it.toString()
-            Log.d("profileFragment","User with background ${mainViewModel.userdetail.value!!.backGroundPic}")
-            Log.d("profileFragment","UserManager with background ${UserManager.user.backGroundPic}")
+            Log.d(
+                "profileFragment",
+                "User with background ${mainViewModel.userdetail.value!!.backGroundPic}"
+            )
+            Log.d(
+                "profileFragment",
+                "UserManager with background ${UserManager.user.backGroundPic}"
+            )
             viewModel.updateUser(mainViewModel.userdetail.value!!)
 
         })
@@ -342,9 +363,9 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                                     val byte = ByteArrayOutputStream()
 
                                     outBitmap.compress(
-                                            Bitmap.CompressFormat.JPEG,
-                                            15,
-                                            byte
+                                        Bitmap.CompressFormat.JPEG,
+                                        15,
+                                        byte
                                     )
 
                                     val byteArray = byte.toByteArray()
@@ -374,57 +395,57 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
                             }
                         }
                     }
-                   IMAGE_FROM_CAMERA -> {
+                    IMAGE_FROM_CAMERA -> {
 
                         fileFromCamera?.let {
-                            Log.d("Max","Run1")
+                            Log.d("Max", "Run1")
 
-                            Log.d("Max","the value of file path =  $fileFromCamera")
+                            Log.d("Max", "the value of file path =  $fileFromCamera")
 
-                            Log.d("Max","Run2")
+                            Log.d("Max", "Run2")
 
 
 
-                                Log.d("Max","Run1")
+                            Log.d("Max", "Run1")
 
-                                bitmap = data?.extras?.get("data") as Bitmap
+                            bitmap = data?.extras?.get("data") as Bitmap
 //                                    MediaStore.Images.Media.getBitmap(
 //                                        (activity as MainActivity).contentResolver,
 //                                        it
 //                                    )
-                            Log.d("Max","$bitmap")
-                                Log.d("Max","Run2")
+                            Log.d("Max", "$bitmap")
+                            Log.d("Max", "Run2")
 
-                                val matrix = Matrix()
+                            val matrix = Matrix()
 
-                                Log.d("Max","Run3")
+                            Log.d("Max", "Run3")
 
-                                Log.d("Max","Run4")
+                            Log.d("Max", "Run4")
 
-                                val outBitmap = Bitmap.createBitmap(
-                                    bitmap!!, 0, 0,
-                                    bitmap!!.width, bitmap!!.height, matrix, false
-                                )
+                            val outBitmap = Bitmap.createBitmap(
+                                bitmap!!, 0, 0,
+                                bitmap!!.width, bitmap!!.height, matrix, false
+                            )
 
-                                Log.d("Max","Run5")
+                            Log.d("Max", "Run5")
 
-                                Log.d("Max","Run6")
-                                val byte = ByteArrayOutputStream()
+                            Log.d("Max", "Run6")
+                            val byte = ByteArrayOutputStream()
 
-                                Log.d("Max","Run7")
-                                outBitmap.compress(
-                                        Bitmap.CompressFormat.JPEG,
-                                        15,
-                                        byte
-                                )
+                            Log.d("Max", "Run7")
+                            outBitmap.compress(
+                                Bitmap.CompressFormat.JPEG,
+                                15,
+                                byte
+                            )
 
-                                Log.d("Max","Run8")
+                            Log.d("Max", "Run8")
 
-                                val byteArray = byte.toByteArray()
+                            val byteArray = byte.toByteArray()
 
-                                Log.d("Max","Run9")
+                            Log.d("Max", "Run9")
 
-                                uploadCamera(byteArray)
+                            uploadCamera(byteArray)
 //                            }
                         }
                     }
@@ -552,7 +573,6 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
     private fun uploadCamera(bitmap: ByteArray) {
 
 
-
         Log.d("Peter", "Hey1")
 
 
@@ -574,11 +594,11 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
             Log.d("Peter", "the value of date = ${viewModel.date.value}")
 
             val imageReference = FirebaseStorage.getInstance().reference.child(
-                    LetsSwtichApplication.applicationContext().getString(
-                            R.string.firebase_storage_reference, uid, viewModel.date.value.toDateFormat(
-                            FORMAT_YYYY_MM_DDHHMMSS
+                LetsSwtichApplication.applicationContext().getString(
+                    R.string.firebase_storage_reference, uid, viewModel.date.value.toDateFormat(
+                        FORMAT_YYYY_MM_DDHHMMSS
                     )
-                    )
+                )
             ).child(fileFromCamera.toString())
 
 
@@ -589,19 +609,19 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
             Log.d("Peter", "Hey7")
 
             imageReference.putBytes(bitmap)
-                    .addOnCompleteListener {
+                .addOnCompleteListener {
 
 
-                        imageReference.downloadUrl.addOnCompleteListener { task ->
+                    imageReference.downloadUrl.addOnCompleteListener { task ->
 
-                            task.result?.let { taskResult ->
+                        task.result?.let { taskResult ->
 
-                                Log.d("Peter", "the result of pic = $taskResult")
+                            Log.d("Peter", "the result of pic = $taskResult")
 
-                                viewModel.setPhoto(taskResult)
-                            }
+                            viewModel.setPhoto(taskResult)
                         }
                     }
+                }
 
         }
     }
@@ -784,29 +804,29 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 
     private fun startCamera() {
 
-        Log.d("Max","run 123")
+        Log.d("Max", "run 123")
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        Log.d("Max","$intent")
-        Log.d("Max","run 1234")
+        Log.d("Max", "$intent")
+        Log.d("Max", "run 1234")
         if (intent.resolveActivity(LetsSwtichApplication.applicationContext().packageManager) != null) {
 
-            Log.d("Max","run 12")
+            Log.d("Max", "run 12")
 
             try {
-                Log.d("Max","run 13")
+                Log.d("Max", "run 13")
                 fileFromCamera = createImageFile()
 
                 Log.d("EditFragment", "the value of return photo = ${fileFromCamera}")
 
             } catch (ex: IOException) {
-                Log.d("Max","run 14")
+                Log.d("Max", "run 14")
                 return
             }
             if (fileFromCamera != null) {
-                Log.d("Max","run 15")
+                Log.d("Max", "run 15")
                 startActivityForResult(intent, IMAGE_FROM_CAMERA)
-                Log.d("Max","run 18")
+                Log.d("Max", "run 18")
             }
         }
     }
@@ -843,74 +863,74 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         if (ActivityCompat.checkSelfPermission(
-                        LetsSwtichApplication.appContext,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                )
-                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        LetsSwtichApplication.appContext,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-                == PackageManager.PERMISSION_GRANTED
+                LetsSwtichApplication.appContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                LetsSwtichApplication.appContext,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
         ) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
             Log.d("Run", "456")
         } else {
             ActivityCompat.requestPermissions(
-                    activity as MainActivity,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST
+                activity as MainActivity,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST
             )
         }
 
         viewModel.locatMe.observe(viewLifecycleOwner, Observer {
-            if (it == true){
-                Log.d("ProfileFragment","value of $it")
+            if (it == true) {
+                Log.d("ProfileFragment", "value of $it")
                 fusedLocationProviderClient =
-                        LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
+                    LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
 
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
                     val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
-                    Log.d("MapFragment","Has run here!")
+                    Log.d("MapFragment", "Has run here!")
                     Log.d("MapFragment", "newlocation value = $newLocation")
                     viewModel.mylocation.value = newLocation
 
-                    Log.d("location","my email = ${UserManager.user.email}")
+                    Log.d("location", "my email = ${UserManager.user.email}")
 
 
                     googleMap.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                    newLocation,
-                                    15.toFloat()
-                            )
+                        CameraUpdateFactory.newLatLngZoom(
+                            newLocation,
+                            15.toFloat()
+                        )
                     )
 
                     val queryRadius = 1
 
                     val circleOptions = CircleOptions()
                     circleOptions.center(newLocation)
-                            .radius(queryRadius.toDouble() * 500)
-                            .fillColor(Color.argb(70, 150, 50, 50))
-                            .strokeWidth(3F)
-                            .strokeColor(Color.RED)
+                        .radius(queryRadius.toDouble() * 500)
+                        .fillColor(Color.argb(70, 150, 50, 50))
+                        .strokeWidth(3F)
+                        .strokeColor(Color.RED)
                     googleMap.addCircle(circleOptions)
 
                 }
-            }else if (it == false){
-                Log.d("Map Fragment","Map has run!!")
+            } else if (it == false) {
+                Log.d("Map Fragment", "Map has run!!")
 
-                    val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
-                    val image = viewModel.userDetail.personImages[0]
+                val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
+                val image = viewModel.userDetail.personImages[0]
 
-                    Log.d("Peter","value of = $image")
+                Log.d("Peter", "value of = $image")
 
-                    val url  = URL(image)
-                    val position = LatLng(viewModel.userDetail.latitude,viewModel.userDetail.lngti)
+                val url = URL(image)
+                val position = LatLng(viewModel.userDetail.latitude, viewModel.userDetail.lngti)
 
 
-                    val result: Deferred<Bitmap?> = GlobalScope.async {
-                        url.toBitmap()
-                    }
+                val result: Deferred<Bitmap?> = GlobalScope.async {
+                    url.toBitmap()
+                }
 
                 GlobalScope.launch(Dispatchers.Main) {
                     // show bitmap on image view when available
@@ -951,12 +971,12 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
 //
 //                    }
 
-                    googleMap.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                    position,
-                                    15.toFloat()
-                            )
+                googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        position,
+                        15.toFloat()
                     )
+                )
 
 
             }
@@ -975,10 +995,10 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         return false
     }
 
-    fun URL.toBitmap(): Bitmap?{
+    fun URL.toBitmap(): Bitmap? {
         return try {
             BitmapFactory.decodeStream(openStream())
-        }catch (e: IOException){
+        } catch (e: IOException) {
             null
         }
     }
@@ -1003,7 +1023,6 @@ class ProfileFragment : Fragment() , GoogleMap.OnMarkerClickListener, OnMapReady
         super.onDestroy()
         map.onDestroy()
     }
-
 
 
 }

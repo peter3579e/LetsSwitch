@@ -32,7 +32,7 @@ class ViewModelFactory constructor(
         with(modelClass) {
             when {
 
-                isAssignableFrom(MainViewModel::class.java)->
+                isAssignableFrom(MainViewModel::class.java) ->
                     MainViewModel(letsSwitchRepository)
 
                 isAssignableFrom(FirstQuestionnaireViewModel::class.java) ->
@@ -41,10 +41,10 @@ class ViewModelFactory constructor(
                 isAssignableFrom(ChatViewModel::class.java) ->
                     ChatViewModel(letsSwitchRepository)
 
-                isAssignableFrom(MapViewModel::class.java)->
+                isAssignableFrom(MapViewModel::class.java) ->
                     MapViewModel(letsSwitchRepository)
 
-                isAssignableFrom(EditViewModel::class.java)->
+                isAssignableFrom(EditViewModel::class.java) ->
                     EditViewModel(letsSwitchRepository)
 
                 isAssignableFrom(LoginViewModel::class.java) ->
@@ -62,10 +62,8 @@ class ViewModelFactory constructor(
                 isAssignableFrom(HomeViewModel::class.java) ->
                     HomeViewModel(letsSwitchRepository)
 
-                isAssignableFrom(EditEventViewModel::class.java)->
+                isAssignableFrom(EditEventViewModel::class.java) ->
                     EditEventViewModel(letsSwitchRepository)
-
-
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -14,7 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class EditProfileViewModel(private val letsSwitchRepository: LetsSwitchRepository, userdetail:User):ViewModel() {
+class EditProfileViewModel(
+    private val letsSwitchRepository: LetsSwitchRepository,
+    userdetail: User
+) : ViewModel() {
 
     var user = userdetail
 

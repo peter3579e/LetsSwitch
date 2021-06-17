@@ -13,20 +13,20 @@ import com.peter.letsswtich.MainActivity
 import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.databinding.FragmentLoginProcessBinding
 
-class LoginProcessFragment:Fragment() {
+class LoginProcessFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginProcessBinding
     private val duration = 2500L
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentLoginProcessBinding.inflate(inflater,container,false)
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentLoginProcessBinding.inflate(inflater, container, false)
         Handler().postDelayed({
-
             findNavController().navigate(LoginNavigationDirections.navigateToFirstQuestionnaire())
-
             requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
-
 
         }, duration)
 
