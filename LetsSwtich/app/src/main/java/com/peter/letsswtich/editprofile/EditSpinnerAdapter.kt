@@ -11,8 +11,6 @@ import com.peter.letsswtich.databinding.ItemMyquestionSpinnerBinding
 
 class EditSpinnerAdapter (private val strings: Array<String>, private val indicator: String) : BaseAdapter() {
 
-
-
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val binding = ItemMyquestionSpinnerBinding.inflate(LayoutInflater.from(parent?.context),parent,false)

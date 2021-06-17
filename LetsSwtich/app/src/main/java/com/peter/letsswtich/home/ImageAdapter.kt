@@ -23,16 +23,7 @@ class ImageAdapter(val viewModel: HomeViewModel):RecyclerView.Adapter<ImageAdapt
 
         val view = binding.imageDetailGallery
 
-
-//        val magnifier= Magnifier.Builder(view)
-//            .setInitialZoom(1.8f)
-//            .setSize(360,360)
-//            .setCornerRadius(360f)
-//            .build()
-
         fun bind(context: Context, imageUrl: String) {
-
-
             imageUrl.let {
                 binding.imageUrl = it
 

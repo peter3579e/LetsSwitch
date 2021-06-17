@@ -38,11 +38,6 @@ class LoginActivity : AppCompatActivity() {
 
     val viewModel by viewModels<LoginActivityViewModel> { getVmFactory() }
 
-//    val viewModel by viewModels<LoginViewModel> { getVmFactory() }
-//    private var auth: FirebaseAuth? = null
-//    private var googleSignInClient: GoogleSignInClient? = null
-//    private var GOOGLE_LOGIN_CODE = 9001
-
     private fun setupNavController(){
         findNavController(R.id.loginNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id){
@@ -54,15 +49,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         setupNavController()
-
-
-
     }
 
 }

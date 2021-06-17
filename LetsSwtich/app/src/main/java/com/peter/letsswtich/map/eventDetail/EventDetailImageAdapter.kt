@@ -20,23 +20,16 @@ class EventDetailImageAdapter (val viewModel: EventDetailViewModel) : RecyclerVi
     // the data of adapter
     private var images: List<String>? = null
 
-
     class ImageViewHolder(private var binding: ItemProfileImageBinding): RecyclerView.ViewHolder(binding.root) {
-
         val view = binding.imageDetailGallery
-
         fun bind(context: Context, imageUrl: String) {
-
-
             imageUrl.let {
                 binding.imageUrl = it
-
                 // Make sure the size of each image item can display correct
                 val displayMetrics = DisplayMetrics()
                 (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
                 binding.imageDetailGallery.layoutParams = ConstraintLayout.LayoutParams(displayMetrics.widthPixels,
                         context.resources.getDimensionPixelSize(R.dimen.height_detail_gallery))
-
                 binding.executePendingBindings()
             }
         }
@@ -53,11 +46,9 @@ class EventDetailImageAdapter (val viewModel: EventDetailViewModel) : RecyclerVi
      */
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-
         images?.let {
             holder.bind(context, it[getRealPosition(position)])
         }
-
         viewModel._snapPosition.value = position
     }
 

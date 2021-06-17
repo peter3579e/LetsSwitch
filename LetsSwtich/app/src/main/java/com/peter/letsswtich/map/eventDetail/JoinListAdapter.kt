@@ -17,12 +17,9 @@ class JoinListAdapter (val viewModel: EventDetailViewModel): ListAdapter<String,
     class ViewHolder(private var binding: ItemJoinImageBinding):
             RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String) {
-            Log.d("joinLsitAdapter","Run2")
             image.let {
-                Log.d("joinLsitAdapter","Run1")
                 Log.d("joinLsitAdapter","the value of received string = $it")
                 binding.images = image
-                Log.d("joinLsitAdapter","Run3")
                 binding.executePendingBindings()
             }
         }
@@ -35,10 +32,8 @@ class JoinListAdapter (val viewModel: EventDetailViewModel): ListAdapter<String,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
-        Log.d("joinLsitAdapter","Run4")
         Log.d("joinLsitAdapter","$position")
     }
-
 
     companion object DiffCallback : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {

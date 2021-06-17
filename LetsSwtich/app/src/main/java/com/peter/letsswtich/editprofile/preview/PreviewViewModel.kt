@@ -39,7 +39,6 @@ class PreviewViewModel(private val letsSwitchRepository: LetsSwitchRepository):V
             layoutManager?.getPosition(snapView)?.let {
                 if (it != snapPosition.value) {
                     _snapPosition.value = it
-                    Log.i("snapPosition on scrollChange","$it")
                 }
             }
         }

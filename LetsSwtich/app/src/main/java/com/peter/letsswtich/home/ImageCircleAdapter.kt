@@ -18,14 +18,12 @@ class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHold
 
     class ImageViewHolder(val binding: ItemImageCircleBinding): RecyclerView.ViewHolder(binding.root) {
 
-        var isSelected = MutableLiveData<Boolean>()
-
         fun bind(context: Context, selectedPosition: MutableLiveData<Int>) {
 
             selectedPosition.observe(context as MainActivity, Observer {
                 binding.isSelected = it == adapterPosition
                 binding.executePendingBindings()
-                Log.i("selected position changed in adapter", "$it")
+                Log.i("Selected position changed in adapter", "$it")
             })
         }
     }
@@ -36,18 +34,15 @@ class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHold
                 ItemImageCircleBinding.inflate(
                         LayoutInflater.from(parent.context), parent, false))
     }
-
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
     override fun onBindViewHolder(holder: ImageCircleAdapter.ImageViewHolder, position: Int) {
         holder.bind(context, selectedPosition)
     }
-
     override fun getItemCount(): Int {
         return count
     }
-
     /**
      * Submit data list and refresh adapter by [notifyDataSetChanged]
      * @param count: set up count of circles

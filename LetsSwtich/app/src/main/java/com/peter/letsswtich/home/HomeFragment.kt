@@ -108,10 +108,6 @@ class HomeFragment : Fragment(), CardStackListener {
             }
         }
 
-
-
-
-
         binding.buttonYes.setOnClickListener {
 
             setupSwipeAnimation(Direction.Left)
@@ -204,34 +200,6 @@ class HomeFragment : Fragment(), CardStackListener {
             }
         })
 
-
-//        viewModel.oldMatchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            oldMatchList = it
-////            Log.d("HomeFragment", "value of old Matchlist = ${oldMatchList.size}")
-//        })
-
-//        mainViewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//
-//            if (viewModel.matchList.value != null ) {
-//                Log.d("mathcList","WTF is happeneing?")
-//                if ( it[0].email != likedUser.email && count > 0){
-//                    Log.d("matchList","value of likedUser =$likedUser")
-//                    Log.d("matchList","the value of matchList = ${it[0].email}")
-//                    Log.d("mtachList","Nav has run")
-//                findNavController().navigate(NavigationDirections.navigateToMatchedDialog(it[0]))
-//                }else{
-//                    Log.d("matchList","Nothing Happened")
-//                }
-//                count ++
-//                Log.d("HomeFragment","the value of count = $count")
-//            }
-//        })
-//
-//        mainViewModel.likeList.value = likedUser
-
-
-
-
         viewModel.status.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             setupSearchAnimation(it)
         })
@@ -273,10 +241,6 @@ class HomeFragment : Fragment(), CardStackListener {
 
         // Add count on every swipe & when count reaches max amount of the list, navigate.
         count++
-//        if (count == maxAmount) {
-//            findNavController().navigate(NavigationDirections.navigateToFollowListFragment())
-//        }
-
         Logger.i(count.toString())
         Logger.i(maxCount.toString())
 
@@ -300,20 +264,13 @@ class HomeFragment : Fragment(), CardStackListener {
 
     private fun setupSwipeAction(direction: Direction?) {
         if (direction == Direction.Right) {
-
-//            viewModel.postUserToFollow(myEmail, requireNotNull(viewModel.usersWithMatch.value)[count])
             likedUser = requireNotNull(viewModel.usersWithMatch.value)[count]
-
             Log.d("HomeFragment", "value of like = $likedUser ")
-
 
             viewModel.updateMyLike(myEmail, likedUser)
             viewModel.getLikeList(myEmail, likedUser)
             viewModel.snapPosition.value = 0
 
-
-
-//            Toast.makeText(LetsSwtichApplication.appContext, "Add to friendList", Toast.LENGTH_SHORT).show()
         }
 
         if (direction == Direction.Left) {
@@ -341,16 +298,12 @@ class HomeFragment : Fragment(), CardStackListener {
         } else {
             binding.noValueText.visibility = View.VISIBLE
             binding.noValueButton.visibility = View.VISIBLE
-//            binding.noValueButton.setOnClickListener {
-//                findNavController().navigate(NavigationDirections.navigateToPairingFragment())
-//            }
         }
     }
 
     private fun setupSearchAnimation(status: LoadApiStatus) {
         when (status) {
             LoadApiStatus.LOADING -> {
-//                Log.d("HomeFragment", "LoadApi has Run")
                 binding.layoutLoading.visibility = View.VISIBLE
                 binding.userPic.visibility = View.VISIBLE
                 binding.animSearching.playAnimation()
@@ -359,8 +312,6 @@ class HomeFragment : Fragment(), CardStackListener {
                 Handler().postDelayed({binding.layoutLoading.visibility = View.GONE
                     binding.userPic.visibility = View.GONE
                     binding.animSearching.cancelAnimation()},2000)
-
-//                Log.d("HomeFragment", "LoadApi has Done")
             }
             else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT).show()
         }

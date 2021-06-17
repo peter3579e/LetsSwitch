@@ -41,16 +41,6 @@ class MatchedDialog : AppCompatDialogFragment() {
         binding.dialog = this
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
-
         return binding.root
     }
-
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        view.setOnClickListener{
-//            Log.d("click","click")
-//            this.dismiss()
-//        }
-//    }
 }

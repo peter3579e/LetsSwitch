@@ -22,8 +22,6 @@ fun createCustomMarker(context: Context,  resource: Bitmap, _name: String?): Bit
         )
     val markerImage = marker.findViewById(R.id.user_dp) as CircleImageView
     markerImage.setImageBitmap(resource)
-//    val txt_name = marker.findViewById(R.id.name) as TextView
-//    txt_name.text = _name
     val displayMetrics = DisplayMetrics()
     (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
     marker.setLayoutParams(ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT))

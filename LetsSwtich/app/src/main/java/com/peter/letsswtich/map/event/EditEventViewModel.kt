@@ -102,7 +102,6 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
                 }
             }
         }
-
     }
 
     fun navigateBackToMap(){
@@ -113,7 +112,6 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
         _navigateBackToMap.value = false
     }
 
-
     fun setPhoto(photo: Uri){
         _photoUri.value = photo
     }
@@ -122,7 +120,6 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
         _date.value = date
         _time.value = Time(date.time)
     }
-
 
     fun startCamera () {
         camera.value = true
@@ -135,7 +132,6 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
     fun closeCamera () {
         camera.value = false
     }
-
 
     fun getEvents(): Events {
         return Events(

@@ -40,8 +40,6 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
 
     var filterMessage = listOf<Message>()
 
-
-
     // All live message
     var allLiveMessage = MutableLiveData<MessageWithId>()
 
@@ -77,7 +75,6 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
 
         getUserDetail(currentChattingUser)
 
-//        getMessageItem()
     }
 
     fun getUserEmails(user1Email: String, user2Email: String): List<String> {
@@ -179,23 +176,12 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
                     null
                 }
             }
-//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
         }
     }
 
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
-
-
-
-
-//    fun getMessageItem() {
-//        coroutineScope.launch {
-//            allLiveMessage.value = letsSwitchRepository.getMessageItem()
-//            Log.d("ChatRoomViewModel","Value of getMessage ${allLiveMessage.value}")
-//        }
-//    }
 
     private fun getAllLiveMessage(userEmails: List<String>) {
         allLiveMessage = letsSwitchRepository.getAllLiveMessage(userEmails)

@@ -21,18 +21,12 @@ import com.peter.letsswtich.profile.ProfileFragmentArgs
 import com.peter.letsswtich.profile.ProfileViewModel
 
 class EditProfileFragment : Fragment(){
-
     private lateinit var binding: FragmentEditProfileBinding
-
-
     private val viewModel by viewModels<EditProfileViewModel> {
         getVmFactory(
             EditProfileFragmentArgs.fromBundle(requireArguments()).userDetail
         )
     }
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,12 +74,7 @@ class EditProfileFragment : Fragment(){
                 viewModel.updateUser(mainViewModel.userdetail.value!!)
                 viewModel.profileNavigated()
             }
-
         })
-
-
-
-
         return binding.root
     }
 

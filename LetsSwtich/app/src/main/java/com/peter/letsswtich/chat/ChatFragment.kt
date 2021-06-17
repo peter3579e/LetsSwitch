@@ -35,10 +35,8 @@ class ChatFragment:Fragment() {
         })
         mainViewModel.newestFriendDetail.observe(viewLifecycleOwner, Observer {
             viewModel.newestFriendDetail  = it
-
         })
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,29 +50,21 @@ class ChatFragment:Fragment() {
         binding.recyclerChatList.adapter = adapter
         binding.recyclerNewMatches.adapter = newMatchesAdapter
         binding.lifecycleOwner = this
-
-
-
-
         viewModel.allLiveChatRooms.observe(viewLifecycleOwner, Observer { oldList ->
             oldList.let {
                 Log.d("ChatFragment", "value of allLiveChatRoom = $oldList")
                 val filteredChatRoom = mutableListOf<ChatRoom>()
 
                 if (oldList.isEmpty()) {
-                    Logger.d("no value has run!!")
                     binding.noValue.visibility = View.VISIBLE
                     binding.noValueImage.visibility = View.VISIBLE
                 } else {
-
                     oldList.forEach {chatRoom ->
-
                         // Remove my info to make the new info list contains only the other user's info
                         chatRoom.attendeesInfo = excludeMyInfo(chatRoom.attendeesInfo)
 
                         filteredChatRoom.add(chatRoom)
                     }
-
                     Log.d("ChatFragment","value of filteredChatRoom = ${filteredChatRoom.size}")
 
                     viewModel.createFilteredChatRooms(filteredChatRoom)
@@ -85,20 +75,12 @@ class ChatFragment:Fragment() {
 
 
         viewModel.filteredChatRooms.observe(viewLifecycleOwner, Observer { list ->
-
-
-//            Log.d("ChatFragment", "value of filteredChatRoom=${list.sortedByDescending { it.latestMessageTime }}")
-
             val newList = list.sortedByDescending { it.latestMessageTime }
 
             for(i in newList){
                 Log.d("ChatFragment","value of list = ${i.latestMessageTime}]")
             }
-
             Log.d("ChatFragment","value of list = $list")
-
-
-
                 viewModel.roomByMessageTime.value = list
                 binding.recyclerChatList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)
                 binding.recyclerNewMatches.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_animation)

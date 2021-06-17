@@ -11,7 +11,6 @@ interface LetsSwitchRepository {
     fun getAllLiveMessage(emails: List<String>): MutableLiveData<MessageWithId>
     fun getLiveEvent(): MutableLiveData<List<Events>>
     fun getLiveJoinList(events: Events): MutableLiveData<List<User>>
-    suspend fun getMessageItem(): List<Message>
     fun getNewMatchListener(myEmail: String): MutableLiveData<List<User>>
     suspend fun getLikeList(myEmail: String, user: User): Result<List<String>>
     suspend fun getMyOldMatchList(myEmail: String): Result<List<User>>
@@ -31,5 +30,4 @@ interface LetsSwitchRepository {
     suspend fun postRequirement (myEmail: String, require: Requirement): Result<Boolean>
     suspend fun removeUserFromLikeList(myEmail: String, friendEmail: User): Result<Boolean>
     suspend fun firebaseAuthWithGoogle(account : GoogleSignInAccount?): Result<FirebaseUser>
-    suspend fun postfake()
 }

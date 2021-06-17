@@ -65,8 +65,6 @@ class ViewModelFactory constructor(
                 isAssignableFrom(EditEventViewModel::class.java)->
                     EditEventViewModel(letsSwitchRepository)
 
-
-
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

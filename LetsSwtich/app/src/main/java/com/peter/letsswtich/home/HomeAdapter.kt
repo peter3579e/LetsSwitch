@@ -19,10 +19,7 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
 
     class UserViewHolder(private var binding: ItemProfilecardBinding): RecyclerView.ViewHolder(binding.root),LifecycleOwner {
         fun bind(user: User,viewModel: HomeViewModel){
-
-
             val linearSnapHelper = LinearSnapHelper().apply {
-//                attachToRecyclerView(binding.imageCardUser)
                 val snapHelper: SnapHelper = PagerSnapHelper()
                 binding.imageCardUser.onFlingListener = null
                 snapHelper.attachToRecyclerView(binding.imageCardUser)
@@ -53,9 +50,6 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
             val layoutManager = binding.imageCardUser.layoutManager
 
             circleAdapter.submitCount(user.personImages.size)
-
-
-
 
             binding.cardImagePlus.setOnClickListener {
 
@@ -91,8 +85,6 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
             if (viewModel.count){
                 language = emptyList()
             }
-
-            Log.d("HomeAdapter","Adapter has run")
 
             for (language in language){
                 val chip = Chip(chipGroup.context)
@@ -137,12 +129,6 @@ class HomeAdapter(val viewModel: HomeViewModel):ListAdapter<User, RecyclerView.V
         when(holder){
             is UserViewHolder -> {
                 holder.bind(getItem(position) as User,viewModel)
-
-                val user = getItem(position) as User
-//                viewModel.userPersonImage.value = user.personImages
-
-//                Log.d("HomeAdapter","User personImages value ${viewModel.userPersonImage.value}")
-
             }
         }
     }

@@ -19,20 +19,21 @@ import com.peter.letsswtich.login.UserManager
 
 class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
     ListAdapter<Message, RecyclerView.ViewHolder>(DiffCallback) {
-//    var count = 0
 
     class FriendMessageViewHolder(private var binding: ItemFriendsMessageBinding) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
         fun bind(message: Message, viewModel: ChatRoomViewModel) {
-
-            Log.d("ChatRoomAdpater","FriendMessageViewHolder has run!!")
-
             binding.message = message
             binding.executePendingBindings()
 
             binding.root.setOnClickListener { view: View ->
                 view.findNavController()
-                    .navigate(NavigationDirections.navigateToProfileFragment(viewModel.userDetail.value!!,false))
+                    .navigate(
+                        NavigationDirections.navigateToProfileFragment(
+                            viewModel.userDetail.value!!,
+                            false
+                        )
+                    )
 
             }
         }
@@ -53,35 +54,27 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
         val read = binding.read
         fun bind(message: Message, viewModel: ChatRoomViewModel) {
             viewModel.count++
-            Log.d("ChatRoomAdpater","MyMessageViewHolder has run!!")
-
             binding.viewModel = viewModel
-
             binding.message = message
-
             val read = binding.read
-
-
             val size = viewModel.filterMessage.size
-            Log.d("ChatRoomAdapter","value of size $size")
-            Log.d("ChatRoomAdapter","value of count ${viewModel.count}")
-//            Log.d("ChatRoomAdapter"," the last message ${viewModel.filterMessage[size].read}")
+            Log.d("ChatRoomAdapter", "value of size $size")
+            Log.d("ChatRoomAdapter", "value of count ${viewModel.count}")
+            Log.d(
+                "ChatRoomAdapter",
+                "the value of boolean = ${viewModel.filterMessage[size - 1].read}"
+            )
 
-            Log.d("ChatRoomAdapter","the value of boolean = ${viewModel.filterMessage[size-1].read}")
-
-                if (viewModel.filterMessage[size-1].read && viewModel.count == size) {
-                    Log.d("ChatRoomAdapter","the visible has run")
-                    read.visibility = View.VISIBLE
-                    viewModel.count = 0
-                    Log.d("ChatRoomAdapter","value of count ${viewModel.count}")
-                } else {
-                    Log.d("ChatRoomAdapter","the invisible has run")
-                    read.visibility = View.GONE
-                }
-
-
+            if (viewModel.filterMessage[size - 1].read && viewModel.count == size) {
+                Log.d("ChatRoomAdapter", "the visible has run")
+                read.visibility = View.VISIBLE
+                viewModel.count = 0
+                Log.d("ChatRoomAdapter", "value of count ${viewModel.count}")
+            } else {
+                Log.d("ChatRoomAdapter", "the invisible has run")
+                read.visibility = View.GONE
+            }
             binding.executePendingBindings()
-
         }
 
         private val lifecycleRegistry = LifecycleRegistry(this)

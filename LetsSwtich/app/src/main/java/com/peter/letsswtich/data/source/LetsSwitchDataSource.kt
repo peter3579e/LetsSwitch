@@ -6,13 +6,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.peter.letsswtich.data.*
 
 interface LetsSwitchDataSource {
-
     suspend fun getAllUser(): Result<List<User>>
     fun  getLiveChatList(myEmail: String): MutableLiveData<List<ChatRoom>>
     fun getAllLiveMessage(emails: List<String>): MutableLiveData<MessageWithId>
     fun getLiveEvent(): MutableLiveData<List<Events>>
     fun getLiveJoinList(events: Events): MutableLiveData<List<User>>
-    suspend fun getMessageItem(): List<Message>
     suspend fun getLikeList(myEmail: String, user: User): Result<List<String>>
     fun getNewMatchListener(myEmail: String): MutableLiveData<List<User>>
     suspend fun getUserDetail(userEmail:String): Result<User>
@@ -32,7 +30,4 @@ interface LetsSwitchDataSource {
     suspend fun updateMatch(myEmail: String, user: User): Result<Boolean>
     suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean>
     suspend fun firebaseAuthWithGoogle(account : GoogleSignInAccount?): Result<FirebaseUser>
-    suspend fun postfake()
-
-
 }

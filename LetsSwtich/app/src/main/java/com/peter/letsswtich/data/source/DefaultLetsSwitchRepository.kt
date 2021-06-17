@@ -36,11 +36,6 @@ class DefaultLetsSwitchRepository(
         return remoteDataSource.getLiveJoinList(events)
     }
 
-
-    override suspend fun getMessageItem(): List<Message> {
-        return remoteDataSource.getMessageItem()
-    }
-
     override suspend fun getLikeList(myEmail: String, user: User): Result<List<String>> {
         return remoteDataSource.getLikeList(myEmail,user)
     }
@@ -80,8 +75,6 @@ class DefaultLetsSwitchRepository(
     override suspend fun postmyLocation(longitude:Double,latitude:Double,myEmail: String): Result<Boolean>{
         return remoteDataSource.postmyLocation(longitude,latitude,myEmail)
     }
-
-
     override suspend fun postChatRoom(chatRoom: ChatRoom): Result<Boolean> {
         return remoteDataSource.postChatRoom(chatRoom)
     }
@@ -108,13 +101,7 @@ class DefaultLetsSwitchRepository(
     override suspend fun removeUserFromLikeList(myEmail: String, user: User): Result<Boolean>{
         return remoteDataSource.removeUserFromLikeList(myEmail,user)
     }
-
     override suspend fun firebaseAuthWithGoogle(account : GoogleSignInAccount?): Result<FirebaseUser> {
         return remoteDataSource.firebaseAuthWithGoogle(account)
     }
-
-    override suspend fun postfake(){
-        return remoteDataSource.postfake()
-    }
-
 }

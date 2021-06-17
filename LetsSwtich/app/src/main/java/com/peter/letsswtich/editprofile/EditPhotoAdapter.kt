@@ -27,7 +27,6 @@ import com.peter.letsswtich.profile.PhotosAdapter
 import java.io.File
 
 class EditPhotoAdapter(val viewModel: EditViewModel) : ListAdapter<String, EditPhotoAdapter.ViewHolder>(DiffCallback) {
-
     class ViewHolder(private var binding: ItemEditPhotosBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String) {

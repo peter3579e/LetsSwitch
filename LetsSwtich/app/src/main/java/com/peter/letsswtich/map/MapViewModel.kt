@@ -22,7 +22,7 @@ import java.sql.Time
 import java.util.*
 import javax.xml.transform.dom.DOMLocator
 
-class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     val showsMore = MutableLiveData<Boolean>()
 
@@ -84,7 +84,6 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         get() = _createEvent
 
 
-
     val cardViewHeight = MutableLiveData<Int>()
 
     var allEvent = MutableLiveData<List<Events>>()
@@ -92,16 +91,9 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
     val navigateToEventDetail = MutableLiveData<Events>()
 
 
-
-
-
-
     private val _navigateToChatRoom = MutableLiveData<Boolean>()
-
     val navigateToChatRoom: LiveData<Boolean>
         get() = _navigateToChatRoom
-
-
 
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -109,7 +101,6 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
 
     init {
@@ -135,26 +126,25 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         _status.value = LoadApiStatus.DONE
     }
 
-    fun plusEventCount(){
-        _event.value = _event.value!!+1
+    fun plusEventCount() {
+        _event.value = _event.value!! + 1
     }
 
-    fun plusCount(){
-        Log.d("MapFragment","plus has run!!")
-       _cardView.value = _cardView.value!!+1
+    fun plusCount() {
+        Log.d("MapFragment", "plus has run!!")
+        _cardView.value = _cardView.value!! + 1
     }
 
-    fun navigateToCreateEvent(){
+    fun navigateToCreateEvent() {
         _createEvent.value = true
     }
 
-    fun createEventNavigated(){
+    fun createEventNavigated() {
         _createEvent.value = false
     }
 
 
-
-    fun getUserDetail(userEmail:String) {
+    fun getUserDetail(userEmail: String) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
@@ -177,7 +167,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }
@@ -186,7 +177,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         }
     }
 
-    fun navigateToChatRoom(){
+    fun navigateToChatRoom() {
         _navigateToChatRoom.value = true
     }
 
@@ -194,23 +185,22 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
         _navigateToChatRoom.value = false
     }
 
-    fun navigateToProfile(){
+    fun navigateToProfile() {
         _navigateToProfile.value = true
     }
 
-    fun profilenavigated(){
+    fun profilenavigated() {
         _navigateToProfile.value = false
     }
 
 
-
-    fun postlocaion(longitude:Double,latitude:Double,myEmail:String) {
+    fun postlocaion(longitude: Double, latitude: Double, myEmail: String) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = letsSwitchRepository.postmyLocation(longitude,latitude,myEmail)) {
+            when (val result = letsSwitchRepository.postmyLocation(longitude, latitude, myEmail)) {
                 is com.peter.letsswtich.data.Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -224,7 +214,8 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewM
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                 }
             }

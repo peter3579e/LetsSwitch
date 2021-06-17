@@ -22,33 +22,32 @@ import com.peter.letsswtich.databinding.ItemCreateEventBinding
 import com.peter.letsswtich.databinding.ItemEventListBinding
 import com.peter.letsswtich.login.UserManager
 
-class EventListAdapter (val viewModel: MapViewModel) :  RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-
+class EventListAdapter(val viewModel: MapViewModel) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var events: List<Events>? = null
 
-
-
     override fun getItemCount(): Int {
-        Log.d("EventListAdapter","Run2")
-                Log.d("EventListAdapter","return ${events?.size}")
+
+        Log.d("EventListAdapter", "return ${events?.size}")
 
         events?.let {
             return when (it.size) {
                 null -> 0
-                else -> it.size +1
+                else -> it.size + 1
             }
         }
         return 0
     }
 
-    class EventListViewHolder(private var binding: ItemEventListBinding): RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+    class EventListViewHolder(private var binding: ItemEventListBinding) :
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
         val seeMore = binding.navigateToEventDetail
 
-        fun bind(events: Events?, viewModel: MapViewModel){
+        fun bind(events: Events?, viewModel: MapViewModel) {
 
-            events?.let{
+            events?.let {
                 binding.eventDetail = it
                 binding.viewModel = viewModel
 
@@ -68,9 +67,10 @@ class EventListAdapter (val viewModel: MapViewModel) :  RecyclerView.Adapter<Rec
         }
     }
 
-    class CreateEventViewHolder(private var binding: ItemCreateEventBinding): RecyclerView.ViewHolder(binding.root),LifecycleOwner{
+    class CreateEventViewHolder(private var binding: ItemCreateEventBinding) :
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-        fun bind(viewModel: MapViewModel){
+        fun bind(viewModel: MapViewModel) {
 
             binding.viewModel = viewModel
 
@@ -91,75 +91,71 @@ class EventListAdapter (val viewModel: MapViewModel) :  RecyclerView.Adapter<Rec
         init {
             lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
         }
-
         override fun getLifecycle(): Lifecycle {
             return lifecycleRegistry
         }
-
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType){
-            ITEM_VIEW_TYPE_Create -> CreateEventViewHolder(ItemCreateEventBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            ITEM_VIEW_TYPE_List -> EventListViewHolder(ItemEventListBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return when (viewType) {
+            ITEM_VIEW_TYPE_Create -> CreateEventViewHolder(
+                ItemCreateEventBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+            ITEM_VIEW_TYPE_List -> EventListViewHolder(
+                ItemEventListBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        when (holder){
+        when (holder) {
             is EventListViewHolder -> {
-                holder.bind(events?.get(position-1), viewModel)
+                holder.bind(events?.get(position - 1), viewModel)
                 holder.seeMore.setOnClickListener {
-                    viewModel.navigateToEventDetail.value = events?.get(position-1)
-                    Log.d("EventListAdapter","navigate click has run")
-                    Log.d("EventListAdapter","navigate click value = ${events?.get(position-1)}")
+                    viewModel.navigateToEventDetail.value = events?.get(position - 1)
+                    Log.d("EventListAdapter", "navigate click value = ${events?.get(position - 1)}")
                     notifyDataSetChanged()
                 }
                 holder.itemView.setOnClickListener {
-                    Log.d("EventListAdapter","the value of position = ${events?.get(position-1)}")
-                    viewModel.clickedEventLocation.value = events?.get(position-1)
+                    Log.d(
+                        "EventListAdapter",
+                        "the value of position = ${events?.get(position - 1)}"
+                    )
+                    viewModel.clickedEventLocation.value = events?.get(position - 1)
                 }
             }
             is CreateEventViewHolder -> {
                 holder.bind(viewModel)
                 holder.itemView.setOnClickListener {
-                    Log.d("EventListAdapter","the value of position = $position")
+                    Log.d("EventListAdapter", "the value of position = $position")
                 }
             }
         }
-//        holder.itemView.setOnClickListener{
-//            Navigation.createNavigateOnClickListener(NavigationDirections.navigateToChatroomFragment())
-//            Log.d("ChatListAdapter","value of getItem = ${getItem(position)}")
-//        }
     }
 
     override fun getItemViewType(position: Int): Int {
-
-        Log.d("EventListAdapter","the value of position = $position")
-
-        Log.d("EventListAdapter","if has run1")
-            if (position == 0){
-                Log.d("EventListAdapter","if has run")
-                return ITEM_VIEW_TYPE_Create
-            }else{
-                Log.d("EventListAdapter","if has run")
-                return ITEM_VIEW_TYPE_List
-            }
-
-//        return when (position) {
-//            events?.size ?: 0 -> ITEM_VIEW_TYPE_Create
-//            else -> ITEM_VIEW_TYPE_List
-//        }
-
+        Log.d("EventListAdapter", "the value of position = $position")
+        if (position == 0) {
+            return ITEM_VIEW_TYPE_Create
+        } else {
+            return ITEM_VIEW_TYPE_List
+        }
     }
 
     fun submitEvent(events: List<Events>) {
         this.events = events
-        Log.d("EventListAdapter","event value in adapter = ${events.size}")
+        Log.d("EventListAdapter", "event value in adapter = ${events.size}")
         notifyDataSetChanged()
     }
 
@@ -179,9 +175,6 @@ class EventListAdapter (val viewModel: MapViewModel) :  RecyclerView.Adapter<Rec
             is CreateEventViewHolder -> holder.onDetach()
         }
     }
-
-
-
 
 
     companion object {

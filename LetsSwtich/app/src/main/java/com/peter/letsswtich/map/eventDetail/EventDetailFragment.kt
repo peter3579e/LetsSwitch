@@ -26,7 +26,6 @@ class EventDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentEventDetailBinding
     private val TAG = "EventDetailFragment"
-
     private val viewModel by viewModels<EventDetailViewModel> {
         getVmFactory(
                 EventDetailFragmentArgs.fromBundle(requireArguments()).eventDetail
@@ -41,9 +40,7 @@ class EventDetailFragment : Fragment() {
                 viewModel.photoList.add(pic)
             }
         }
-
         Log.d(TAG,"the value of photos = ${viewModel.photoList}")
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,7 +55,6 @@ class EventDetailFragment : Fragment() {
         binding.joinListRecycler.adapter = joinAdapter
 
         val linearSnapHelper = LinearSnapHelper().apply {
-//                attachToRecyclerView(binding.imageCardUser)
             val snapHelper: SnapHelper = PagerSnapHelper()
             binding.recyclerDetailGallery.onFlingListener = null
             snapHelper.attachToRecyclerView(binding.recyclerDetailGallery)
@@ -70,7 +66,6 @@ class EventDetailFragment : Fragment() {
                     linearSnapHelper
             )
         }
-
 
         viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
@@ -107,11 +102,8 @@ class EventDetailFragment : Fragment() {
                 joinListPic = mutableListOf()
                 Log.d(TAG,"the value of joinList After = $joinListPic")
                 count = 0
-                Log.d(TAG,"if has run")
             }
         })
-
-
 
         viewModel.navigateBackToMap.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -121,8 +113,6 @@ class EventDetailFragment : Fragment() {
         })
 
         Log.d(TAG, "the value of received detail = ${viewModel.event}")
-
-
         return binding.root
     }
 }

@@ -28,10 +28,6 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMessageItem(): List<Message> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun postUser(user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
@@ -105,10 +101,6 @@ class LetsSwitchLocalDataSource(val context: Context): LetsSwitchDataSource {
     }
 
     override suspend fun firebaseAuthWithGoogle(account: GoogleSignInAccount?): Result<FirebaseUser> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun postfake() {
         TODO("Not yet implemented")
     }
 }

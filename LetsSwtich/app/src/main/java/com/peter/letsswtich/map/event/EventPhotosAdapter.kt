@@ -31,8 +31,6 @@ class EventPhotoAdapter (val viewModel: EditEventViewModel) : ListAdapter<String
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
-
-
         holder.itemView.setOnClickListener {
             Log.d("EditPhotoAdapter","click value = $position")
             if(getItem(position) != "") {

@@ -42,9 +42,7 @@ class LoginFragment :Fragment(){
     override fun onStart() {
         super.onStart()
         moveMainPage(auth?.currentUser)
-        Log.d("LoginActivity","Run4")
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -56,9 +54,7 @@ class LoginFragment :Fragment(){
 
             if (binding.privacy.isChecked){
                 googleLogin()
-                Log.d("LoginActivity","Run1")
             }else{
-                Log.d("LoginActivity","Run2")
                 Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.privacy_requiremnt), Toast.LENGTH_SHORT).show()
             }
         }
@@ -68,7 +64,7 @@ class LoginFragment :Fragment(){
                 .requestIdToken(getString(R.string.token_id))
                 .requestEmail()
                 .build()
-// getting the value of gso inside the GoogleSigninClient
+        // getting the value of gso inside the GoogleSigninClient
         googleSignInClient = GoogleSignIn.getClient(requireContext(),gso)
 
         binding.term.setOnClickListener {
@@ -84,80 +80,47 @@ class LoginFragment :Fragment(){
             binding.privacy.isChecked = true
         }
 
-
-
-
-
-
-
-// initialize the firebaseAuth variable
-
         viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {
             it?.let {
-//                findNavController().navigate(LoginNavigationDirections.navigateToFirstQuestionnaire())
                 moveToQuestion(it)
-
                 Log.d("user","the observe has run = $it")
             }
         })
-
-
         return binding.root
     }
 
     private fun googleLogin() {
         val signInIntent = googleSignInClient?.signInIntent
-        Log.d("LoginActivity","Run5")
         startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d("LoginActivity","google has return")
-
         if (requestCode == GOOGLE_LOGIN_CODE) {
-            Log.d("LoginActivity","google has return 1")
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            Log.d("LoginActivity","google has return 2")
             if (result != null) {
-                Log.d("LoginActivity","google has return 3")
                 Log.d("LoginActivity","the value of result = ${result.isSuccess}")
                 if (result.isSuccess) {
-                    Log.d("LoginActivity","google has return 4")
                     val account = result.signInAccount
                     //Second step
                     viewModel.loginAuth(account)
                 }
             }
         }
-
-//        if(requestCode==GOOGLE_LOGIN_CODE){
-//            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            handleResult(task)
-//        }
     }
 
 
     private fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
-            Log.d("LoginActivity","google has return 5")
             val currentUser = User(personImages = listOf(user.photoUrl.toString()),
                     email = user.email.toString(),
                     name = user.displayName.toString(),
                     googleId = user.uid
             )
-
             UserManager.user = currentUser
-
-            Log.d("LogActivity","PostUser has run")
             Log.d("LogActivity","the value of User =${UserManager.user}")
-//            viewModel.postUser(currentUser)
-
-//            startActivity(Intent(this, SplashActivity::class.java))
-//            startActivity(Intent(context, MainActivity::class.java))
             startActivity(Intent(context,LoginProcessActivity::class.java))
-
             requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
             requireActivity().finish()
         }
@@ -165,7 +128,6 @@ class LoginFragment :Fragment(){
 
     private fun moveToQuestion(user: FirebaseUser?) {
         if (user != null) {
-            Log.d("LoginActivity","google has return 5")
             val currentUser = User(personImages = listOf(user.photoUrl.toString()),
                     email = user.email.toString(),
                     name = user.displayName.toString(),
@@ -174,20 +136,9 @@ class LoginFragment :Fragment(){
 
             UserManager.user = currentUser
             UserManager.uid = user.email.toString()
-
-            Log.d("LogActivity","PostUser has run")
             Log.d("LogActivity","the value of User =${UserManager.user}")
-//            viewModel.postUser(currentUser)
 
             findNavController().navigate(LoginNavigationDirections.navigateToLoginProcess())
-
-            Log.d("LogActivity","thing has changed jhon show")
-
-
-
-//            startActivity(Intent(this, SplashActivity::class.java))
-//            startActivity(Intent(context, MainActivity::class.java))
-//            requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
         }
     }
 

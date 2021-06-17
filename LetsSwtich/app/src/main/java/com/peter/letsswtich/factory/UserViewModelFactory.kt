@@ -24,12 +24,8 @@ class UserViewModelFactory constructor(
                     isAssignableFrom(MatchedDialogViewModel::class.java) ->
                         MatchedDialogViewModel(repository, matchedUser)
 
-
                     isAssignableFrom(EditProfileViewModel::class.java) ->
                         EditProfileViewModel(repository,matchedUser)
-
-
-
 
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

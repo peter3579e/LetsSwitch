@@ -20,29 +20,15 @@ class PreviewImageAdapter (val viewModel: PreviewViewModel): RecyclerView.Adapte
     val position: Int =-1
 
     class ImageViewHolder(private var binding: ItemProfileImageBinding): RecyclerView.ViewHolder(binding.root) {
-
-
-
         val view = binding.imageDetailGallery
-
-
         fun bind(context: Context, imageUrl: String) {
-
-            Log.d("Alex","Run11")
-
             imageUrl.let {
                 binding.imageUrl = it
-                Log.d("Alex","Run12")
-
-
                 // Make sure the size of each image item can display correct
                 val displayMetrics = DisplayMetrics()
-                Log.d("Alex","Run13")
                 (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-                Log.d("Alex","Run14")
                 binding.imageDetailGallery.layoutParams = ConstraintLayout.LayoutParams(displayMetrics.widthPixels,
                         context.resources.getDimensionPixelSize(R.dimen.height_profile_gallery))
-                Log.d("Alex","Run15")
                 binding.executePendingBindings()
             }
         }

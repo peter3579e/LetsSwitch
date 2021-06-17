@@ -1,25 +1,15 @@
 package com.peter.letsswtich.map
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
-import com.peter.letsswtich.R
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.ItemMapFriendImagesBinding
-import com.peter.letsswtich.databinding.ItemProfileImageBinding
-import com.peter.letsswtich.databinding.ItemProfilePhotosBinding
-import com.peter.letsswtich.editprofile.preview.PreviewImageAdapter
-import com.peter.letsswtich.editprofile.preview.PreviewViewModel
-import com.peter.letsswtich.profile.PhotosAdapter
+
 
 class FriendsImageAdapter (val viewModel: MapViewModel): ListAdapter<User, FriendsImageAdapter.ViewHolder>(DiffCallback) {
 

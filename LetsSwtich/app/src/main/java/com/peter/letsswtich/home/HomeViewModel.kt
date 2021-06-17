@@ -31,8 +31,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
-    val answer = requirement
-
     private val _allUser = MutableLiveData<List<User>>()
 
     val allUser: MutableLiveData<List<User>>
@@ -84,9 +82,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
 
     val oldMatchList: MutableLiveData<List<User>>
         get() = _oldMatchList
-
-    val userPersonImage = MutableLiveData<List<String>>()
-
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -233,23 +228,8 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         }
     }
 
-    fun myDetail(myEmail: String, user: User) {
-        val users = FirebaseFirestore.getInstance().collection("user")
-
-        Log.d("letsSwitchRemoteDataSource", "UpdateAndCheckLike has run")
-
-        users.document(myEmail).collection("followList").document("peter3579e@gmail.com")
-            .set(user)
-            .addOnSuccessListener {
-                Logger.d("DocumentSnapshot added with ID: ${users}")
-            }
-            .addOnFailureListener { e ->
-                Logger.w("Error adding document $e")
-            }
-    }
 
     fun getRequirement(myEmail: String) {
-//        Log.d("HomeViewModel", "GetLxikeList has run!!")
         coroutineScope.launch {
 
             val result = letsSwitchRepository.getRequirement(myEmail)
@@ -340,7 +320,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     null
                 }
             }
-//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
             _refreshStatus.value = false
         }
     }
@@ -349,9 +328,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
     fun getAllUser() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-
             val result = letsSwitchRepository.getAllUser()
-
             _allUser.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -375,7 +352,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
                     null
                 }
             }
-//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
             _refreshStatus.value = false
         }
     }
@@ -406,8 +382,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         for (i in _usersWithMatch.value!!) {
             Log.d("HomeViewModel", "value of users = ${i.name}")
         }
-
-        Log.d("HomeViewModel", "here here here!!!")
     }
 
     fun onCampaignScrollChange(
@@ -424,6 +398,4 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
             }
         }
     }
-
-
 }

@@ -19,10 +19,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class EventDetailViewModel(private val letsSwitchRepository: LetsSwitchRepository, eventDetail:Events):ViewModel() {
+class EventDetailViewModel(
+    private val letsSwitchRepository: LetsSwitchRepository,
+    eventDetail: Events
+) : ViewModel() {
 
     val event = eventDetail
-
     val photoList = mutableListOf<String>()
 
     val _snapPosition = MutableLiveData<Int>()
@@ -30,13 +32,11 @@ class EventDetailViewModel(private val letsSwitchRepository: LetsSwitchRepositor
         get() = _snapPosition
 
     private val _status = MutableLiveData<LoadApiStatus>()
-
     val status: LiveData<LoadApiStatus>
         get() = _status
 
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
-
     val error: LiveData<String>
         get() = _error
 
@@ -49,14 +49,20 @@ class EventDetailViewModel(private val letsSwitchRepository: LetsSwitchRepositor
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     val decoration = object : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
             super.getItemOffsets(outRect, view, parent, state)
 
             // Add top margin only for the first item to avoid double space between items
             if (parent.getChildLayoutPosition(view) == 0) {
                 outRect.left = 0
             } else {
-                outRect.left = LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_detail_circle)
+                outRect.left =
+                    LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_detail_circle)
             }
         }
     }
@@ -73,30 +79,34 @@ class EventDetailViewModel(private val letsSwitchRepository: LetsSwitchRepositor
         getLiveJoinList(event)
     }
 
-    fun navigateBackToMap(){
+    fun navigateBackToMap() {
         _navigateBackToMap.value = true
     }
 
-    fun mapNavigated(){
+    fun mapNavigated() {
         _navigateBackToMap.value = false
     }
 
-    fun onCampaignScrollChange(layoutManager: RecyclerView.LayoutManager?, linearSnapHelper: LinearSnapHelper) {
+    fun onCampaignScrollChange(
+        layoutManager: RecyclerView.LayoutManager?,
+        linearSnapHelper: LinearSnapHelper
+    ) {
         val snapView = linearSnapHelper.findSnapView(layoutManager)
         snapView?.let {
             layoutManager?.getPosition(snapView)?.let {
                 if (it != snapPosition.value) {
                     _snapPosition.value = it
-                    Log.i("snapPosition on scrollChange","$it")
+                    Log.i("snapPosition on scrollChange", "$it")
                 }
             }
         }
     }
 
-    fun sendJoin(){
+    fun sendJoin() {
         _join.value = true
     }
-    fun joinSent(){
+
+    fun joinSent() {
         _join.value = false
     }
 
@@ -105,13 +115,13 @@ class EventDetailViewModel(private val letsSwitchRepository: LetsSwitchRepositor
         _status.value = LoadApiStatus.DONE
     }
 
-    fun postJoin(myEmail:String,events: Events) {
+    fun postJoin(myEmail: String, events: Events) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = letsSwitchRepository.postJoin(myEmail,events)) {
+            when (val result = letsSwitchRepository.postJoin(myEmail, events)) {
                 is com.peter.letsswtich.data.Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -125,11 +135,11 @@ class EventDetailViewModel(private val letsSwitchRepository: LetsSwitchRepositor
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
         }
-
     }
 }
