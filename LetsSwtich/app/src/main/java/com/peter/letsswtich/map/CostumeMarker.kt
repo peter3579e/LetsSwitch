@@ -14,7 +14,7 @@ import com.peter.letsswtich.R
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-fun createCustomMarker(context: Context,  resource: Bitmap, _name: String?): Bitmap? {
+fun createCustomMarker(context: Context, resource: Bitmap, _name: String?): Bitmap? {
     val marker: View =
         (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
             R.layout.circular_image,

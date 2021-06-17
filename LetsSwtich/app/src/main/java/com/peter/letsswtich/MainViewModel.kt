@@ -15,22 +15,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     var matchList = MutableLiveData<List<User>>()
 
-    private val _oldMatchList = MutableLiveData<List<User>>()
-
-    val oldMatchList: MutableLiveData<List<User>>
-        get() = _oldMatchList
-
-    val likeList = MutableLiveData<User>()
     val requirment = MutableLiveData<Requirement>()
-
-    private val _leave = MutableLiveData<Boolean>()
-
-    val leave: LiveData<Boolean>
-        get() = _leave
 
     val newestFriendDetail = MutableLiveData<List<User>>()
 
@@ -51,18 +40,12 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     val error: LiveData<String>
         get() = _error
 
-    private val _refreshStatus = MutableLiveData<Boolean>()
-
     val userdetail = MutableLiveData<User>()
-
-    val refreshStatus: LiveData<Boolean>
-        get() = _refreshStatus
 
     private val _userInfo = MutableLiveData<User>()
 
     val userInfo: LiveData<User>
         get() = _userInfo
-
 
 
     val _navigateToFriendsProfile = MutableLiveData<Boolean>()
@@ -81,88 +64,17 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
         Logger.i("[${this::class.simpleName}]${this}")
         Logger.i("------------------------------------")
 
-
-//        getMyOldMatchList(UserManager.user.email)
         getNewMatchListener(UserManager.user.email)
         getUserDetail(UserManager.user.email)
 
     }
 
-    fun getNewMatchListener(myEmail: String){
-        Log.d("HomeViewModel","getNewMatchListener has run!!!")
+    fun getNewMatchListener(myEmail: String) {
+        Log.d("HomeViewModel", "getNewMatchListener has run!!!")
         matchList = letsSwitchRepository.getNewMatchListener(myEmail)
     }
 
-
-//    fun getChatRoom(): List<ChatRoom>{
-//
-//        Log.d("ChatViewModel","getChatRoom has run!!")
-//
-//        var chatList: MutableList<UserInfo> = mutableListOf()
-////        var attendeesList : MutableList<String> = mutableListOf()
-//        var chatRoom :MutableList<ChatRoom> = mutableListOf()
-//        matchList.value!!.forEach { it ->
-//            val myInfo = UserInfo().apply {
-//                userEmail = UserManager.user.email
-//                userImage = UserManager.user.personImages[0]
-//                userName = UserManager.user.name
-//            }
-//
-//            val friendInfo = UserInfo().apply {
-//                userEmail = it.email
-//                userName = it.name
-//                userImage = it.personImages[0]
-//            }
-//
-//            chatList.add(friendInfo)
-//            val attendlist = listOf<String>(UserManager.user.email,it.email)
-//            val chat = ChatRoom()
-//
-//            chat.apply {
-//                chatRoomId = ""
-//                latestTime = 0
-//                latestMessageTime = 0
-//                attendeesInfo = listOf(myInfo,friendInfo)
-//                attendees = attendlist
-//            }
-//            postChatList(chat)
-//            chatRoom.add(chat)
-//        }
-//
-//        Log.d("ChatViewModel","value of ChatRoom $chatRoom")
-//
-//        return chatRoom
-//    }
-//
-//    fun postChatList(chatRoom: ChatRoom){
-//        Log.d("ChatViewModel","postChatList has run!!")
-//        coroutineScope.launch {
-//            when (val result = letsSwitchRepository.postChatRoom(chatRoom)) {
-//                is com.peter.letsswtich.data.Result.Success -> {
-//                    _error.value = null
-//                    leave(true)
-//                }
-//                is com.peter.letsswtich.data.Result.Fail -> {
-//                    _error.value = result.error
-//                    _status.value = LoadApiStatus.ERROR
-//                }
-//                is com.peter.letsswtich.data.Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    _status.value = LoadApiStatus.ERROR
-//                }
-//                else -> {
-//                    _error.value = LetsSwtichApplication.instance.getString(R.string.get_nothing_from_firebase)
-//                    _status.value = LoadApiStatus.ERROR
-//                }
-//            }
-//        }
-//    }
-
-    fun leave(needRefresh: Boolean = false) {
-        _leave.value = needRefresh
-    }
-
-    fun getUserDetail(userEmail:String) {
+    fun getUserDetail(userEmail: String) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
@@ -185,81 +97,21 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
+                    _error.value =
+                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }
             }
-//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
         }
     }
 
 
-
-//    fun getMatchList(myEmail: String){
-//        coroutineScope.launch {
-//
-//            Log.d("ChatViewModel","getMyOldMatchList has run!!!")
-//
-//            val result = letsSwitchRepository.getMyOldMatchList(myEmail)
-//
-//            _matchList.value = when (result) {
-//                is Result.Success -> {
-//                    _error.value = null
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    null
-//                }
-//                else -> {
-//                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
-//                    null
-//                }
-//            }
-////            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
-//        }
-//    }
-
-//    fun getMyOldMatchList(myEmail: String){
-//        coroutineScope.launch {
-//
-//            Log.d("HomeViewModel","getMyOldMatchList has run!!!")
-//
-//            val result = letsSwitchRepository.getMyOldMatchList(myEmail)
-//
-//            _oldMatchList.value = when (result) {
-//                is Result.Success -> {
-//                    _error.value = null
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    null
-//                }
-//                else -> {
-//                    _error.value = LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
-//                    null
-//                }
-//            }
-////            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
-//            _refreshStatus.value = false
-//        }
-//    }
-
-    fun navigateToFriendProfile(){
+    fun navigateToFriendProfile() {
         _navigateToFriendsProfile.value = true
     }
 
-    fun friendsProfileNavigated(){
+    fun friendsProfileNavigated() {
         _navigateToFriendsProfile.value = false
     }
 }

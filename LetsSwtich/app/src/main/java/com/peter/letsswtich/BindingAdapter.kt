@@ -34,7 +34,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .apply(
                 RequestOptions()
                     .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_placeholder))
+                    .error(R.drawable.ic_placeholder)
+            )
             .into(imgView)
     }
 }
@@ -54,13 +55,15 @@ fun bindDetailCircleStatus(imageView: ImageView, isSelected: Boolean = false) {
                 false -> {
                     paint.style = Paint.Style.STROKE
                     paint.strokeWidth = LetsSwtichApplication.instance.resources
-                            .getDimensionPixelSize(R.dimen.edge_detail_circle).toFloat()
+                        .getDimensionPixelSize(R.dimen.edge_detail_circle).toFloat()
                 }
             }
 
-            canvas.drawCircle(this.width / 2, this.height / 2,
-                    LetsSwtichApplication.instance.resources
-                            .getDimensionPixelSize(R.dimen.radius_detail_circle).toFloat(), paint)
+            canvas.drawCircle(
+                this.width / 2, this.height / 2,
+                LetsSwtichApplication.instance.resources
+                    .getDimensionPixelSize(R.dimen.radius_detail_circle).toFloat(), paint
+            )
         }
     })
 }
@@ -86,57 +89,95 @@ fun bindRecyclerViewByCount(recyclerView: RecyclerView, count: Int?) {
 @BindingAdapter("itemPosition", "itemCount")
 fun setupPaddingForGridItems(layout: ConstraintLayout, position: Int, count: Int) {
 
-    val outsideHorizontal = LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_outside_horizontal_photo_item)
-    val insideHorizontal = LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_inside_horizontal_photo_item)
-    val outsideVertical = LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_outside_vertical_photo_item)
-    val insideVertical = LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_inside_vertical_photo_item)
+    val outsideHorizontal =
+        LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_outside_horizontal_photo_item)
+    val insideHorizontal =
+        LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_inside_horizontal_photo_item)
+    val outsideVertical =
+        LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_outside_vertical_photo_item)
+    val insideVertical =
+        LetsSwtichApplication.instance.resources.getDimensionPixelSize(R.dimen.space_inside_vertical_photo_item)
 
-    val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+    val layoutParams = ConstraintLayout.LayoutParams(
+        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+        ConstraintLayout.LayoutParams.WRAP_CONTENT
+    )
 
     when {
         position == 0 -> { // first item and confirm whether only 1 row
-            layoutParams.setMargins(outsideHorizontal, outsideVertical, insideHorizontal, if (count > 2) insideVertical else outsideVertical)
+            layoutParams.setMargins(
+                outsideHorizontal,
+                outsideVertical,
+                insideHorizontal,
+                if (count > 2) insideVertical else outsideVertical
+            )
         }
         position == 1 -> { // second item and confirm whether only 1 row
-            layoutParams.setMargins(insideHorizontal, outsideVertical, outsideHorizontal, if (count > 2) insideVertical else outsideVertical)
+            layoutParams.setMargins(
+                insideHorizontal,
+                outsideVertical,
+                outsideHorizontal,
+                if (count > 2) insideVertical else outsideVertical
+            )
         }
         count % 2 == 0 && position == count - 1 -> { // count more than 2 and item count is even
-            layoutParams.setMargins(insideHorizontal, insideVertical, outsideHorizontal, outsideVertical)
+            layoutParams.setMargins(
+                insideHorizontal,
+                insideVertical,
+                outsideHorizontal,
+                outsideVertical
+            )
         }
         (count % 2 == 1 && position == count - 1) || (count % 2 == 0 && position == count - 2) -> {
-            layoutParams.setMargins(outsideHorizontal, insideVertical, insideHorizontal, outsideVertical)
+            layoutParams.setMargins(
+                outsideHorizontal,
+                insideVertical,
+                insideHorizontal,
+                outsideVertical
+            )
         }
         position % 2 == 0 -> { // even
             when (position) {
-                count - 1 -> layoutParams.setMargins(insideHorizontal, insideVertical, outsideHorizontal, outsideVertical) // last 1
-                count - 2 -> layoutParams.setMargins(outsideHorizontal, insideVertical, insideHorizontal, outsideVertical) // last 2
-                else -> layoutParams.setMargins(outsideHorizontal, insideVertical, insideHorizontal, insideVertical)
+                count - 1 -> layoutParams.setMargins(
+                    insideHorizontal,
+                    insideVertical,
+                    outsideHorizontal,
+                    outsideVertical
+                ) // last 1
+                count - 2 -> layoutParams.setMargins(
+                    outsideHorizontal,
+                    insideVertical,
+                    insideHorizontal,
+                    outsideVertical
+                ) // last 2
+                else -> layoutParams.setMargins(
+                    outsideHorizontal,
+                    insideVertical,
+                    insideHorizontal,
+                    insideVertical
+                )
             }
         }
         position % 2 == 1 -> { // odd
             when (position) {
-                count - 1 -> layoutParams.setMargins(outsideHorizontal, insideVertical, insideHorizontal, outsideVertical) // last 1
-                else -> layoutParams.setMargins(insideHorizontal, insideVertical, outsideHorizontal, insideVertical)
+                count - 1 -> layoutParams.setMargins(
+                    outsideHorizontal,
+                    insideVertical,
+                    insideHorizontal,
+                    outsideVertical
+                ) // last 1
+                else -> layoutParams.setMargins(
+                    insideHorizontal,
+                    insideVertical,
+                    outsideHorizontal,
+                    insideVertical
+                )
             }
         }
     }
 
     layout.layoutParams = layoutParams
 }
-
-//@BindingAdapter("userImages")
-//fun bindRecyclerViewWithUsersImages(recyclerView: RecyclerView, users: List<String>?) {
-//    users?.let {
-//        recyclerView.adapter?.apply {
-//            when (this) {
-//                is FriendsImageAdapter -> {
-//                    submitImages(it)
-//                }
-//
-//            }
-//        }
-//    }
-//}
 
 @BindingAdapter("images")
 fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<String>?) {
@@ -160,10 +201,9 @@ fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<String>?
 }
 
 @BindingAdapter("listCard")
-fun bindCartView(recyclerView: RecyclerView, data : List<User>?) {
+fun bindCartView(recyclerView: RecyclerView, data: List<User>?) {
 
-    Log.d("Peter","Here here")
-
+    Log.d("Peter", "Here here")
 
 
     val adapter = recyclerView.adapter as HomeAdapter
@@ -174,6 +214,6 @@ fun bindCartView(recyclerView: RecyclerView, data : List<User>?) {
 }
 
 @BindingAdapter("ago")
-fun bindAgo(textView: TextView, time:Long?){
+fun bindAgo(textView: TextView, time: Long?) {
     time?.let { textView.text = TimeUtil.stampToAgo(time) }
 }

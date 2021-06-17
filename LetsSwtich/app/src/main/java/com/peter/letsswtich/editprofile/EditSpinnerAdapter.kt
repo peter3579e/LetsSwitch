@@ -9,20 +9,27 @@ import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.ItemMyquestionSpinnerBinding
 
-class EditSpinnerAdapter (private val strings: Array<String>, private val indicator: String) : BaseAdapter() {
+class EditSpinnerAdapter(private val strings: Array<String>, private val indicator: String) :
+    BaseAdapter() {
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val binding = ItemMyquestionSpinnerBinding.inflate(LayoutInflater.from(parent?.context),parent,false)
+        val binding = ItemMyquestionSpinnerBinding.inflate(
+            LayoutInflater.from(parent?.context),
+            parent,
+            false
+        )
 
-        if(position == 0){
+        if (position == 0) {
             binding.user = indicator
             binding.textSpinnerTitle.setTextColor(
                 LetsSwtichApplication.appContext.resources.getColor(
-                    R.color.black))
+                    R.color.black
+                )
+            )
 
         } else {
-            binding.user = strings[position-1]
+            binding.user = strings[position - 1]
         }
 
         return binding.root
@@ -32,7 +39,7 @@ class EditSpinnerAdapter (private val strings: Array<String>, private val indica
         return if (position == 0)
             0
         else
-            strings[position-1]
+            strings[position - 1]
     }
 
     override fun getItemId(position: Int): Long {

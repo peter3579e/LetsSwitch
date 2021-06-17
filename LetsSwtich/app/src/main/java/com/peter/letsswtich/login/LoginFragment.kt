@@ -30,7 +30,7 @@ import com.peter.letsswtich.login_process.LoginProcessActivity
 import com.peter.letsswtich.util.CurrentFragmentType
 
 
-class LoginFragment :Fragment(){
+class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
 
@@ -44,28 +44,36 @@ class LoginFragment :Fragment(){
         moveMainPage(auth?.currentUser)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        binding = FragmentLoginBinding.inflate(inflater,container,false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         auth = FirebaseAuth.getInstance()
 
         binding.googleSignInButton.setOnClickListener {
 
-            if (binding.privacy.isChecked){
+            if (binding.privacy.isChecked) {
                 googleLogin()
-            }else{
-                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.privacy_requiremnt), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    LetsSwtichApplication.appContext,
+                    getString(R.string.privacy_requiremnt),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         // Configure Google Sign In inside onCreate mentod
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.token_id))
-                .requestEmail()
-                .build()
+            .requestIdToken(getString(R.string.token_id))
+            .requestEmail()
+            .build()
         // getting the value of gso inside the GoogleSigninClient
-        googleSignInClient = GoogleSignIn.getClient(requireContext(),gso)
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
         binding.term.setOnClickListener {
             findNavController().navigate(LoginNavigationDirections.navigateToLoginPrivacyDialog())
@@ -83,7 +91,7 @@ class LoginFragment :Fragment(){
         viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {
             it?.let {
                 moveToQuestion(it)
-                Log.d("user","the observe has run = $it")
+                Log.d("user", "the observe has run = $it")
             }
         })
         return binding.root
@@ -100,7 +108,7 @@ class LoginFragment :Fragment(){
         if (requestCode == GOOGLE_LOGIN_CODE) {
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (result != null) {
-                Log.d("LoginActivity","the value of result = ${result.isSuccess}")
+                Log.d("LoginActivity", "the value of result = ${result.isSuccess}")
                 if (result.isSuccess) {
                     val account = result.signInAccount
                     //Second step
@@ -113,14 +121,15 @@ class LoginFragment :Fragment(){
 
     private fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
-            val currentUser = User(personImages = listOf(user.photoUrl.toString()),
-                    email = user.email.toString(),
-                    name = user.displayName.toString(),
-                    googleId = user.uid
+            val currentUser = User(
+                personImages = listOf(user.photoUrl.toString()),
+                email = user.email.toString(),
+                name = user.displayName.toString(),
+                googleId = user.uid
             )
             UserManager.user = currentUser
-            Log.d("LogActivity","the value of User =${UserManager.user}")
-            startActivity(Intent(context,LoginProcessActivity::class.java))
+            Log.d("LogActivity", "the value of User =${UserManager.user}")
+            startActivity(Intent(context, LoginProcessActivity::class.java))
             requireActivity().overridePendingTransition(0, android.R.anim.fade_out)
             requireActivity().finish()
         }
@@ -128,15 +137,16 @@ class LoginFragment :Fragment(){
 
     private fun moveToQuestion(user: FirebaseUser?) {
         if (user != null) {
-            val currentUser = User(personImages = listOf(user.photoUrl.toString()),
-                    email = user.email.toString(),
-                    name = user.displayName.toString(),
-                    googleId = user.uid
+            val currentUser = User(
+                personImages = listOf(user.photoUrl.toString()),
+                email = user.email.toString(),
+                name = user.displayName.toString(),
+                googleId = user.uid
             )
 
             UserManager.user = currentUser
             UserManager.uid = user.email.toString()
-            Log.d("LogActivity","the value of User =${UserManager.user}")
+            Log.d("LogActivity", "the value of User =${UserManager.user}")
 
             findNavController().navigate(LoginNavigationDirections.navigateToLoginProcess())
         }

@@ -14,13 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.ItemProfileImageBinding
 
-class EventDetailImageAdapter (val viewModel: EventDetailViewModel) : RecyclerView.Adapter<EventDetailImageAdapter.ImageViewHolder>() {
+class EventDetailImageAdapter(val viewModel: EventDetailViewModel) :
+    RecyclerView.Adapter<EventDetailImageAdapter.ImageViewHolder>() {
 
     private lateinit var context: Context
+
     // the data of adapter
     private var images: List<String>? = null
 
-    class ImageViewHolder(private var binding: ItemProfileImageBinding): RecyclerView.ViewHolder(binding.root) {
+    class ImageViewHolder(private var binding: ItemProfileImageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val view = binding.imageDetailGallery
         fun bind(context: Context, imageUrl: String) {
             imageUrl.let {
@@ -28,8 +31,10 @@ class EventDetailImageAdapter (val viewModel: EventDetailViewModel) : RecyclerVi
                 // Make sure the size of each image item can display correct
                 val displayMetrics = DisplayMetrics()
                 (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-                binding.imageDetailGallery.layoutParams = ConstraintLayout.LayoutParams(displayMetrics.widthPixels,
-                        context.resources.getDimensionPixelSize(R.dimen.height_detail_gallery))
+                binding.imageDetailGallery.layoutParams = ConstraintLayout.LayoutParams(
+                    displayMetrics.widthPixels,
+                    context.resources.getDimensionPixelSize(R.dimen.height_detail_gallery)
+                )
                 binding.executePendingBindings()
             }
         }
@@ -37,8 +42,11 @@ class EventDetailImageAdapter (val viewModel: EventDetailViewModel) : RecyclerVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         context = parent.context
-        return ImageViewHolder(ItemProfileImageBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+        return ImageViewHolder(
+            ItemProfileImageBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     /**

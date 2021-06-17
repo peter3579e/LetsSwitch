@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):ViewModel() {
+class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository) : ViewModel() {
 
     private val _user = MutableLiveData<User>()
 
@@ -87,7 +87,8 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository):Vie
                     null
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }

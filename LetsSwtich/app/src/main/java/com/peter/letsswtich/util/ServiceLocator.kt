@@ -16,7 +16,7 @@ object ServiceLocator {
 
     @Volatile
     var letsSwitchRepository: LetsSwitchRepository? = null
-       @VisibleForTesting set
+        @VisibleForTesting set
 
     fun provideTasksRepository(context: Context): LetsSwitchRepository {
         synchronized(this) {
@@ -27,7 +27,8 @@ object ServiceLocator {
     }
 
     private fun createLetsSwitchRepository(context: Context): LetsSwitchRepository {
-        return DefaultLetsSwitchRepository(LetsSwitchRemoteDataSource,
+        return DefaultLetsSwitchRepository(
+            LetsSwitchRemoteDataSource,
             createLocalDataSource(context)
         )
     }

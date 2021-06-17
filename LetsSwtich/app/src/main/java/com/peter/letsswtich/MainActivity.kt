@@ -21,10 +21,8 @@ import com.peter.letsswtich.util.Logger
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var myEmail = UserManager.user.email
 
-    val viewModel by viewModels<MainViewModel>{ getVmFactory() }
-
+    val viewModel by viewModels<MainViewModel> { getVmFactory() }
 
 
     private val onNavigationItemSelectedListener =
@@ -64,18 +62,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNav() {
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-//        val menuView = binding.bottomNavView.getChildAt(0) as BottomNavigationMenuView
-//        val itemView = menuView.getChildAt(2) as BottomNavigationItemView
-//        val bindingBadge = BadgeBottomBinding.inflate(LayoutInflater.from(this), itemView, true)
-//        bindingBadge.lifecycleOwner = this
-//        bindingBadge.viewModel = viewModel
     }
 
 
-
-    private fun setupNavController(){
+    private fun setupNavController() {
         findNavController(R.id.myNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
-            viewModel.currentFragmentType.value = when (navController.currentDestination?.id){
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.homeFragment -> {
                     val home = binding.bottomNavView.menu.findItem(R.id.navigation_home)
                     home.isChecked = true
@@ -100,18 +92,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // 5.0
-//            val window: Window = window
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS) // 確認取消半透明設置。
-//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // 全螢幕顯示，status bar 不隱藏，activity 上方 layout 會被 status bar 覆蓋。
-//                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE) // 配合其他 flag 使用，防止 system bar 改變後 layout 的變動。
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) // 跟系統表示要渲染 system bar 背景。
-//            window.setStatusBarColor(Color.TRANSPARENT)
-//        }
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -132,40 +112,6 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-
-
-//        viewModel.matchList.observe(this, androidx.lifecycle.Observer {newMatch ->
-//
-//            Log.d("MainActivity","value of new size = ${newMatch.size}")
-//
-//            viewModel.getMyOldMatchList(myEmail)
-//
-//        viewModel.oldMatchList.observe(this, Observer { oldMatch ->
-//
-//            for (i in newMatch){
-//                Log.d("Mainactivity","the value of = ${i.name}")
-//            }
-//
-//            Log.d("MainActivity","value of old size = ${oldMatch.size}")
-//
-//
-//            if (newMatch.size > oldMatch.size && viewModel.oldMatchList.value != null && viewModel.currentFragmentType.value != CurrentFragmentType.HOME) {
-//
-//                val newPerson = newMatch[0]
-////                Log.d("MainActivity","value of likelist = ${viewModel.likeList.value}")
-////                Log.d("MainActivity","value of newPerson = ${newPerson}")
-//                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToMatchedDialog(newPerson))
-//                viewModel.oldMatchList.value = newMatch
-//            }
-//
-//            if (viewModel.matchList.value!!.size < viewModel.oldMatchList.value!!.size) {
-////                Log.d("HomeFragment", "Friends has been deleted")
-//                viewModel.getMyOldMatchList(myEmail)
-//            }
-//        })
-//
-//        })
-
         viewModel.userInfo.observe(this, Observer {
             UserManager.user = it
             viewModel.userdetail.value = it
@@ -176,12 +122,11 @@ class MainActivity : AppCompatActivity() {
 
 
         var count = 0
-        var oldMatch =0
+        var oldMatch = 0
 
 
         viewModel.matchList.observe(this, androidx.lifecycle.Observer { newMatch ->
 
-//            viewModel.getChatRoom()
 
             Log.d("Before", "value of count = $count")
             if (viewModel.matchList.value!!.isNotEmpty() && viewModel.currentFragmentType.value != CurrentFragmentType.HOME) {
@@ -206,7 +151,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("After", "oldMatchSize = ${oldMatch}")
             }
         })
-
 
 
     }

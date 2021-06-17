@@ -50,33 +50,36 @@ class HomeFragment : Fragment(), CardStackListener {
 
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        Log.d("UserManager","value of UserManager = ${UserManager.user}")
+        Log.d("UserManager", "value of UserManager = ${UserManager.user}")
 
-        viewModel.requirement.observe(viewLifecycleOwner, androidx.lifecycle.Observer {requirement ->
+        viewModel.requirement.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { requirement ->
 
-            Log.d("HomeFragment","value of requirment = ${viewModel.requirement.value}")
+                Log.d("HomeFragment", "value of requirment = ${viewModel.requirement.value}")
 
-            requirement?.let {
-                viewModel.getAllUser()
-                mainViewModel.requirment.value = requirement
-                mainViewModel.userdetail.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                requirement?.let {
+                    viewModel.getAllUser()
+                    mainViewModel.requirment.value = requirement
+                    mainViewModel.userdetail.observe(
+                        viewLifecycleOwner,
+                        androidx.lifecycle.Observer {
 
-                    UserManager.user.preferLanguage = listOf(requirement.language)
-                    it.preferLanguage = listOf(requirement.language)
-                })
-                Log.d("HomeFragment","the value of Use with requirement = ${UserManager.user}")
-            }
+                            UserManager.user.preferLanguage = listOf(requirement.language)
+                            it.preferLanguage = listOf(requirement.language)
+                        })
+                    Log.d("HomeFragment", "the value of Use with requirement = ${UserManager.user}")
+                }
 
-        })
+            })
 
     }
 
 
-
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
 //        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
@@ -154,12 +157,20 @@ class HomeFragment : Fragment(), CardStackListener {
             if (it != null) {
                 if (it.contains(myEmail)) {
                     Log.d("HomeFragment", "YesYes it is a match!")
-                    findNavController().navigate(NavigationDirections.navigateToMatchedDialog(likedUser))
+                    findNavController().navigate(
+                        NavigationDirections.navigateToMatchedDialog(
+                            likedUser
+                        )
+                    )
 //                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.bigheadPic}")
 //                        Log.d("HomeFragment","The value of bigheadpic = ${likedUser.name}")
-                    Toast.makeText(LetsSwtichApplication.appContext, "It is a match!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        LetsSwtichApplication.appContext,
+                        "It is a match!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     viewModel.updateMatch(myEmail, likedUser)
-                    Log.d("HomeFragment","value of likedUser = $likedUser")
+                    Log.d("HomeFragment", "value of likedUser = $likedUser")
                 } else {
                     Log.d("HomeFragment", "No match!")
                 }
@@ -167,36 +178,40 @@ class HomeFragment : Fragment(), CardStackListener {
         })
 
         var count = 0
-        var oldMatch =0
+        var oldMatch = 0
 
-        viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newMatch ->
+        viewModel.matchList.observe(viewLifecycleOwner, androidx.lifecycle.Observer { newMatch ->
 
-            Log.d("HomeFragmentBefroe","value of count = $count")
+            Log.d("HomeFragmentBefroe", "value of count = $count")
 
-            for ( i in newMatch){
-                Log.d("HomeFragment","the name of match user = ${i.name}")
+            for (i in newMatch) {
+                Log.d("HomeFragment", "the name of match user = ${i.name}")
             }
 
-            if (viewModel.matchList.value!!.isNotEmpty()){
+            if (viewModel.matchList.value!!.isNotEmpty()) {
 
-                Log.d("the match list","the value of name ${newMatch[0].name} ")
-                Log.d("HomeFragmentBefore","newMatchSize = ${newMatch.size}")
-                Log.d("HomeFragmentBefore","oldMatchSize = ${oldMatch}")
+                Log.d("the match list", "the value of name ${newMatch[0].name} ")
+                Log.d("HomeFragmentBefore", "newMatchSize = ${newMatch.size}")
+                Log.d("HomeFragmentBefore", "oldMatchSize = ${oldMatch}")
                 val newPerson = newMatch[0]
-                if (count >0 && newMatch.size > oldMatch && newPerson != likedUser) {
-                    Log.d("HomeFragment","match has run!!!!")
-                    findNavController().navigate(NavigationDirections.navigateToMatchedDialog(newPerson))
+                if (count > 0 && newMatch.size > oldMatch && newPerson != likedUser) {
+                    Log.d("HomeFragment", "match has run!!!!")
+                    findNavController().navigate(
+                        NavigationDirections.navigateToMatchedDialog(
+                            newPerson
+                        )
+                    )
                 }
                 oldMatch = newMatch.size
-                count ++
+                count++
 
-                Log.d("HomeFragmentAfter","newMatchSize = ${newMatch.size}")
-                Log.d("HomeFragmentAfter","oldMatchSize = ${oldMatch}")
-                Log.d("HomeFragmentAfter","value of count = $count")
-            }else if (viewModel.matchList.value!!.isEmpty()){
+                Log.d("HomeFragmentAfter", "newMatchSize = ${newMatch.size}")
+                Log.d("HomeFragmentAfter", "oldMatchSize = ${oldMatch}")
+                Log.d("HomeFragmentAfter", "value of count = $count")
+            } else if (viewModel.matchList.value!!.isEmpty()) {
                 oldMatch = 0
                 Logger.d("else if is working")
-                Log.d("HomeFragmentAfter","oldMatchSize = ${oldMatch}")
+                Log.d("HomeFragmentAfter", "oldMatchSize = ${oldMatch}")
             }
         })
 
@@ -275,19 +290,23 @@ class HomeFragment : Fragment(), CardStackListener {
 
         if (direction == Direction.Left) {
             likedUser = requireNotNull(viewModel.usersWithMatch.value)[count]
-            Toast.makeText(LetsSwtichApplication.appContext, "Remove from likeList", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                LetsSwtichApplication.appContext,
+                "Remove from likeList",
+                Toast.LENGTH_SHORT
+            ).show()
             viewModel.removeFromLikeList(myEmail, likedUser)
-            viewModel.removeUserFromChatList(myEmail,likedUser.email)
+            viewModel.removeUserFromChatList(myEmail, likedUser.email)
             viewModel.snapPosition.value = 0
         }
     }
 
     private fun setupSwipeAnimation(direction: Direction) {
         val setting = SwipeAnimationSetting.Builder()
-                .setDirection(direction)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
+            .setDirection(direction)
+            .setDuration(Duration.Normal.duration)
+            .setInterpolator(AccelerateInterpolator())
+            .build()
         layoutManager.setSwipeAnimationSetting(setting)
     }
 
@@ -309,11 +328,14 @@ class HomeFragment : Fragment(), CardStackListener {
                 binding.animSearching.playAnimation()
             }
             LoadApiStatus.DONE -> {
-                Handler().postDelayed({binding.layoutLoading.visibility = View.GONE
+                Handler().postDelayed({
+                    binding.layoutLoading.visibility = View.GONE
                     binding.userPic.visibility = View.GONE
-                    binding.animSearching.cancelAnimation()},2000)
+                    binding.animSearching.cancelAnimation()
+                }, 2000)
             }
-            else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(context, "Something Terrible Happened", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

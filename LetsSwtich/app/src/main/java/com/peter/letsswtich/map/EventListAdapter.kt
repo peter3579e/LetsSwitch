@@ -91,6 +91,7 @@ class EventListAdapter(val viewModel: MapViewModel) :
         init {
             lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
         }
+
         override fun getLifecycle(): Lifecycle {
             return lifecycleRegistry
         }

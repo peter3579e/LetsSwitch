@@ -14,12 +14,14 @@ import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.R
 import com.peter.letsswtich.databinding.ItemProfileImageBinding
 
-class ImageAdapter(val viewModel: HomeViewModel):RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+class ImageAdapter(val viewModel: HomeViewModel) :
+    RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
     private lateinit var context: Context
     private lateinit var images: List<String>
-    val position: Int =-1
+    val position: Int = -1
 
-    class ImageViewHolder(private var binding: ItemProfileImageBinding): RecyclerView.ViewHolder(binding.root) {
+    class ImageViewHolder(private var binding: ItemProfileImageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         val view = binding.imageDetailGallery
 
@@ -30,8 +32,10 @@ class ImageAdapter(val viewModel: HomeViewModel):RecyclerView.Adapter<ImageAdapt
                 // Make sure the size of each image item can display correct
                 val displayMetrics = DisplayMetrics()
                 (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-                binding.imageDetailGallery.layoutParams = ConstraintLayout.LayoutParams(displayMetrics.widthPixels,
-                        context.resources.getDimensionPixelSize(R.dimen.height_profile_gallery))
+                binding.imageDetailGallery.layoutParams = ConstraintLayout.LayoutParams(
+                    displayMetrics.widthPixels,
+                    context.resources.getDimensionPixelSize(R.dimen.height_profile_gallery)
+                )
 
                 binding.executePendingBindings()
             }
@@ -40,14 +44,17 @@ class ImageAdapter(val viewModel: HomeViewModel):RecyclerView.Adapter<ImageAdapt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         context = parent.context
-        return ImageViewHolder(ItemProfileImageBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+        return ImageViewHolder(
+            ItemProfileImageBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         images?.let {
-            holder.bind(context,it[getRealPosition(position)])
+            holder.bind(context, it[getRealPosition(position)])
         }
 
         viewModel._snapPosition.value = position

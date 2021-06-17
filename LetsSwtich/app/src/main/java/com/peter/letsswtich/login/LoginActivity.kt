@@ -34,13 +34,13 @@ import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.util.CurrentFragmentType
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityLoginBinding
+    private lateinit var binding: ActivityLoginBinding
 
     val viewModel by viewModels<LoginActivityViewModel> { getVmFactory() }
 
-    private fun setupNavController(){
+    private fun setupNavController() {
         findNavController(R.id.loginNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
-            viewModel.currentFragmentType.value = when (navController.currentDestination?.id){
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.firstQuestionnaireFragment -> CurrentFragmentType.FIRSTQUESTION
                 R.id.secondQutionnaireFragment -> CurrentFragmentType.SECONDQUESTION
                 R.id.loginProcessFragment -> CurrentFragmentType.LOGINPROCESS

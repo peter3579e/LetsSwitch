@@ -211,7 +211,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         })
 
         viewModel.createEvent.observe(viewLifecycleOwner, Observer {
-            if(it ==  true){
+            if (it == true) {
                 findNavController().navigate(NavigationDirections.navigateToEventFragment())
                 viewModel.createEventNavigated()
             }
@@ -233,7 +233,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         })
 
         viewModel.allEvent.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG,"the vale of all event = ${it.size}")
+            Log.d(TAG, "the vale of all event = ${it.size}")
             eventAdapter.submitEvent(it)
             viewModel.eventsInMapReady.value = it
 
@@ -260,17 +260,16 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     }
 
 
-
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         viewModel.eventsInMapReady.observe(this, Observer {
-            for (events in it){
-                val location = LatLng(events.Location.latitude,events.Location.lngti)
+            for (events in it) {
+                val location = LatLng(events.Location.latitude, events.Location.lngti)
                 googleMap.addMarker(
-                        MarkerOptions().position(location)
-                                .flat(true)
+                    MarkerOptions().position(location)
+                        .flat(true)
                 )
             }
         })
@@ -296,7 +295,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
         }
 
         fusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
+            LocationServices.getFusedLocationProviderClient((LetsSwtichApplication.appContext))
 
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
             val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
@@ -325,10 +324,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
             val circleOptions = CircleOptions()
             circleOptions.center(newLocation)
-                    .radius(queryRadius.toDouble() * 500)
-                    .fillColor(Color.argb(70, 150, 50, 50))
-                    .strokeWidth(3F)
-                    .strokeColor(Color.RED)
+                .radius(queryRadius.toDouble() * 500)
+                .fillColor(Color.argb(70, 150, 50, 50))
+                .strokeWidth(3F)
+                .strokeColor(Color.RED)
             googleMap.addCircle(circleOptions)
 
         }
@@ -346,18 +345,18 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
             val location = LatLng(Event.Location.latitude, Event.Location.lngti)
 
             googleMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                            location,
-                            15.toFloat()
-                    )
+                CameraUpdateFactory.newLatLngZoom(
+                    location,
+                    15.toFloat()
+                )
             )
         })
 
         viewModel.navigateToEventDetail.observe(viewLifecycleOwner, Observer {
-            if (it != null){
+            if (it != null) {
                 findNavController().navigate(NavigationDirections.navigateToEventDetailFragment(it))
                 viewModel.navigateToEventDetail.value = null
-        }
+            }
         })
 
 
@@ -421,10 +420,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     }
 
     // extension function to get bitmap from url
-    fun URL.toBitmap(): Bitmap?{
+    fun URL.toBitmap(): Bitmap? {
         return try {
             BitmapFactory.decodeStream(openStream())
-        }catch (e: IOException){
+        } catch (e: IOException) {
             null
         }
     }

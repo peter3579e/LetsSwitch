@@ -20,40 +20,17 @@ import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.util.Logger
 
 
-class FirstQuestionnaireFragment:Fragment() {
+class FirstQuestionnaireFragment : Fragment() {
 
     private lateinit var binding: FragmentFirstQuestionnaireBinding
 
-    private val viewModel : FirstQuestionnaireViewModel by viewModels<FirstQuestionnaireViewModel> { getVmFactory() }
-
-//    override fun onStart() {
-//        super.onStart()
-//
-//        viewModel.getUserDetail(UserManager.user.email)
-//
-//        viewModel.userDetail.observe(viewLifecycleOwner, Observer {
-//
-//            val userInfo = viewModel.userDetail.value!!
-//
-//            Log.d("FirstQuestion","the value of user from firebase = $userInfo")
-//
-//        })
-//
-//
-//        Log.d("FirstQuestion","${UserManager.user}")
-//
-//        Log.d("FirstQuestion","Run1")
-//
-//
-//        Log.d("FirstQuestion","Run3")
-//
-//    }
+    private val viewModel: FirstQuestionnaireViewModel by viewModels<FirstQuestionnaireViewModel> { getVmFactory() }
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFirstQuestionnaireBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -61,22 +38,30 @@ class FirstQuestionnaireFragment:Fragment() {
 
         Logger.d("Run1")
 
-        val ageIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_age)
-        val genderIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_gender)
-        val mothertongue = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_mothertongue)
-        val fluentLanguage = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_fluent)
-        val cityIndicator = LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_city)
-        val genderContent = LetsSwtichApplication.instance.resources.getStringArray(R.array.gender_array)
-        val languageContent = LetsSwtichApplication.instance.resources.getStringArray(R.array.language_array)
-        val cityContent = LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
+        val ageIndicator =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_age)
+        val genderIndicator =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_gender)
+        val mothertongue =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_mothertongue)
+        val fluentLanguage =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_fluent)
+        val cityIndicator =
+            LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_city)
+        val genderContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.gender_array)
+        val languageContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.language_array)
+        val cityContent =
+            LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
         Logger.d("Run2")
 
-        val ageArray:MutableList<Int> = mutableListOf<Int>()
+        val ageArray: MutableList<Int> = mutableListOf<Int>()
         Logger.d("Run3")
         var count = 0
         Logger.d("Run4")
-        for (i in 0..99){
-            count ++
+        for (i in 0..99) {
+            count++
             ageArray.add(count)
         }
         Logger.d("Run5")
@@ -84,30 +69,30 @@ class FirstQuestionnaireFragment:Fragment() {
 
         Logger.d("Run6")
 
-        binding.age.adapter = AgeSpinner(ageArray,ageIndicator)
-        binding.gender.adapter = SpinnerAdapter(genderContent,genderIndicator)
-        binding.mothertongue.adapter = SpinnerAdapter(languageContent,mothertongue)
-        binding.fluent.adapter = SpinnerAdapter(languageContent,fluentLanguage)
+        binding.age.adapter = AgeSpinner(ageArray, ageIndicator)
+        binding.gender.adapter = SpinnerAdapter(genderContent, genderIndicator)
+        binding.mothertongue.adapter = SpinnerAdapter(languageContent, mothertongue)
+        binding.fluent.adapter = SpinnerAdapter(languageContent, fluentLanguage)
         //Setup Spinner
         binding.city.adapter = SpinnerAdapter(cityContent, cityIndicator)
 
         Logger.d("Run7")
 
         binding.city.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                    }
-
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
-                    ) {
-
-                        if (parent != null && pos != 0) {
-                            viewModel.setupCity(parent.selectedItem.toString())
-                        }
-
-                    }
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupCity(parent.selectedItem.toString())
+                    }
+
+                }
+            }
 
         viewModel.selectedCity.observe(viewLifecycleOwner, Observer {
             Logger.d(it.toString())
@@ -115,83 +100,83 @@ class FirstQuestionnaireFragment:Fragment() {
 
 
         binding.age.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                    }
-
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
-                    ) {
-
-                        if (parent != null && pos != 0) {
-                            viewModel.setupAge(parent.selectedItem as Int)
-                        }
-
-                    }
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupAge(parent.selectedItem as Int)
+                    }
+
+                }
+            }
 
         binding.gender.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                    }
-
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
-                    ) {
-
-                        if (parent != null && pos != 0) {
-                            viewModel.setupGender(parent.selectedItem.toString())
-                        }
-
-                    }
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupGender(parent.selectedItem.toString())
+                    }
+
+                }
+            }
 
         binding.mothertongue.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                    }
-
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
-                    ) {
-
-                        if (parent != null && pos != 0) {
-                            viewModel.setupMothertongue(parent.selectedItem.toString())
-                        }
-
-                    }
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupMothertongue(parent.selectedItem.toString())
+                    }
+
+                }
+            }
 
         binding.fluent.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                    }
-
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, pos: Int, id: Long
-                    ) {
-
-                        if (parent != null && pos != 0) {
-                            viewModel.setupFluent(parent.selectedItem.toString())
-                        }
-
-                    }
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
 
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, pos: Int, id: Long
+                ) {
+
+                    if (parent != null && pos != 0) {
+                        viewModel.setupFluent(parent.selectedItem.toString())
+                    }
+
+                }
+            }
+
         viewModel.selectedAge.observe(viewLifecycleOwner, Observer {
-            Log.d("chose value","value = $it")
+            Log.d("chose value", "value = $it")
         })
 
         viewModel.selectedGender.observe(viewLifecycleOwner, Observer {
-            Log.d("chose value","value = $it")
+            Log.d("chose value", "value = $it")
         })
 
         viewModel.selectedMothertongue.observe(viewLifecycleOwner, Observer {
-            Log.d("chose value","value = $it")
+            Log.d("chose value", "value = $it")
         })
 
         viewModel.selectedFluent.observe(viewLifecycleOwner, Observer {
-            Log.d("chose value","value = $it")
+            Log.d("chose value", "value = $it")
         })
 
 
@@ -199,15 +184,16 @@ class FirstQuestionnaireFragment:Fragment() {
             if (isFinished()) {
 
 
-                Log.d("FirstQuestion","the value of UserManager = ${UserManager.user}")
+                Log.d("FirstQuestion", "the value of UserManager = ${UserManager.user}")
 
 
                 UserManager.user.age = viewModel.selectedAge.value!!
                 UserManager.user.gender = viewModel.selectedGender.value!!
-                UserManager.user.fluentLanguage = listOf(viewModel.selectedMothertongue.value!!,viewModel.selectedFluent.value!!)
+                UserManager.user.fluentLanguage =
+                    listOf(viewModel.selectedMothertongue.value!!, viewModel.selectedFluent.value!!)
                 UserManager.user.city = viewModel.selectedCity.value!!
 
-                Log.d("FirstQuestion","the value of UserManager = ${UserManager.user}")
+                Log.d("FirstQuestion", "the value of UserManager = ${UserManager.user}")
 
                 findNavController().navigate(LoginNavigationDirections.navigateToSecondQuestionnaire())
 
@@ -216,12 +202,6 @@ class FirstQuestionnaireFragment:Fragment() {
         }
 
 
-//        binding.buttonNext.setOnClickListener {
-//            if (isFinished()) {
-//                navigateToNext()
-//            }
-//        }
-//
         return binding.root
     }
 
@@ -229,14 +209,22 @@ class FirstQuestionnaireFragment:Fragment() {
 
         return when {
             viewModel.selectedAge.value != null && viewModel.selectedFluent.value != null &&
-                    viewModel.selectedGender.value != null && viewModel.selectedMothertongue.value != null && viewModel.selectedCity.value != null ->{
-                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.select_requiremnt), Toast.LENGTH_SHORT).show()
+                    viewModel.selectedGender.value != null && viewModel.selectedMothertongue.value != null && viewModel.selectedCity.value != null -> {
+                Toast.makeText(
+                    LetsSwtichApplication.appContext,
+                    getString(R.string.select_requiremnt),
+                    Toast.LENGTH_SHORT
+                ).show()
                 true
             }
 
 
             else -> {
-                Toast.makeText(LetsSwtichApplication.appContext, getString(R.string.remindertofillInfor), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    LetsSwtichApplication.appContext,
+                    getString(R.string.remindertofillInfor),
+                    Toast.LENGTH_SHORT
+                ).show()
                 false
             }
         }

@@ -13,9 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SettingViewModel(private val letsSwitchRepository: LetsSwitchRepository , requirement: Requirement):ViewModel() {
+class SettingViewModel(
+    private val letsSwitchRepository: LetsSwitchRepository,
+    requirement: Requirement
+) : ViewModel() {
 
-    val need =requirement
+    val need = requirement
 
     private val _profile = MutableLiveData<Boolean>()
 
@@ -57,33 +60,33 @@ class SettingViewModel(private val letsSwitchRepository: LetsSwitchRepository , 
         get() = _city
 
 
-    fun navigateToProfile(){
+    fun navigateToProfile() {
         _profile.value = true
     }
 
-    fun profileNavigated(){
-        _profile.value= false
+    fun profileNavigated() {
+        _profile.value = false
     }
 
     fun setupGender(gender: String) {
         _selectedGender.value = gender
     }
 
-    fun setupMothertongue(language:String){
+    fun setupMothertongue(language: String) {
         _selectedFirstLanguage.value = language
     }
 
-    fun setupFluent(language:String){
+    fun setupFluent(language: String) {
         _city.value = language
     }
 
-    fun postRequirement(myEmail: String , require:Requirement) {
+    fun postRequirement(myEmail: String, require: Requirement) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = letsSwitchRepository.postRequirement(myEmail,require)) {
+            when (val result = letsSwitchRepository.postRequirement(myEmail, require)) {
                 is com.peter.letsswtich.data.Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -97,7 +100,8 @@ class SettingViewModel(private val letsSwitchRepository: LetsSwitchRepository , 
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
+                    _error.value =
+                        LetsSwtichApplication.instance.getString(R.string.you_shall_not_pass)
                     _status.value = LoadApiStatus.ERROR
                 }
             }

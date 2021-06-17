@@ -19,12 +19,13 @@ class LoginPrivacy : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MessageDialog)
     }
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        val binding=DialogPrivacyPolicyBinding.inflate(inflater,container,false)
+        val binding = DialogPrivacyPolicyBinding.inflate(inflater, container, false)
         webView = binding.webview
         val webSetting = webView.settings
         webSetting.javaScriptEnabled = true
@@ -36,7 +37,7 @@ class LoginPrivacy : AppCompatDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.setOnClickListener{
+        view.setOnClickListener {
             this.dismiss()
         }
     }

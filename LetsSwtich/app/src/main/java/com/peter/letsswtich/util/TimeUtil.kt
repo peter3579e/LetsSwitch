@@ -94,7 +94,7 @@ object TimeUtil {
         }
     }
 
-    fun stampToTime(time: Long) : String {
+    fun stampToTime(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("HH:mm")
         return simpleDateFormat.format(Date(time))
     }

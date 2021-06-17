@@ -11,10 +11,11 @@ import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.databinding.ItemNewMatchesBinding
 import com.peter.letsswtich.databinding.ItemProfilePhotosBinding
 
-class PhotosAdapter(val viewModel: ProfileViewModel): ListAdapter<String, PhotosAdapter.ViewHolder>(DiffCallback) {
+class PhotosAdapter(val viewModel: ProfileViewModel) :
+    ListAdapter<String, PhotosAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(private var binding: ItemProfilePhotosBinding):
-            RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private var binding: ItemProfilePhotosBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String) {
             image.let {
                 binding.images = image
@@ -24,14 +25,17 @@ class PhotosAdapter(val viewModel: ProfileViewModel): ListAdapter<String, Photos
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemProfilePhotosBinding.inflate(
-                LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(
+            ItemProfilePhotosBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
-            Log.d("PhotosAdapter","the value of Pic = ${getItem(position)}")
+            Log.d("PhotosAdapter", "the value of Pic = ${getItem(position)}")
             viewModel.clickedPic.value = getItem(position)
         }
     }

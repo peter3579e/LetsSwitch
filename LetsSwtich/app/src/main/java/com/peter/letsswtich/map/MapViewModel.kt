@@ -110,16 +110,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vie
         _cardView.value = -1
         _event.value = -1
         getLiveEvent()
-//        getMapItemLocation()
     }
-
-
-//    fun getMapItemLocation() {
-//        coroutineScope.launch {
-//            _storeLocation.value = letsSwitchRepository.getMapItem()
-//            Log.d("MapViewModel","Value of storeLocation = ${_storeLocation.value}")
-//        }
-//    }
 
     private fun getLiveEvent() {
         allEvent = letsSwitchRepository.getLiveEvent()
@@ -131,7 +122,6 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vie
     }
 
     fun plusCount() {
-        Log.d("MapFragment", "plus has run!!")
         _cardView.value = _cardView.value!! + 1
     }
 
@@ -173,7 +163,6 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vie
                     null
                 }
             }
-//            Log.d("HomeViewModel","Value of GetAllUser = ${_allUser.value}")
         }
     }
 
