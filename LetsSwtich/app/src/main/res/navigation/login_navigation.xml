@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginNavigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/firstQuestionnaireFragment"
+        android:name="com.peter.letsswtich.question.FirstQuestionnaireFragment"
+        android:label="FirstQuestionnaireFragment" />
+    <fragment
+        android:id="@+id/secondQutionnaireFragment"
+        android:name="com.peter.letsswtich.question.SecondQutionnaireFragment"
+        android:label="SecondQutionnaireFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.peter.letsswtich.login.LoginFragment"
+        android:label="LoginFragment" />
+
+    <fragment
+        android:id="@+id/loginProcessFragment"
+        android:name="com.peter.letsswtich.login_process.LoginProcessFragment"
+        android:label="LoginProcessFragment" />
+
+    <dialog
+        android:id="@+id/loginPrivacy"
+        android:name="com.peter.letsswtich.login.LoginPrivacy"
+        android:label="LoginPrivacy" />
+
+    <action android:id="@+id/navigate_to_second_questionnaire" app:destination="@id/secondQutionnaireFragment"/>
+    <action android:id="@+id/navigate_to_first_questionnaire" app:destination="@id/firstQuestionnaireFragment" />
+    <action android:id="@+id/navigate_to_login_process" app:destination="@id/loginProcessFragment"/>
+    <action android:id="@+id/navigate_to_login_privacy_dialog" app:destination="@id/loginPrivacy"/>
+
+
+</navigation>

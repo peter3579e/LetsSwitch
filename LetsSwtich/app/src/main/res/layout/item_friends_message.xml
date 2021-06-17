@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="message"
+            type="com.peter.letsswtich.data.Message" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_user"
+            imageUrl="@{message.senderImage}"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_placeholder"/>
+
+        <TextView
+            android:id="@+id/text_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_friends_message"
+            android:padding="8dp"
+            android:text="@{message.text}"
+            app:layout_constraintBottom_toBottomOf="@id/image_user"
+            app:layout_constraintStart_toEndOf="@id/image_user"
+            app:layout_constraintTop_toTopOf="@id/image_user"
+            tools:text="Hello!" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

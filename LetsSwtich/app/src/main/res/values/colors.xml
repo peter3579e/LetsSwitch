@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFFFFFFF</color>
+    <color name="purple_500">#FFFFFFFF</color>
+    <color name="purple_700">#FFFFFFFF</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="translucent">#80000000</color>
+    <color name="translucent_40">#66000000</color>
+    <color name="translucent_80">#cc000000</color>
+
+    <color name="pinkish">#EF6F6C</color>
+
+    <color name="yellow">#E5A840</color>
+
+
+    <!-- Black Series -->
+
+    <color name="black_3f3a3a">#3f3a3a</color>
+    <color name="black_87_alpha">#1F1F1F</color>
+    <color name="black_54_alpha">#6F6F6F</color>
+    <color name="black_36_alpha">#A1A1A1</color>
+    <color name="black_12_alpha">#E0E0E0</color>
+    <color name="black_default_bg">#F9F9F9</color>
+
+    <!-- Gray Series -->
+    <color name="gray_646464">#646464</color>
+    <color name="gray_888888">#888888</color>
+    <color name="gray_999999">#999999</color>
+    <color name="gray_cccccc">#cccccc</color>
+    <color name="gray_f0f0f0">#f0f0f0</color>
+    <color name="gray_f5f5f5">#f5f5f5</color>
+    <color name="gray_transition_light">#99F5F5F5</color>
+    <color name="gray_light">#EEEEEE</color>
+
+
+    <!-- Red Series -->
+    <color name="red_d0021b">#d0021b</color>
+
+    <!-- Orange Series -->
+    <color name="orange_8b572a">#8b572a</color>
+
+    <!-- Blue Series -->
+    <color name="blue_facebook">#3b5998</color>
+    <color name="light_blue">#03A9F4</color>
+    <color name="profile_blue">#6699CC</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottom_navigation_item_normal">@color/gray_999999</color>
+    <color name="bottom_navigation_item_selected">@color/black_3f3a3a</color>
+
+    <!-- Voyage Respect Series -->
+    <color name="purple_voyage">#7830b8</color>
+    <color name="blue_voyage">#33a4cc</color>
+
+    <!-- Original -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    
+    <!--- ThemeColor -->
+    <color name="charm_pink">#E18AAA</color>
+    <color name="pink_white_ish">#FFDDE1</color>
+    <color name="pink">#EE9CA7</color>
+    <color name="more_white_pink">#EAEAEA</color>
+    <color name="color_start">#F5B8B3</color>
+    <color name="color_center">#F2A499</color>
+    <color name="color_end">#ED8779</color>
+
+
+
+
+</resources>

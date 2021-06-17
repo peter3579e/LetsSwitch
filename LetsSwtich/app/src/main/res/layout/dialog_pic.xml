@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="dialog"
+            type="com.peter.letsswtich.profile.PicDialog" />
+        <variable
+            name="image"
+            type="String" />
+        <variable
+            name="viewModel"
+            type="com.peter.letsswtich.profile.PicViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> dialog.dismiss()}">
+
+        <ImageView
+            android:id="@+id/layout_message"
+            android:layout_width="@dimen/size_width"
+            android:layout_height="@dimen/size_length"
+            imageUrl="@{image}"
+            android:background="@drawable/bg_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
