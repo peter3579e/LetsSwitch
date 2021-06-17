@@ -632,6 +632,16 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
 
+        users.document(myEmail).update("preferLanguage", listOf(require.language))
+                .addOnCanceledListener {
+                    Logger.d("DocumentSnapshot added with ID: ${users}")
+                }
+                .addOnFailureListener { e ->
+                    Logger.w("Error adding document $e")
+                }
+
+
+
         //update matchList for friends
         val requirement = users.document(myEmail).collection(PATH_REQUIREMENT).document(myEmail)
 

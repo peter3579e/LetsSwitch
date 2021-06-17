@@ -33,6 +33,11 @@ class SecondQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchR
  val status: LiveData<LoadApiStatus>
   get() = _status
 
+ private val _leave = MutableLiveData<Boolean>()
+
+ val leave: LiveData<Boolean>
+  get() = _leave
+
  // error: The internal MutableLiveData that stores the error of the most recent request
  private val _error = MutableLiveData<String>()
 
@@ -61,6 +66,12 @@ class SecondQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchR
  fun setupFluent(language:String){
   _city.value = language
  }
+
+
+ fun leave(needRefresh: Boolean = false) {
+  _leave.value = needRefresh
+ }
+
 
  fun postRequirement(myEmail: String , require:Requirement) {
 

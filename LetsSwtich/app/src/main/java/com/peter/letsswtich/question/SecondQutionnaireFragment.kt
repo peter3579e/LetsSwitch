@@ -154,8 +154,9 @@ class SecondQutionnaireFragment : Fragment() {
                     gender = viewModel.selectedGender.value.toString(),
                     age = listOf(viewModel.minAge.value!!,viewModel.maxAge.value!!),
                     city = viewModel.city.value!!,
-                    language = viewModel.selectedFirstLanguage.value!!
+                    language = viewModel.selectedFirstLanguage?.value!!
                 )
+                
 
                 viewModel.postRequirement(UserManager.user.email,requirement)
 
