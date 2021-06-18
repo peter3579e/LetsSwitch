@@ -18,6 +18,7 @@ import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentProfileBinding
 import com.peter.letsswtich.databinding.ItemChatListBinding
+import com.peter.letsswtich.home.HomeAdapter
 
 class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, ChatListAdapter.ChatListViewHolder> (DiffCallback){
     class ChatListViewHolder(private var binding: ItemChatListBinding): RecyclerView.ViewHolder(binding.root),LifecycleOwner{
@@ -66,7 +67,6 @@ class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, Chat
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
         return ChatListViewHolder(ItemChatListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
@@ -78,6 +78,22 @@ class ChatListAdapter(val viewModel: ChatViewModel) : ListAdapter<ChatRoom, Chat
         Log.d("ChatListAdapter","value of getItem = ${viewModel.latestTimeMessage.value}")
     }
 
+    override fun onViewAttachedToWindow(holder: ChatListViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        when (holder) {
+            else -> holder.onAttach()
+        }
+    }
+
+    /**
+     * It for [LifecycleRegistry] change [onViewDetachedFromWindow]
+     */
+    override fun onViewDetachedFromWindow(holder: ChatListViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        when (holder) {
+            else -> holder.onDetach()
+        }
+    }
 
 
     companion object DiffCallback : DiffUtil.ItemCallback<ChatRoom>() {

@@ -50,19 +50,22 @@ class ChatFragment:Fragment() {
         binding.recyclerChatList.adapter = adapter
         binding.recyclerNewMatches.adapter = newMatchesAdapter
         binding.lifecycleOwner = this
+
+        //Get all chatroom from firebase
         viewModel.allLiveChatRooms.observe(viewLifecycleOwner, Observer { oldList ->
             oldList.let {
                 Log.d("ChatFragment", "value of allLiveChatRoom = $oldList")
                 val filteredChatRoom = mutableListOf<ChatRoom>()
 
                 if (oldList.isEmpty()) {
+
                     binding.noValue.visibility = View.VISIBLE
                     binding.noValueImage.visibility = View.VISIBLE
+
                 } else {
                     oldList.forEach {chatRoom ->
                         // Remove my info to make the new info list contains only the other user's info
                         chatRoom.attendeesInfo = excludeMyInfo(chatRoom.attendeesInfo)
-
                         filteredChatRoom.add(chatRoom)
                     }
                     Log.d("ChatFragment","value of filteredChatRoom = ${filteredChatRoom.size}")
@@ -74,6 +77,7 @@ class ChatFragment:Fragment() {
         })
 
 
+        //order chatList by time
         viewModel.filteredChatRooms.observe(viewLifecycleOwner, Observer { list ->
             val newList = list.sortedByDescending { it.latestMessageTime }
 
@@ -87,10 +91,8 @@ class ChatFragment:Fragment() {
 
                     newMatchesAdapter.submitList(list)
                     adapter.submitList(newList)
-
             }
         )
-
         return binding.root
     }
 

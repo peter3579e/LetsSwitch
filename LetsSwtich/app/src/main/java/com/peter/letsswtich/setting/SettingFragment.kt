@@ -56,16 +56,11 @@ class SettingFragment : Fragment() {
             Log.d("SettingFragment", "the value of need = ${viewModel.need}")
             if (profile == true && isFinished()) {
 
-
-//                Log.d("SecondQuestion", "the value of UserManager = ${UserManager.user}")
-
-
                 Log.d("SettingFragment", "the requirement = ${viewModel.need}")
 
                 viewModel.postRequirement(UserManager.user.email, viewModel.need)
                 mainViewModel.userdetail.value!!.preferLanguage = listOf(viewModel.need.language)
                 UserManager.user.preferLanguage = listOf(viewModel.need.language)
-//                    mainViewModel.requirment.value = requirement
 
 
                 Log.d("settingFragment", "the value of requirement = ${UserManager.user}")

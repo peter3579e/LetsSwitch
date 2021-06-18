@@ -78,13 +78,9 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     override suspend fun postEvent(events: Events): Result<Boolean> = suspendCoroutine { continuation ->
         Log.d(TAG, "the value of post events = $events")
         val event = FirebaseFirestore.getInstance().collection(PATH_EVENT)
-
         val document = event.document()
-
         events.eventId = document.id
-
         events.postTime = Calendar.getInstance().timeInMillis
-
         document.set(events)
                 .addOnSuccessListener {
                     Logger.d("DocumentSnapshot added with ID: ${event}")
@@ -119,8 +115,6 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                 }
         return liveData
     }
-
-
 
     override fun getLiveEvent(): MutableLiveData<List<Events>> {
         val liveData = MutableLiveData<List<Events>>()
@@ -498,10 +492,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     val list = mutableListOf<User>()
                     if (snapshot != null) {
                         for (document in snapshot) {
-//                            Logger.d(document.id + " => " + document.data)
-
                             val event = document.toObject(User::class.java)
-//                            Log.d("testtest","matchTime value = ${event.matchTime}")
                             list.add(event)
                         }
                     }

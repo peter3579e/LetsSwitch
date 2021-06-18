@@ -60,6 +60,8 @@ class ChatRoomFragment : Fragment() {
             (activity as MainActivity).setSupportActionBar(binding.toolbar)
         }
 
+
+        //check the send box if empty
         binding.send.setOnClickListener {
             if (isEmpty()) {
                 Toast.makeText(
@@ -72,8 +74,10 @@ class ChatRoomFragment : Fragment() {
             }
         }
 
+        //get all Live Message from firebase
         viewModel.allLiveMessage.observe(viewLifecycleOwner, Observer { message ->
             viewModel.updateIsRead(viewModel.currentChattingUser, message.documentId)
+            //exclude friends message
             viewModel.filterMessage = message.message.excludeFriend(friendUserEmail)
             Log.d("ChatroomFragment", "the value of message ${message.message}")
             viewModel.count = 0
@@ -83,6 +87,7 @@ class ChatRoomFragment : Fragment() {
             Log.d("ChatRoomFragmen", "the value of filteredMessage = ${viewModel.filterMessage}")
         })
 
+        //check if send message icon is blue
         viewModel.enterMessage.observe(viewLifecycleOwner, Observer {
             Logger.d(it)
             binding.sendwithblue.visibility = View.VISIBLE

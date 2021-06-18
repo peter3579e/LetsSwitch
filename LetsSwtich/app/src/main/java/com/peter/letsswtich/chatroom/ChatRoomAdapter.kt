@@ -34,7 +34,6 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
                             false
                         )
                     )
-
             }
         }
 
@@ -65,6 +64,7 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
                 "the value of boolean = ${viewModel.filterMessage[size - 1].read}"
             )
 
+            // Catch last message and check isRead function
             if (viewModel.filterMessage[size - 1].read && viewModel.count == size) {
                 Log.d("ChatRoomAdapter", "the visible has run")
                 read.visibility = View.VISIBLE
@@ -74,6 +74,7 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
                 Log.d("ChatRoomAdapter", "the invisible has run")
                 read.visibility = View.GONE
             }
+
             binding.executePendingBindings()
         }
 
@@ -136,6 +137,4 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
             else -> ITEM_VIEW_TYPE_FRIEND
         }
     }
-
-
 }

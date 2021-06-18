@@ -16,8 +16,8 @@ class NewMatchedAdapter(val viewModel: ChatViewModel): ListAdapter<ChatRoom, New
             RecyclerView.ViewHolder(binding.root) {
                 fun bind(image: ChatRoom) {
                     image.let {
-                        val friendinfo = image.attendeesInfo.first()
-                        binding.image = friendinfo.userImage
+                        val friendInfo = image.attendeesInfo.first()
+                        binding.image = friendInfo.userImage
                         binding.executePendingBindings()
                     }
                 }

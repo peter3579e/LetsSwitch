@@ -81,8 +81,8 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
     }
 
     fun getChatRoom(): List<ChatRoom>{
-        var chatList: MutableList<UserInfo> = mutableListOf()
-        var chatRoom :MutableList<ChatRoom> = mutableListOf()
+        val chatList: MutableList<UserInfo> = mutableListOf()
+        val chatRoom :MutableList<ChatRoom> = mutableListOf()
         _matchList.value!!.forEach { it ->
             val myInfo = UserInfo().apply {
                 userEmail = UserManager.user.email
@@ -97,7 +97,7 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
             }
 
             chatList.add(friendInfo)
-            val attendlist = listOf<String>(UserManager.user.email,it.email)
+            val attendList = listOf<String>(UserManager.user.email,it.email)
             val chat = ChatRoom()
 
             chat.apply {
@@ -105,7 +105,7 @@ class ChatViewModel(private val letsSwitchRepository: LetsSwitchRepository):View
                 latestTime = 0
                 latestMessageTime = 0
                 attendeesInfo = listOf(myInfo,friendInfo)
-                attendees = attendlist
+                attendees = attendList
             }
             postChatList(chat)
             chatRoom.add(chat)

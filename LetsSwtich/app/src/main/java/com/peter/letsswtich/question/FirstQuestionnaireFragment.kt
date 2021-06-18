@@ -54,20 +54,13 @@ class FirstQuestionnaireFragment : Fragment() {
             LetsSwtichApplication.instance.resources.getStringArray(R.array.language_array)
         val cityContent =
             LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
-        Logger.d("Run2")
 
         val ageArray: MutableList<Int> = mutableListOf<Int>()
-        Logger.d("Run3")
         var count = 0
-        Logger.d("Run4")
         for (i in 0..99) {
             count++
             ageArray.add(count)
         }
-        Logger.d("Run5")
-//        Log.d("FirstQuestion","the value of array = ${ageArray[2]}")
-
-        Logger.d("Run6")
 
         binding.age.adapter = AgeSpinner(ageArray, ageIndicator)
         binding.gender.adapter = SpinnerAdapter(genderContent, genderIndicator)
@@ -75,8 +68,6 @@ class FirstQuestionnaireFragment : Fragment() {
         binding.fluent.adapter = SpinnerAdapter(languageContent, fluentLanguage)
         //Setup Spinner
         binding.city.adapter = SpinnerAdapter(cityContent, cityIndicator)
-
-        Logger.d("Run7")
 
         binding.city.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
