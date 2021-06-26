@@ -41,7 +41,7 @@ class LoginFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-//        moveMainPage(auth?.currentUser)
+        moveMainPage(auth?.currentUser)
     }
 
     override fun onCreateView(
