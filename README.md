@@ -40,7 +40,7 @@ You will be good to start ❤️
 
 ### Home
 * List of recommended users based on your preference
-* Swipe right or left(as like and dislike) to select prefer users
+* Swipe right or left (as like and dislike) to select prefer users
 * The system will check if you guys are matched
 <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/swipe_gif.gif?raw=true" height="500" /> 
 
