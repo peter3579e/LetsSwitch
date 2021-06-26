@@ -13,7 +13,7 @@ const val tagUserToken = "token"
 object UserManager {
     var user = User()
     var prefs: SharedPreferences? =
-        LetsSwtichApplication.instance?.getSharedPreferences(tagUserToken, 0)
+            LetsSwtichApplication.instance.getSharedPreferences(tagUserToken, 0)
     var uid: String? = null
         get() {
             return prefs?.getString(
@@ -24,6 +24,5 @@ object UserManager {
             field = prefs?.edit()?.putString(
                 tagUserUid, value
             )?.apply().toString()
-            Log.i("UserManager.Uid", value!!)
         }
 }

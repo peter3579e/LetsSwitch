@@ -22,7 +22,7 @@ class LetsSwtichApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        LetsSwtichApplication.appContext = applicationContext
+        appContext = applicationContext
         instance = this
     }
 

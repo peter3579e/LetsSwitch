@@ -1,36 +1,18 @@
 package com.peter.letsswtich.map
 
 import android.Manifest
-import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Base64
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -43,27 +25,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import com.peter.letsswtich.*
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentMapBinding
-import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
 import com.peter.letsswtich.ext.getVmFactory
-import com.peter.letsswtich.ext.toDateFormat
-import com.peter.letsswtich.login.LoginActivity
 import com.peter.letsswtich.login.UserManager
 import kotlinx.coroutines.*
 import java.io.*
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 
 
 class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
@@ -105,8 +74,8 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        val adpter = FriendsImageAdapter(viewModel)
-        binding.friendsRecycleView.adapter = adpter
+        val adapter = FriendsImageAdapter(viewModel)
+        binding.friendsRecycleView.adapter = adapter
         binding.friendsRecycleView.layoutAnimation = AnimationUtils.loadLayoutAnimation(
             context,
             R.anim.recycler_animation
@@ -126,6 +95,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                 viewModel.getUserDetail(users.email)
             }
 
+            val test = getUserEmails(it)
+
+            Log.d("Unitest", "the result of test = $test")
+
             val list = mutableListOf<User>()
             val images = mutableListOf<String>()
 
@@ -144,7 +117,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     )
                     Log.d("the value of images", "the value of images = ${images.size}")
                     viewModel.imagesLive.value = images
-                    adpter.submitList(list)
+                    adapter.submitList(list)
                 }
 
                 count++
@@ -164,7 +137,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                         true
                     )
                 )
-                viewModel.profilenavigated()
+                viewModel.profileNavigated()
             }
         })
 
@@ -247,6 +220,17 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
     }
 
 
+  fun getUserEmails(matchList:List<User>):List<String>{
+        val userEmail = mutableListOf<String>()
+        for (users in matchList){
+            userEmail.add(users.email)
+        }
+        return userEmail
+    }
+
+
+
+
     private fun initGoogleMap(savedInstanceState: Bundle?) {
         // *** IMPORTANT ***
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
@@ -302,13 +286,13 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
             Log.d("MapFragment", "newlocation value = $newLocation")
 
-            viewModel.mylocation.value = newLocation
+            viewModel.myLocation.value = newLocation
 
             Log.d("location", "my email = ${UserManager.user.email}")
 
-            viewModel.mylocation.observe(viewLifecycleOwner, Observer { location ->
+            viewModel.myLocation.observe(viewLifecycleOwner, Observer { location ->
 
-                viewModel.postlocaion(location.longitude, location.latitude, UserManager.user.email)
+                viewModel.postLocation(location.longitude, location.latitude, UserManager.user.email)
 
                 Log.d("location", "the value of lat = ${location}")
             })
@@ -332,7 +316,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
 
         }
 
-        viewModel.friendslocation.observe(viewLifecycleOwner, Observer {
+        viewModel.friendsLocation.observe(viewLifecycleOwner, Observer {
             googleMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     it,
@@ -372,12 +356,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                     Log.d("MapFragment", "value of queryResult = $queryResult")
 
                     val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
-                    val bitmapDraw =
-                        LetsSwtichApplication.instance.getDrawable(R.drawable.drink_map_icon_1)
-                    val b = bitmapDraw?.toBitmap()
-                    val smallMarker =
-                        Bitmap.createScaledBitmap(b!!, widthIcon, widthIcon, false)
-                    val iconDraw = BitmapDescriptorFactory.fromBitmap(smallMarker)
 
                     val image = userInfo.personImages[0]
 
@@ -395,7 +373,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                             Bitmap.createScaledBitmap(
                                 it1, widthIcon, widthIcon, false
                             )
-
                         }
 
                         val addMarker = googleMap.addMarker(
@@ -404,8 +381,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallb
                                     BitmapDescriptorFactory.fromBitmap(
                                         createCustomMarker(
                                             requireContext(),
-                                            figureMarker!!,
-                                            "Narender"
+                                            figureMarker!!
                                         )
                                     )
                                 )

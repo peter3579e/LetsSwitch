@@ -18,7 +18,6 @@ class ChatRoomViewModelFactory constructor(
                 isAssignableFrom(ChatRoomViewModel::class.java) ->
                     ChatRoomViewModel(repository, userEmail, userName, fromMap)
 
-
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

@@ -105,6 +105,10 @@ class EditEventViewModel(private val letsSwitchRepository: LetsSwitchRepository)
         }
     }
 
+    fun setDate (date: String){
+        selectedDate.value = date
+    }
+
     fun navigateBackToMap() {
         _navigateBackToMap.value = true
     }

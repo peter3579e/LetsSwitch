@@ -19,7 +19,6 @@ import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentPreviewBinding
 import com.peter.letsswtich.ext.getVmFactory
-import com.peter.letsswtich.home.ImageAdapter
 import com.peter.letsswtich.home.ImageCircleAdapter
 
 class PreviewFragment(user: User): Fragment() {
@@ -44,21 +43,21 @@ class PreviewFragment(user: User): Fragment() {
 
         binding.imageCardUser.adapter = imageAdapter
 
-        val circleAdapeter = ImageCircleAdapter()
+        val circleAdapter = ImageCircleAdapter()
 
-        binding.recyclerImageCircles.adapter = circleAdapeter
+        binding.recyclerImageCircles.adapter = circleAdapter
 
-        mainViewModel.userdetail.observe(viewLifecycleOwner, Observer {
+        mainViewModel.userDetail.observe(viewLifecycleOwner, Observer {
             Log.d("PreviewFragment","the value of userdetail from main viewModel = ${it}")
             viewModel.userDetail.personImages = it.personImages
             imageAdapter.submitImages(viewModel.userDetail.personImages)
             imageAdapter.notifyDataSetChanged()
-            circleAdapeter.submitCount(userdetail.personImages.size)
+            circleAdapter.submitCount(userdetail.personImages.size)
             binding.name = it.name
             binding.city = it.city
             binding.district = it.district
-            val newlanguage = mainViewModel.userdetail.value!!.fluentLanguage
-            if (mainViewModel.userdetail.value!!.fluentLanguage != viewModel.userDetail.fluentLanguage){
+            val newlanguage = mainViewModel.userDetail.value!!.fluentLanguage
+            if (mainViewModel.userDetail.value!!.fluentLanguage != viewModel.userDetail.fluentLanguage){
                 for (language in newlanguage){
                     val chip = Chip(chipGroup.context)
                     chip.text = language
@@ -68,36 +67,27 @@ class PreviewFragment(user: User): Fragment() {
         })
 
 
-
-
-
-//
         val linearSnapHelper = LinearSnapHelper().apply {
-//                attachToRecyclerView(binding.imageCardUser)
             val snapHelper: SnapHelper = PagerSnapHelper()
             binding.imageCardUser.onFlingListener = null
             snapHelper.attachToRecyclerView(binding.imageCardUser)
         }
-//
-//
+
         binding.imageCardUser.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             viewModel.onCampaignScrollChange(
                     binding.imageCardUser.layoutManager,
                     linearSnapHelper
             )
         }
-//
-//
-//
+
         viewModel.snapPosition.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
                 (binding.recyclerImageCircles.adapter as ImageCircleAdapter).selectedPosition.value =
                         (it % (viewModel.userDetail.personImages.size))
 
         })
-//
+
         val layoutManager = binding.imageCardUser.layoutManager
-//
         binding.cardImagePlus.setOnClickListener {
                 viewModel.snapPosition.value?.let {
                     if(viewModel.snapPosition.value!!< viewModel.userDetail.personImages.size-1){
@@ -123,11 +113,6 @@ class PreviewFragment(user: User): Fragment() {
                 }
         }
 
-
-
-
-
-        Log.d("HomeAdapter","Adapter has run")
 
         for (language in language){
             val chip = Chip(chipGroup.context)

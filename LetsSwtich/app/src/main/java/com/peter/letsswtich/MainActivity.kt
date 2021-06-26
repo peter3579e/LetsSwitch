@@ -114,9 +114,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.userInfo.observe(this, Observer {
             UserManager.user = it
-            viewModel.userdetail.value = it
+            viewModel.userDetail.value = it
             Log.d("Mainactivity", "the vaue of User Manager = ${UserManager.user}")
-            Log.d("Mainactivity", "the vaue of userdetail = ${viewModel.userdetail.value}")
+            Log.d("Mainactivity", "the vaue of userdetail = ${viewModel.userDetail.value}")
 
         })
 

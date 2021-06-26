@@ -78,10 +78,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
     val usersWithMatch: LiveData<List<User>>
         get() = _usersWithMatch
 
-    private val _oldMatchList = MutableLiveData<List<User>>()
-
-    val oldMatchList: MutableLiveData<List<User>>
-        get() = _oldMatchList
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -229,7 +225,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
     }
 
 
-    fun getRequirement(myEmail: String) {
+    private fun getRequirement(myEmail: String) {
         coroutineScope.launch {
 
             val result = letsSwitchRepository.getRequirement(myEmail)
@@ -260,7 +256,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
 
 
     fun getLikeList(myEmail: String, user: User) {
-//        Log.d("HomeViewModel", "GetLxikeList has run!!")
         coroutineScope.launch {
 
             val result = letsSwitchRepository.getLikeList(myEmail, user)
@@ -289,41 +284,10 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         }
     }
 
-    fun getNewMatchListener(myEmail: String) {
+    private fun getNewMatchListener(myEmail: String) {
         Log.d("HomeViewModel", "getNewMatchListener has run!!!")
         matchList = letsSwitchRepository.getNewMatchListener(myEmail)
     }
-
-    fun getMyOldMatchList(myEmail: String) {
-        coroutineScope.launch {
-
-            Log.d("HomeViewModel", "getMyOldMatchList has run!!!")
-
-            val result = letsSwitchRepository.getMyOldMatchList(myEmail)
-
-            _oldMatchList.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    null
-                }
-                else -> {
-                    _error.value =
-                        LetsSwtichApplication.appContext.getString(R.string.get_nothing_from_firebase)
-                    null
-                }
-            }
-            _refreshStatus.value = false
-        }
-    }
-
 
     fun getAllUser() {
         coroutineScope.launch {
@@ -356,13 +320,6 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         }
     }
 
-    var doneProgressCount = 4
-    private fun doneProgress() {
-
-        doneProgressCount--
-        if (doneProgressCount == 0) _status.value = LoadApiStatus.DONE
-    }
-
 
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
@@ -393,7 +350,7 @@ class HomeViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
             layoutManager?.getPosition(snapView)?.let {
                 if (it != snapPosition.value) {
                     _snapPosition.value = it
-                    Log.i("snapPosition on scrollChange", "$it")
+                    Log.i("snapPositionOnScroll", "$it")
                 }
             }
         }

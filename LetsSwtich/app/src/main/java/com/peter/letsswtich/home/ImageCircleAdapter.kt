@@ -24,7 +24,6 @@ class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHold
             selectedPosition.observe(context as MainActivity, Observer {
                 binding.isSelected = it == adapterPosition
                 binding.executePendingBindings()
-                Log.i("Selected position changed in adapter", "$it")
             })
         }
     }
@@ -32,7 +31,7 @@ class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHold
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ImageCircleAdapter.ImageViewHolder {
+    ): ImageViewHolder {
         context = parent.context
         return ImageViewHolder(
             ItemImageCircleBinding.inflate(
@@ -44,7 +43,7 @@ class ImageCircleAdapter : RecyclerView.Adapter<ImageCircleAdapter.ImageViewHold
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
-    override fun onBindViewHolder(holder: ImageCircleAdapter.ImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.bind(context, selectedPosition)
     }
 

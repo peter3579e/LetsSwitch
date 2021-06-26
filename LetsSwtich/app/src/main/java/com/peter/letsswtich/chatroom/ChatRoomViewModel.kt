@@ -100,16 +100,16 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
             _status.value = LoadApiStatus.LOADING
 
             when (val result = letsSwitchRepository.postMessage(userEmails, message)) {
-                is com.peter.letsswtich.data.Result.Success -> {
+                is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     leave(true)
                 }
-                is com.peter.letsswtich.data.Result.Fail -> {
+                is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
                 }
-                is com.peter.letsswtich.data.Result.Error -> {
+                is Result.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
                 }
@@ -127,16 +127,16 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
             _status.value = LoadApiStatus.LOADING
 
             when (val result = letsSwitchRepository.updateIsRead(friendEmail,documentId)) {
-                is com.peter.letsswtich.data.Result.Success -> {
+                is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     leave(true)
                 }
-                is com.peter.letsswtich.data.Result.Fail -> {
+                is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
                 }
-                is com.peter.letsswtich.data.Result.Error -> {
+                is Result.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
                 }
@@ -179,7 +179,7 @@ class ChatRoomViewModel(private val letsSwitchRepository: LetsSwitchRepository, 
         }
     }
 
-    fun leave(needRefresh: Boolean = false) {
+    private fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
 

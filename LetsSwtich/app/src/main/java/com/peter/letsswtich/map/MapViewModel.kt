@@ -26,11 +26,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vie
 
     val showsMore = MutableLiveData<Boolean>()
 
-    val friendslocation = MutableLiveData<LatLng>()
-
-    val _snapPosition = MutableLiveData<Int>()
-    val snapPosition: MutableLiveData<Int>
-        get() = _snapPosition
+    val friendsLocation = MutableLiveData<LatLng>()
 
     val clickedEventLocation = MutableLiveData<Events>()
 
@@ -48,7 +44,7 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vie
 
     val imagesLive = MutableLiveData<List<String>>()
 
-    val mylocation = MutableLiveData<LatLng>()
+    val myLocation = MutableLiveData<LatLng>()
 
     val clickedUserDetail = MutableLiveData<User>()
 
@@ -178,27 +174,27 @@ class MapViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vie
         _navigateToProfile.value = true
     }
 
-    fun profilenavigated() {
+    fun profileNavigated() {
         _navigateToProfile.value = false
     }
 
 
-    fun postlocaion(longitude: Double, latitude: Double, myEmail: String) {
+    fun postLocation(longitude: Double, latitude: Double, myEmail: String) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
             when (val result = letsSwitchRepository.postmyLocation(longitude, latitude, myEmail)) {
-                is com.peter.letsswtich.data.Result.Success -> {
+                is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                 }
-                is com.peter.letsswtich.data.Result.Fail -> {
+                is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
                 }
-                is com.peter.letsswtich.data.Result.Error -> {
+                is Result.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
                 }

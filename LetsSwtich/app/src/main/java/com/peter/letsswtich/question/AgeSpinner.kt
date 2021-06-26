@@ -41,7 +41,6 @@ class AgeSpinner(private val strings: MutableList<Int>, val indicator: String) :
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
-        Log.d("posistion", "${getItemId(position)}")
     }
 
     override fun getCount(): Int {

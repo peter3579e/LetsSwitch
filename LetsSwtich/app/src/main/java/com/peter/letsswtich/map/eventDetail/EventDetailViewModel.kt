@@ -67,7 +67,7 @@ class EventDetailViewModel(
         }
     }
 
-    val _navigateBackToMap = MutableLiveData<Boolean>()
+    private val _navigateBackToMap = MutableLiveData<Boolean>()
     val navigateBackToMap: LiveData<Boolean>
         get() = _navigateBackToMap
 
@@ -96,7 +96,7 @@ class EventDetailViewModel(
             layoutManager?.getPosition(snapView)?.let {
                 if (it != snapPosition.value) {
                     _snapPosition.value = it
-                    Log.i("snapPosition on scrollChange", "$it")
+                    Log.i("snapPosition", "$it")
                 }
             }
         }

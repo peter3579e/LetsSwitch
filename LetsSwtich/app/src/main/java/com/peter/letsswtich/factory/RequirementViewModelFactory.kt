@@ -18,7 +18,6 @@ class RequirementViewModelFactory constructor(
                 isAssignableFrom(SettingViewModel::class.java) ->
                     SettingViewModel(repository, userRequirement)
 
-
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

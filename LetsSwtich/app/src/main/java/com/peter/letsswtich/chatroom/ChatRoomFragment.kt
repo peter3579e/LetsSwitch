@@ -30,6 +30,7 @@ class ChatRoomFragment : Fragment() {
             ChatRoomFragmentArgs.fromBundle(requireArguments()).fromMap
         )
     }
+    private val TAG = "ChatRoomFragment"
     private lateinit var binding: FragmentChatRoomBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,7 @@ class ChatRoomFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentChatRoomBinding.inflate(inflater, container, false)
         val adapter = ChatRoomAdapter(viewModel)
@@ -79,12 +80,12 @@ class ChatRoomFragment : Fragment() {
             viewModel.updateIsRead(viewModel.currentChattingUser, message.documentId)
             //exclude friends message
             viewModel.filterMessage = message.message.excludeFriend(friendUserEmail)
-            Log.d("ChatroomFragment", "the value of message ${message.message}")
+            Log.d(TAG, "the value of message ${message.message}")
             viewModel.count = 0
             adapter.submitList(message.message)
             adapter.notifyDataSetChanged()
 
-            Log.d("ChatRoomFragmen", "the value of filteredMessage = ${viewModel.filterMessage}")
+            Log.d(TAG, "the value of filteredMessage = ${viewModel.filterMessage}")
         })
 
         //check if send message icon is blue
@@ -99,7 +100,7 @@ class ChatRoomFragment : Fragment() {
 
         binding.editMessage.doOnTextChanged { text, start, before, count ->
             viewModel.enterMessage.value = text.toString()
-            Log.d("Peter", "${viewModel.enterMessage.value}")
+            Log.d(TAG, "${viewModel.enterMessage.value}")
         }
         return binding.root
     }

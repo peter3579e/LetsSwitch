@@ -93,13 +93,6 @@ class FirstQuestionnaireViewModel(private val letsSwitchRepository: LetsSwitchRe
 
     }
 
-
-//    fun postUser(){
-//        coroutineScope.launch {
-//            letsSwitchRepository.postfake()
-//        }
-//    }
-
     fun setupCity(city: String) {
         _selectedCity.value = city
     }

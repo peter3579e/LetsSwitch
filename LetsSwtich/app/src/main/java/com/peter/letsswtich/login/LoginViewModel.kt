@@ -71,12 +71,12 @@ class LoginViewModel(private val letsSwitchRepository: LetsSwitchRepository) : V
             val result = letsSwitchRepository.firebaseAuthWithGoogle(account)
 
             _firebaseUser.value = when (result) {
-                is com.peter.letsswtich.data.Result.Success -> {
+                is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     result.data
                 }
-                is com.peter.letsswtich.data.Result.Fail -> {
+                is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
                     null

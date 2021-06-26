@@ -1,5 +1,6 @@
 package com.peter.letsswtich.data.source.remote
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -386,6 +387,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     }
 
 
+    @SuppressLint("LongLogTag")
     override suspend fun getLikeList(myEmail: String, user: User): com.peter.letsswtich.data.Result<List<String>> = suspendCoroutine { continuation ->
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
         users.document(user.email)
@@ -404,11 +406,11 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     } else {
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message} ")
-                            continuation.resume(com.peter.letsswtich.data.Result.Error(it))
+                            continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                                com.peter.letsswtich.data.Result.Fail(
+                               Result.Fail(
                                         LetsSwtichApplication.appContext.getString(
                                                 R.string.get_nothing_from_firebase)))
                     }
@@ -417,7 +419,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
-    override suspend fun getAllUser(): com.peter.letsswtich.data.Result<List<User>> = suspendCoroutine { continuation ->
+    override suspend fun getAllUser(): Result<List<User>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
                 .collection(PATH_USER)
                 .get()
@@ -439,7 +441,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                                com.peter.letsswtich.data.Result.Fail(
+                                Result.Fail(
                                         LetsSwtichApplication.appContext.getString(
                                                 R.string.get_nothing_from_firebase)))
                     }
@@ -447,7 +449,8 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
 
     }
 
-    override suspend fun getMyOldMatchList(myEmail: String): com.peter.letsswtich.data.Result<List<User>> = suspendCoroutine { continuation ->
+    @SuppressLint("LongLogTag")
+    override suspend fun getMyOldMatchList(myEmail: String): Result<List<User>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
                 .collection(PATH_USER)
                 .document(myEmail)
@@ -467,11 +470,11 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
                     } else {
                         task.exception?.let {
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message} ")
-                            continuation.resume(com.peter.letsswtich.data.Result.Error(it))
+                            continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                                com.peter.letsswtich.data.Result.Fail(
+                                Result.Fail(
                                         LetsSwtichApplication.appContext.getString(
                                                 R.string.get_nothing_from_firebase)))
                     }
@@ -503,6 +506,7 @@ object LetsSwitchRemoteDataSource : LetsSwitchDataSource {
     }
 
 
+    @SuppressLint("LongLogTag")
     override suspend fun updateMyLike(myEmail: String, user: User): Result<Boolean> = suspendCoroutine {
         val users = FirebaseFirestore.getInstance().collection(PATH_USER)
 

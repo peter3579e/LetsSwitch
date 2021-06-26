@@ -3,7 +3,6 @@ package com.peter.letsswtich.editprofile
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -13,12 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.peter.letsswtich.*
-import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentEditProfileBinding
 import com.peter.letsswtich.ext.getVmFactory
 import com.peter.letsswtich.login.UserManager
-import com.peter.letsswtich.profile.ProfileFragmentArgs
-import com.peter.letsswtich.profile.ProfileViewModel
 
 class EditProfileFragment : Fragment() {
     private lateinit var binding: FragmentEditProfileBinding
@@ -51,11 +47,10 @@ class EditProfileFragment : Fragment() {
         fun isFinished(): Boolean {
 
             return when {
-                mainViewModel.userdetail.value!!.fluentLanguage.isNotEmpty() &&
-                        mainViewModel.userdetail.value!!.gender != "" -> {
+                mainViewModel.userDetail.value!!.fluentLanguage.isNotEmpty() &&
+                        mainViewModel.userDetail.value!!.gender != "" -> {
                     true
                 }
-
 
                 else -> {
                     Toast.makeText(
@@ -73,10 +68,10 @@ class EditProfileFragment : Fragment() {
             if (it == true && isFinished()) {
                 Log.d(
                     "EditProfileFragment",
-                    "the value of User = ${mainViewModel.userdetail.value}"
+                    "the value of User = ${mainViewModel.userDetail.value}"
                 )
-                UserManager.user = mainViewModel.userdetail.value!!
-                viewModel.user = mainViewModel.userdetail.value!!
+                UserManager.user = mainViewModel.userDetail.value!!
+                viewModel.user = mainViewModel.userDetail.value!!
                 Log.d("EditProfileFragment", "the value of UserManager = ${UserManager.user}")
                 findNavController().navigate(
                     NavigationDirections.navigateToProfileFragment(
@@ -84,7 +79,7 @@ class EditProfileFragment : Fragment() {
                         false
                     )
                 )
-                viewModel.updateUser(mainViewModel.userdetail.value!!)
+                viewModel.updateUser(mainViewModel.userDetail.value!!)
                 viewModel.profileNavigated()
             }
         })

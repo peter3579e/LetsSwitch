@@ -1,6 +1,7 @@
 package com.peter.letsswtich.map.event
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -11,17 +12,17 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -40,7 +41,6 @@ import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.MainActivity
 import com.peter.letsswtich.NavigationDirections
 import com.peter.letsswtich.R
-import com.peter.letsswtich.data.Events
 import com.peter.letsswtich.data.Location
 import com.peter.letsswtich.databinding.FragmentEditEventBinding
 import com.peter.letsswtich.ext.FORMAT_YYYY_MM_DDHHMMSS
@@ -49,7 +49,6 @@ import com.peter.letsswtich.ext.toDateFormat
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.map.EventPhotoAdapter
 import com.peter.letsswtich.question.AgeSpinner
-import com.peter.letsswtich.util.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -64,7 +63,9 @@ class EditEventFragment : Fragment() {
     private lateinit var binding: FragmentEditEventBinding
     private val AUTOCOMPLETE_REQUEST_CODE = 2
     private val TAG = "EditEventFrgment"
+    private val photos = mutableListOf("", "", "", "", "", "", "", "")
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,7 +78,6 @@ class EditEventFragment : Fragment() {
         val adapter = EventPhotoAdapter(viewModel)
         binding.photosRecycleView.adapter = adapter
 
-        val photos = mutableListOf<String>("", "", "", "", "", "", "", "")
         viewModel.photoList.value = photos
 
         adapter.submitList(photos)
@@ -129,8 +129,7 @@ class EditEventFragment : Fragment() {
                 val myFormat = "dd.MM.yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 textView.text = sdf.format(cal.time).format(System.currentTimeMillis())
-                viewModel.selectedDate.value =
-                    sdf.format(cal.time).format(System.currentTimeMillis())
+                viewModel.setDate(sdf.format(cal.time).format(System.currentTimeMillis()))
                 Log.d("MapFragment", "date ${viewModel.selectedDate.value}")
 
             }
@@ -164,15 +163,8 @@ class EditEventFragment : Fragment() {
 
         viewModel.photoUri.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             Log.d("MapFragment", "value of receive = $it")
-            var stop = false
 
-            for (i in 1..photos.size) {
-                if (photos[i - 1] == "" && !stop) {
-                    photos[i - 1] = it.toString()
-                    stop = true
-                }
-            }
-            viewModel.photoList.value = photos
+            viewModel.photoList.value = addPhoto(it.toString(),photos)
             Log.d(TAG, "value of photo list = ${viewModel.photoList.value}")
 
         })
@@ -221,8 +213,24 @@ class EditEventFragment : Fragment() {
 
                 }
             }
+
+
         return binding.root
     }
+
+
+    fun addPhoto(photoUri: String, photoList: MutableList<String>):MutableList<String>{
+        var stop = false
+
+        for (i in 1..photoList.size) {
+            if (photoList[i - 1] == "" && !stop) {
+                photoList[i - 1] = photoUri.toString()
+                stop = true
+            }
+        }
+        return photoList
+    }
+
 
 
     private fun isFinished(): Boolean {
@@ -290,6 +298,7 @@ class EditEventFragment : Fragment() {
     }
 
     //handling the image chooser activity result
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Log.d("MapFragment", "request code value = $requestCode")
@@ -389,6 +398,7 @@ class EditEventFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun getImageRotation(context: Context, uri: Uri): Int {
         var stream: InputStream? = null
         return try {
@@ -644,8 +654,6 @@ class EditEventFragment : Fragment() {
         //Bitmap to get image from gallery
         private var bitmap: Bitmap? = null
         private var auth: FirebaseAuth? = null
-        private var displayMetrics: DisplayMetrics? = null
-        private var windowManager: WindowManager? = null
         private var fileFromCamera: File? = null
         var isUploadPermissionsGranted = false
 //            private var foodie: Foodie? = null

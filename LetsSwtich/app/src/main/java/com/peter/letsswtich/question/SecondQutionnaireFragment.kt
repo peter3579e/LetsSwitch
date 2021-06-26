@@ -147,10 +147,6 @@ class SecondQutionnaireFragment : Fragment() {
         binding.buttonNext.setOnClickListener {
             if (isFinished()) {
 
-
-//                Log.d("SecondQuestion", "the value of UserManager = ${UserManager.user}")
-
-
                 val requirement = Requirement(
                     gender = viewModel.selectedGender.value.toString(),
                     age = listOf(viewModel.minAge.value!!, viewModel.maxAge.value!!),
@@ -158,23 +154,13 @@ class SecondQutionnaireFragment : Fragment() {
                     language = viewModel.selectedFirstLanguage?.value!!
                 )
 
-
                 viewModel.postRequirement(UserManager.user.email, requirement)
 
                 startActivity(Intent(context, MainActivity::class.java))
                 requireActivity().finish()
 
-
-
-                Log.d("SecondQuestion", "the value of requirement = ${requirement}")
-
-
             }
         }
-
-
-
-
 
         return binding.root
     }
@@ -185,7 +171,6 @@ class SecondQutionnaireFragment : Fragment() {
             viewModel.maxAge.value != null && viewModel.minAge.value != null && viewModel.selectedFirstLanguage.value != null && viewModel.city.value != null -> {
                 true
             }
-
 
             else -> {
                 Toast.makeText(

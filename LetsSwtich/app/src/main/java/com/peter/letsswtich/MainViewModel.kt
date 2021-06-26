@@ -19,7 +19,7 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
 
     var matchList = MutableLiveData<List<User>>()
 
-    val requirment = MutableLiveData<Requirement>()
+    val requirement = MutableLiveData<Requirement>()
 
     val newestFriendDetail = MutableLiveData<List<User>>()
 
@@ -40,7 +40,7 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
     val error: LiveData<String>
         get() = _error
 
-    val userdetail = MutableLiveData<User>()
+    val userDetail = MutableLiveData<User>()
 
     private val _userInfo = MutableLiveData<User>()
 
@@ -48,7 +48,7 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
         get() = _userInfo
 
 
-    val _navigateToFriendsProfile = MutableLiveData<Boolean>()
+    private val _navigateToFriendsProfile = MutableLiveData<Boolean>()
     val navigateToFriendsProfile: MutableLiveData<Boolean>
         get() = _navigateToFriendsProfile
 
@@ -69,7 +69,7 @@ class MainViewModel(private val letsSwitchRepository: LetsSwitchRepository) : Vi
 
     }
 
-    fun getNewMatchListener(myEmail: String) {
+    private fun getNewMatchListener(myEmail: String) {
         Log.d("HomeViewModel", "getNewMatchListener has run!!!")
         matchList = letsSwitchRepository.getNewMatchListener(myEmail)
     }

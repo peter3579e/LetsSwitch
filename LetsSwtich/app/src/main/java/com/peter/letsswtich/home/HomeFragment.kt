@@ -12,25 +12,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.peter.letsswtich.LetsSwtichApplication
 import com.peter.letsswtich.MainViewModel
 import com.peter.letsswtich.NavigationDirections
-import com.peter.letsswtich.R
-import com.peter.letsswtich.data.User
 import com.peter.letsswtich.databinding.FragmentHomeBinding
 import com.peter.letsswtich.ext.excludeUser
 import com.peter.letsswtich.ext.getVmFactory
-import com.peter.letsswtich.login.LoginViewModel
 import com.peter.letsswtich.login.UserManager
 import com.peter.letsswtich.network.LoadApiStatus
-import com.peter.letsswtich.util.CurrentFragmentType
 import com.yuyakaido.android.cardstackview.*
 import com.peter.letsswtich.util.Logger
-import java.util.*
 
 
 class HomeFragment : Fragment(), CardStackListener {
@@ -60,8 +53,8 @@ class HomeFragment : Fragment(), CardStackListener {
 
                 requirement?.let {
                     viewModel.getAllUser()
-                    mainViewModel.requirment.value = requirement
-                    mainViewModel.userdetail.observe(
+                    mainViewModel.requirement.value = requirement
+                    mainViewModel.userDetail.observe(
                         viewLifecycleOwner,
                         androidx.lifecycle.Observer {
 
@@ -82,7 +75,6 @@ class HomeFragment : Fragment(), CardStackListener {
         savedInstanceState: Bundle?
     ): View? {
 
-//        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 

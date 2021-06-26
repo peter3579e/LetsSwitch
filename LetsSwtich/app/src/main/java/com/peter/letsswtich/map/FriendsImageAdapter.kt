@@ -36,7 +36,7 @@ class FriendsImageAdapter(val viewModel: MapViewModel) :
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
             Log.d("Mic", " the value of Use = ${getItem(position).latitude}")
-            viewModel.friendslocation.value =
+            viewModel.friendsLocation.value =
                 LatLng(getItem(position).latitude, getItem(position).lngti)
             viewModel.clickedUserDetail.value = getItem(position)
             viewModel.showsMore.value = true

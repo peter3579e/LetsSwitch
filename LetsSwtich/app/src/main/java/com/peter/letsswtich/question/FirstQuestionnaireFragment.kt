@@ -36,8 +36,6 @@ class FirstQuestionnaireFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        Logger.d("Run1")
-
         val ageIndicator =
             LetsSwtichApplication.instance.resources.getString(R.string.spinner_select_age)
         val genderIndicator =
