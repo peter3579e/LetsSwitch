@@ -22,9 +22,9 @@ src ="https://i.imgur.com/6Rsv9wB.png"  width="150" />](https://play.google.com/
 
 1. Click on **Login with Google** Button
 2. Fill your peronsnal detail
-3. Click next questions
+3. Click **NEXT**
 4. Select the age range you prefer
-5. Choose any gender you are looking for or Leave it Empty 
+5. Choose any gender you are looking for, or leave it empty 
 6. Choose **English** as your subject
 7. Choose **Taipei** as your location
 
@@ -39,8 +39,9 @@ You will be good to start ❤️
 ## Features
 
 ### Home
-* Recommend users based on your preference
+* List of recommended users based on your preference
 * Swipe right or left(as like and dislike) to select prefer users
+* The system will check if you guys are matched
 <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/swipe_gif.gif?raw=true" height="500" /> 
 
 ### Chat list & Chat room
@@ -52,13 +53,13 @@ You will be good to start ❤️
 <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/chat_gif.gif?raw=true" height="500" /> 
 
 ### Map
-* Map not only allows you to see your matched friedns location, but also shows the location of events created by other users
+* Map not only allows you to see your matched friedns location, but also shows the location of the events created by other users
 * By clicking its image, the UI will automatically zoom to the location
 <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/map_gif.gif?raw=true" height="500" /> 
 
 ### Profile
-* Help you with creating your unique profile page
-* You make the pictures bigger by clicking it
+* Profile helps you with creating your unique profile page
+* You can make the pictures bigger by clicking it
 <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/profile_gif.gif?raw=true" height="500" /> 
 
 
