@@ -55,6 +55,7 @@ class SettingFragment : Fragment() {
                 Log.d("SettingFragment", "the requirement = ${viewModel.need}")
 
                 viewModel.postRequirement(UserManager.user.email, viewModel.need)
+                mainViewModel.requirement.value = viewModel.need
                 mainViewModel.userDetail.value!!.preferLanguage = listOf(viewModel.need.language)
                 UserManager.user.preferLanguage = listOf(viewModel.need.language)
 
