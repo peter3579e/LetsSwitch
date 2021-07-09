@@ -8,7 +8,7 @@ user can see their matched friend’s approximate location with the personal sta
 activities on map. To increase the chance of face-to-face meeting.
 
 <img
-src ="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/lets_switch_launcher.png?raw=true"  width="150" />
+src ="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/lets_switch_launcher.png?raw=true"  width="150" />
 
 [<img
 src ="https://i.imgur.com/6Rsv9wB.png"  width="150" />](https://play.google.com/store/apps/details?id=com.peter.letsswtich)
@@ -31,7 +31,7 @@ src ="https://i.imgur.com/6Rsv9wB.png"  width="150" />](https://play.google.com/
 
 You will be good to start ❤️
 
-<img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/login_gif.gif?raw=true" height="500" /> <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/firstQuestion_img.png?raw=true" height="500" /> <img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/secondQuestion_img.png?raw=true" height="500" />
+<img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/login_gif.gif?raw=true" height="500" /> <img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/firstQuestion_img.png?raw=true" height="500" /> <img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/secondQuestion_img.png?raw=true" height="500" />
 
 
 
@@ -42,7 +42,7 @@ You will be good to start ❤️
 * List of recommended users based on your preference
 * Swipe right or left (as like and dislike) to select prefer users
 * The system will check if you guys are matched
-<img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/swipe_gif.gif?raw=true" height="500" /> 
+<img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/swipe_gif.gif?raw=true" height="500" /> 
 
 ### Chat list & Chat room
 * Chat room allows you to initial a conversation with the person you like
@@ -50,17 +50,17 @@ You will be good to start ❤️
 
 
 
-<img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/chat_gif.gif?raw=true" height="500" /> 
+<img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/chat_gif.gif?raw=true" height="500" /> 
 
 ### Map
 * Map not only allows you to see your matched friedns location, but also shows the location of the events created by other users
 * By clicking its image, the UI will automatically zoom to the location
-<img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/map_gif.gif?raw=true" height="500" /> 
+<img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/map_gif.gif?raw=true" height="500" /> 
 
 ### Profile
 * Profile helps you with creating your unique profile page
 * You can make the pictures bigger by clicking it
-<img src="https://github.com/peter3579e/LetsSwtich/blob/main/LetsSwtich/ScreenShot/profile_gif.gif?raw=true" height="500" /> 
+<img src="https://github.com/peter3579e/LetsSwitch/blob/main/LetsSwitch/ScreenShot/profile_gif.gif?raw=true" height="500" /> 
 
 
 ## Implementation
