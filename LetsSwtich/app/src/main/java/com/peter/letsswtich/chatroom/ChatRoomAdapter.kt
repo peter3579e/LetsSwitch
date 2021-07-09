@@ -91,11 +91,23 @@ class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
 
     companion object DiffCallback : DiffUtil.ItemCallback<Message>() {
         override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem === newItem
+            return if (oldItem === newItem){
+                Log.d("PhotoAdapter","the value of Diffcallback has run")
+                true
+            }else{
+                Log.d("PhotoAdapter","the value of Diffcallback has run false")
+                false
+            }
         }
 
         override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem.id == newItem.id
+            return if (oldItem.id == newItem.id){
+                Log.d("PhotoAdapter","the value of Diffcallback has run")
+                true
+            }else{
+                Log.d("PhotoAdapter","the value of Diffcallback has run false 1")
+                false
+            }
         }
 
         private const val ITEM_VIEW_TYPE_FRIEND = 0x00

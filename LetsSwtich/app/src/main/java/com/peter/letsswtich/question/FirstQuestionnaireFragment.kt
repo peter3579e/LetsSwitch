@@ -54,7 +54,7 @@ class FirstQuestionnaireFragment : Fragment() {
             LetsSwtichApplication.instance.resources.getStringArray(R.array.city_array)
 
         val ageArray: MutableList<Int> = mutableListOf<Int>()
-        var count = 0
+        var count = 1
         for (i in 0..99) {
             count++
             ageArray.add(count)

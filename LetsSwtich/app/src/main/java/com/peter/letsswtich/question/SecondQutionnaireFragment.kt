@@ -100,6 +100,8 @@ class SecondQutionnaireFragment : Fragment() {
                 }
             }
 
+
+
         binding.preferFirst.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(p0: AdapterView<*>?) {

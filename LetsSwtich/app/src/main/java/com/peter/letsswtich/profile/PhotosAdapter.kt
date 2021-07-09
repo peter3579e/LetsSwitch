@@ -10,6 +10,7 @@ import com.peter.letsswtich.chat.NewMatchedAdapter
 import com.peter.letsswtich.data.ChatRoom
 import com.peter.letsswtich.databinding.ItemNewMatchesBinding
 import com.peter.letsswtich.databinding.ItemProfilePhotosBinding
+import kotlin.math.log
 
 class PhotosAdapter(val viewModel: ProfileViewModel) :
     ListAdapter<String, PhotosAdapter.ViewHolder>(DiffCallback) {
