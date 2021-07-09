@@ -1,4 +1,4 @@
-# LetsSwtich
+# LetsSwitch
 
 [![GitHub](https://img.shields.io/packagist/l/doctrine/orm)](https://github.com/peter3579e/LetsSwtich/blob/main/LICENSE)  <img
 src="https://img.shields.io/badge/platform-Android-brightgreen"/>
